@@ -1,0 +1,35 @@
+import { defineComponent, createBlock, openBlock, unref, withCtx, renderSlot, createTextVNode } from 'vue';
+import { P as Primitive } from '../Primitive/Primitive.js';
+
+const __default__ = {
+  compatConfig: {
+    MODE: 3
+  }
+};
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  ...__default__,
+  __name: "SelectIcon",
+  props: {
+    asChild: { type: Boolean },
+    as: { default: "span" }
+  },
+  setup(__props) {
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(unref(Primitive), {
+        "aria-hidden": "true",
+        as: _ctx.as,
+        "as-child": _ctx.asChild
+      }, {
+        default: withCtx(() => [
+          renderSlot(_ctx.$slots, "default", {}, () => [
+            _cache[0] || (_cache[0] = createTextVNode("▼"))
+          ])
+        ]),
+        _: 3
+      }, 8, ["as", "as-child"]);
+    };
+  }
+});
+
+export { _sfc_main as _ };
+//# sourceMappingURL=SelectIcon.js.map

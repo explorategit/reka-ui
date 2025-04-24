@@ -1,0 +1,30 @@
+import { defineComponent, createBlock, openBlock, unref, mergeProps, withCtx, renderSlot } from 'vue';
+import { P as Primitive } from '../Primitive/Primitive.js';
+
+const __default__ = {
+  compatConfig: {
+    MODE: 3
+  }
+};
+const _sfc_main = /* @__PURE__ */ defineComponent({
+  ...__default__,
+  __name: "MenuGroup",
+  props: {
+    asChild: { type: Boolean },
+    as: {}
+  },
+  setup(__props) {
+    const props = __props;
+    return (_ctx, _cache) => {
+      return openBlock(), createBlock(unref(Primitive), mergeProps({ role: "group" }, props), {
+        default: withCtx(() => [
+          renderSlot(_ctx.$slots, "default")
+        ]),
+        _: 3
+      }, 16);
+    };
+  }
+});
+
+export { _sfc_main as _ };
+//# sourceMappingURL=MenuGroup.js.map
