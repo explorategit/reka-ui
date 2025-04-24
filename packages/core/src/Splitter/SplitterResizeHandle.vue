@@ -21,6 +21,12 @@ export type SplitterResizeHandleEmits = {
   /** Event handler called when dragging the handler. */
   dragging: [isDragging: boolean]
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

@@ -69,6 +69,12 @@ export type EditableRootEmits = {
 
 export const [injectEditableRootContext, provideEditableRootContext]
   = createContext<EditableRootContext>('EditableRoot')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

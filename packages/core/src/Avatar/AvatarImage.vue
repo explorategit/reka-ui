@@ -14,6 +14,12 @@ export interface AvatarImageProps extends PrimitiveProps {
   src: string
   referrerPolicy?: ImgHTMLAttributes['referrerpolicy']
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

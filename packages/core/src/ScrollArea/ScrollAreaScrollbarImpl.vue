@@ -8,6 +8,12 @@ type ScrollbarAreaScrollbarImplEmits = {
 export interface ScrollAreaScrollbarImplProps {
   isHorizontal: boolean
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

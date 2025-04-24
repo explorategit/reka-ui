@@ -89,6 +89,12 @@ export type DateRangeFieldRootEmits = {
 
 export const [injectDateRangeFieldRootContext, provideDateRangeFieldRootContext]
   = createContext<DateRangeFieldRootContext>('DateRangeFieldRoot')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

@@ -7,6 +7,12 @@ export interface TreeVirtualizerProps {
   /** Text content for each item to achieve type-ahead feature */
   textContent?: (item: Record<string, any>) => string
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

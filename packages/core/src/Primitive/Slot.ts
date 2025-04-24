@@ -3,6 +3,9 @@ import { cloneVNode, Comment, defineComponent, mergeProps } from 'vue'
 
 export const Slot = defineComponent({
   name: 'PrimitiveSlot',
+  compatConfig: {
+    MODE: 3,
+  },
   inheritAttrs: false,
   setup(_, { attrs, slots }) {
     return () => {

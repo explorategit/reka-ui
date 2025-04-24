@@ -159,6 +159,12 @@ export interface PopperContentContext {
 
 export const [injectPopperContentContext, providePopperContentContext]
   = createContext<PopperContentContext>('PopperContent')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

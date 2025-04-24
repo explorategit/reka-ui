@@ -10,6 +10,12 @@ export interface MenuRadioItemProps extends MenuItemProps {
   /** The unique value of the item. */
   value: string
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

@@ -12,6 +12,12 @@ type MotionAttribute = 'to-start' | 'to-end' | 'from-start' | 'from-end'
 export type NavigationMenuContentImplEmits = DismissableLayerEmits
 
 export interface NavigationMenuContentImplProps extends DismissableLayerProps {}
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

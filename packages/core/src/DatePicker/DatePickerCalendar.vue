@@ -3,6 +3,12 @@ import type { DateValue } from '@internationalized/date'
 import { isEqualDay } from '@internationalized/date'
 import { CalendarRoot } from '..'
 import { injectDatePickerRootContext } from './DatePickerRoot.vue'
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

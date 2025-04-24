@@ -13,6 +13,12 @@ export interface RangeCalendarPrevSlot {
     disabled: boolean
   }) => any
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

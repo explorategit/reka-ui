@@ -23,6 +23,12 @@ export const [injectComboboxContentContext, provideComboboxContentContext]
   = createContext<{
     position: Ref<'inline' | 'popper'>
   }>('ComboboxContent')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

@@ -20,6 +20,12 @@ export interface ScrollAreaScrollbarVisibleContext {
 
 export const [injectScrollAreaScrollbarVisibleContext, provideScrollAreaScrollbarVisibleContext]
   = createContext<ScrollAreaScrollbarVisibleContext>('ScrollAreaScrollbarVisible')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

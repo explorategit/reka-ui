@@ -5,6 +5,12 @@ import { Primitive } from '..'
 import { injectListboxRootContext } from './ListboxRoot.vue'
 
 export interface ListboxContentProps extends PrimitiveProps { }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

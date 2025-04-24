@@ -23,6 +23,12 @@ export interface ScrollAreaScollbarContext {
 
 export const [injectScrollAreaScrollbarContext, provideScrollAreaScrollbarContext]
   = createContext<ScrollAreaScollbarContext>('ScrollAreaScrollbar')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

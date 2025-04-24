@@ -22,6 +22,12 @@ interface ListboxItemContext {
 
 export const [injectListboxItemContext, provideListboxItemContext]
   = createContext<ListboxItemContext>('ListboxItem')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts"  generic="T extends AcceptableValue = AcceptableValue">

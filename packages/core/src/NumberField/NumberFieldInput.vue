@@ -6,6 +6,12 @@ import { injectNumberFieldRootContext } from './NumberFieldRoot.vue'
 
 export interface NumberFieldInputProps extends PrimitiveProps {
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

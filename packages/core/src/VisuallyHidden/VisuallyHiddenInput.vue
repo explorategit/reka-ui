@@ -1,3 +1,11 @@
+<script lang="ts">
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
+</script>
+
 <script setup lang="ts" generic="T">
 import type { VisuallyHiddenInputBubbleProps } from './VisuallyHiddenInputBubble.vue'
 import { computed } from 'vue'

@@ -4,6 +4,12 @@ import { PopoverContent, PopoverPortal, useForwardPropsEmits } from '..'
 
 export interface DateRangePickerContentProps extends PopoverContentProps {}
 export interface DateRangePickerContentEmits extends PopoverContentEmits {}
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

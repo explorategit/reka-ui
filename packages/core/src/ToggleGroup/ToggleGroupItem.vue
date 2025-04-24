@@ -9,6 +9,12 @@ export interface ToggleGroupItemProps extends Omit<ToggleProps, 'name' | 'requir
    */
   value: AcceptableValue
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

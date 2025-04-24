@@ -7,6 +7,12 @@ export type TooltipTriggerDataState =
   | 'instant-open'
 
 export interface TooltipTriggerProps extends PopperAnchorProps {}
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">
@@ -31,6 +37,8 @@ const { forwardRef, currentElement: triggerElement } = useForwardExpose()
 
 const isPointerDown = ref(false)
 const hasPointerMoveOpened = ref(false)
+
+console.log('TooltipTrigger')
 
 const tooltipListeners = computed(() => {
   if (rootContext.disabled.value)
@@ -81,6 +89,7 @@ function handlePointerLeave() {
 }
 
 function handleFocus(event: FocusEvent) {
+  console.log('TooltipTrigger focus', event)
   if (isPointerDown.value)
     return
 

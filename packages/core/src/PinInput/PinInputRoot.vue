@@ -48,6 +48,12 @@ export interface PinInputRootContext {
 
 export const [injectPinInputRootContext, providePinInputRootContext]
   = createContext<PinInputRootContext>('PinInputRoot')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

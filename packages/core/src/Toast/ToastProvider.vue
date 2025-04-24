@@ -44,6 +44,12 @@ export interface ToastProviderProps {
 
 export const [injectToastProviderContext, provideToastProviderContext]
   = createContext<ToastProviderContext>('ToastProvider')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

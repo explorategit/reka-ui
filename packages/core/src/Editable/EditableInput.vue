@@ -4,6 +4,12 @@ import { Primitive, usePrimitiveElement } from '@/Primitive'
 
 export interface EditableInputProps extends PrimitiveProps {
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

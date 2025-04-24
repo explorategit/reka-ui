@@ -85,6 +85,12 @@ function convertValue(value: TimeValue, date: DateValue = today(getLocalTimeZone
 
   return toCalendarDateTime(date, value)
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

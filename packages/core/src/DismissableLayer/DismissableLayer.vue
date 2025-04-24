@@ -58,6 +58,12 @@ export const context = reactive({
   layersWithOutsidePointerEventsDisabled: new Set<HTMLElement>(),
   branches: new Set<HTMLElement>(),
 })
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

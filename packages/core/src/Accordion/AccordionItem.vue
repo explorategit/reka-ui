@@ -37,6 +37,12 @@ interface AccordionItemContext {
 
 export const [injectAccordionItemContext, provideAccordionItemContext]
   = createContext<AccordionItemContext>('AccordionItem')
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

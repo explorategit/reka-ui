@@ -4,6 +4,12 @@ import type { CalendarNextProps } from '..'
 import { CalendarNext } from '..'
 
 export interface DatePickerNextProps extends CalendarNextProps {}
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

@@ -10,6 +10,12 @@ export interface TagsInputInputProps extends PrimitiveProps {
   /** Maximum number of character allowed. */
   maxLength?: number
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">

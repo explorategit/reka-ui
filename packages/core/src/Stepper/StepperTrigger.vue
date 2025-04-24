@@ -5,6 +5,12 @@ import { computed, onMounted, onUnmounted } from 'vue'
 
 export interface StepperTriggerProps extends PrimitiveProps {
 }
+
+export default {
+  compatConfig: {
+    MODE: 3,
+  },
+}
 </script>
 
 <script setup lang="ts">
