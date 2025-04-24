@@ -46,6 +46,9 @@ export function useCollection<ItemData = {}>(options: { key?: string, isProvider
 
   const CollectionSlot = defineComponent({
     name: 'CollectionSlot',
+    compatConfig: {
+      MODE: 3,
+    },
     setup(_, { slots }) {
       const { primitiveElement, currentElement } = usePrimitiveElement()
       watch(currentElement, () => {
