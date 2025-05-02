@@ -7229,11 +7229,15 @@ getValueLabel: (value: number, max: number) => string;
     default: (props: {
         /** Current input values */
         modelValue: number | null | undefined;
+        /** Whether the progress is indeterminate */
+        indeterminate: boolean;
     }) => any;
 }> & {
     default: (props: {
         /** Current input values */
         modelValue: number | null | undefined;
+        /** Whether the progress is indeterminate */
+        indeterminate: boolean;
     }) => any;
 }>;
 

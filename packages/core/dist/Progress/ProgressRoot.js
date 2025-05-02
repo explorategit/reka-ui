@@ -1,4 +1,4 @@
-import { defineComponent, watch, nextTick, computed, createBlock, openBlock, unref, withCtx, renderSlot } from 'vue';
+import { defineComponent, computed, watch, nextTick, createBlock, openBlock, unref, withCtx, renderSlot } from 'vue';
 import { useVModel } from '@vueuse/core';
 import { c as createContext } from '../shared/createContext.js';
 import { u as useForwardExpose } from '../shared/useForwardExpose.js';
@@ -55,6 +55,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const max = useVModel(props, "max", emit, {
       passive: props.max === void 0
     });
+    const isIndeterminate = computed(() => isNullish(modelValue.value));
     watch(
       () => modelValue.value,
       async (value) => {
@@ -76,7 +77,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       { immediate: true }
     );
     const progressState = computed(() => {
-      if (isNullish(modelValue.value))
+      if (isIndeterminate.value)
         return "indeterminate";
       if (modelValue.value === max.value)
         return "complete";
@@ -94,18 +95,20 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         "aria-valuemax": unref(max),
         "aria-valuemin": 0,
         "aria-valuenow": isNumber(unref(modelValue)) ? unref(modelValue) : void 0,
-        "aria-valuetext": _ctx.getValueLabel(unref(modelValue), unref(max)),
-        "aria-label": _ctx.getValueLabel(unref(modelValue), unref(max)),
+        "aria-valuetext": isNumber(unref(modelValue)) ? _ctx.getValueLabel(unref(modelValue), unref(max)) : void 0,
         role: "progressbar",
         "data-state": progressState.value,
         "data-value": unref(modelValue) ?? void 0,
         "data-max": unref(max)
       }, {
         default: withCtx(() => [
-          renderSlot(_ctx.$slots, "default", { modelValue: unref(modelValue) })
+          renderSlot(_ctx.$slots, "default", {
+            modelValue: unref(modelValue),
+            indeterminate: isIndeterminate.value
+          })
         ]),
         _: 3
-      }, 8, ["as-child", "as", "aria-valuemax", "aria-valuenow", "aria-valuetext", "aria-label", "data-state", "data-value", "data-max"]);
+      }, 8, ["as-child", "as", "aria-valuemax", "aria-valuenow", "aria-valuetext", "data-state", "data-value", "data-max"]);
     };
   }
 });

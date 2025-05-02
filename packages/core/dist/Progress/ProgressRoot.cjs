@@ -57,6 +57,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const max = core.useVModel(props, "max", emit, {
       passive: props.max === void 0
     });
+    const isIndeterminate = vue.computed(() => shared_nullish.isNullish(modelValue.value));
     vue.watch(
       () => modelValue.value,
       async (value) => {
@@ -78,7 +79,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       { immediate: true }
     );
     const progressState = vue.computed(() => {
-      if (shared_nullish.isNullish(modelValue.value))
+      if (isIndeterminate.value)
         return "indeterminate";
       if (modelValue.value === max.value)
         return "complete";
@@ -96,18 +97,20 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         "aria-valuemax": vue.unref(max),
         "aria-valuemin": 0,
         "aria-valuenow": isNumber(vue.unref(modelValue)) ? vue.unref(modelValue) : void 0,
-        "aria-valuetext": _ctx.getValueLabel(vue.unref(modelValue), vue.unref(max)),
-        "aria-label": _ctx.getValueLabel(vue.unref(modelValue), vue.unref(max)),
+        "aria-valuetext": isNumber(vue.unref(modelValue)) ? _ctx.getValueLabel(vue.unref(modelValue), vue.unref(max)) : void 0,
         role: "progressbar",
         "data-state": progressState.value,
         "data-value": vue.unref(modelValue) ?? void 0,
         "data-max": vue.unref(max)
       }, {
         default: vue.withCtx(() => [
-          vue.renderSlot(_ctx.$slots, "default", { modelValue: vue.unref(modelValue) })
+          vue.renderSlot(_ctx.$slots, "default", {
+            modelValue: vue.unref(modelValue),
+            indeterminate: isIndeterminate.value
+          })
         ]),
         _: 3
-      }, 8, ["as-child", "as", "aria-valuemax", "aria-valuenow", "aria-valuetext", "aria-label", "data-state", "data-value", "data-max"]);
+      }, 8, ["as-child", "as", "aria-valuemax", "aria-valuenow", "aria-valuetext", "data-state", "data-value", "data-max"]);
     };
   }
 });
