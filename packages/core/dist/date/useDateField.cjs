@@ -521,7 +521,7 @@ function useDateField(props) {
   function handleSegmentKeydown(e) {
     const disabled = props.disabled.value;
     const readonly = props.readonly.value;
-    if (e.key !== kbd.TAB)
+    if (e.key !== kbd.TAB || !((e.ctrlKey || e.metaKey) && e.key === "v"))
       e.preventDefault();
     if (disabled || readonly)
       return;
