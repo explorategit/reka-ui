@@ -55,6 +55,11 @@ function handleInput(event: InputEvent) {
   }
 }
 
+function handleFocus() {
+  if (rootContext.openOnFocus.value && !rootContext.open.value)
+    rootContext.onOpenChange(true)
+}
+
 function resetSearchTerm() {
   const rootModelValue = rootContext.modelValue.value
 
@@ -110,6 +115,7 @@ watch(
     autocomplete="false"
     @input="handleInput"
     @keydown.down.up.prevent="handleKeyDown"
+    @focus="handleFocus"
   >
     <slot />
   </ListboxFilter>
