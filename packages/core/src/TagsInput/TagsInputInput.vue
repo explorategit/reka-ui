@@ -31,6 +31,8 @@ const context = injectTagsInputRootContext()
 const { forwardRef, currentElement } = useForwardExpose()
 
 function handleBlur(event: Event) {
+  context.selectedElement.value = undefined
+
   if (!context.addOnBlur.value)
     return
 

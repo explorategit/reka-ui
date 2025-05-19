@@ -25,6 +25,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const context = TagsInput_TagsInputRoot.injectTagsInputRootContext();
     const { forwardRef, currentElement } = shared_useForwardExpose.useForwardExpose();
     function handleBlur(event) {
+      context.selectedElement.value = void 0;
       if (!context.addOnBlur.value)
         return;
       const target = event.target;
