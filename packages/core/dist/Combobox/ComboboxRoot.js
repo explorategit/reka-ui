@@ -1,6 +1,6 @@
 import { defineComponent, toRefs, ref, computed, reactive, watch, nextTick, getCurrentInstance, onMounted, createBlock, openBlock, unref, withCtx, createVNode, mergeProps, isRef, renderSlot } from 'vue';
-import { _ as _sfc_main$1 } from '../Popper/PopperRoot.js';
 import { useVModel, createEventHook } from '@vueuse/core';
+import { _ as _sfc_main$1 } from '../Popper/PopperRoot.js';
 import { c as createContext } from '../shared/createContext.js';
 import { u as usePrimitiveElement } from '../Primitive/usePrimitiveElement.js';
 import { u as useDirection } from '../shared/useDirection.js';

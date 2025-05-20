@@ -53,6 +53,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         rootContext.filterState.search = target.value;
       }
     }
+    function handleFocus() {
+      if (rootContext.openOnFocus && !rootContext.open.value) {
+        rootContext.onOpenChange(true);
+      }
+    }
     function resetSearchTerm() {
       const rootModelValue = rootContext.modelValue.value;
       if (props.displayValue) {
@@ -90,7 +95,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         role: "combobox",
         autocomplete: "false",
         onInput: handleInput,
-        onKeydown: withKeys(withModifiers(handleKeyDown, ["prevent"]), ["down", "up"])
+        onKeydown: withKeys(withModifiers(handleKeyDown, ["prevent"]), ["down", "up"]),
+        onFocus: handleFocus
       }, {
         default: withCtx(() => [
           renderSlot(_ctx.$slots, "default")
