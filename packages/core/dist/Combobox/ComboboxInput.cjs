@@ -55,10 +55,6 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         rootContext.filterState.search = target.value;
       }
     }
-    function handleFocus() {
-      if (rootContext.openOnFocus && !rootContext.open.value)
-        rootContext.onOpenChange(true);
-    }
     function resetSearchTerm() {
       const rootModelValue = rootContext.modelValue.value;
       if (props.displayValue) {
@@ -96,8 +92,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         role: "combobox",
         autocomplete: "false",
         onInput: handleInput,
-        onKeydown: vue.withKeys(vue.withModifiers(handleKeyDown, ["prevent"]), ["down", "up"]),
-        onFocus: handleFocus
+        onKeydown: vue.withKeys(vue.withModifiers(handleKeyDown, ["prevent"]), ["down", "up"])
       }, {
         default: vue.withCtx(() => [
           vue.renderSlot(_ctx.$slots, "default")

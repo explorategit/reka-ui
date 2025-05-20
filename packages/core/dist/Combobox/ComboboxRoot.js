@@ -22,7 +22,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     resetSearchTermOnBlur: { type: Boolean, default: true },
     resetSearchTermOnSelect: { type: Boolean, default: true },
     ignoreFilter: { type: Boolean },
-    openOnFocus: { type: Boolean },
+    openOnFocus: { type: Boolean, default: false },
     modelValue: {},
     defaultValue: {},
     multiple: { type: Boolean },
