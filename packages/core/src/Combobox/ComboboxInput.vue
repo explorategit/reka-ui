@@ -62,7 +62,7 @@ function handleInput(event: InputEvent) {
 }
 
 function handleFocus() {
-  if (rootContext.openOnFocus && !rootContext.open.value) {
+  if (rootContext.openOnFocus.value && !rootContext.open.value) {
     rootContext.onOpenChange(true)
   }
 }
