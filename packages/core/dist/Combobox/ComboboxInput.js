@@ -54,7 +54,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       }
     }
     function handleFocus() {
-      if (rootContext.openOnFocus && !rootContext.open.value) {
+      if (rootContext.openOnFocus.value && !rootContext.open.value) {
         rootContext.onOpenChange(true);
       }
     }
