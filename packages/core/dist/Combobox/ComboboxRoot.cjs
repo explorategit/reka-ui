@@ -24,6 +24,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     resetSearchTermOnBlur: { type: Boolean, default: true },
     resetSearchTermOnSelect: { type: Boolean, default: true },
     ignoreFilter: { type: Boolean },
+    openOnFocus: { type: Boolean },
     modelValue: {},
     defaultValue: {},
     multiple: { type: Boolean },
@@ -41,7 +42,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const props = __props;
     const emits = __emit;
     const { primitiveElement, currentElement: parentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
-    const { multiple, disabled, ignoreFilter, resetSearchTermOnSelect, dir: propDir } = vue.toRefs(props);
+    const { multiple, disabled, ignoreFilter, openOnFocus, resetSearchTermOnSelect, dir: propDir } = vue.toRefs(props);
     const dir = shared_useDirection.useDirection(propDir);
     const modelValue = core.useVModel(props, "modelValue", emits, {
       // @ts-expect-error ignore the type error here
@@ -156,7 +157,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       allItems,
       allGroups,
       filterState,
-      ignoreFilter
+      ignoreFilter,
+      openOnFocus
     });
     return (_ctx, _cache) => {
       return vue.openBlock(), vue.createBlock(vue.unref(Popper_PopperRoot._sfc_main), null, {

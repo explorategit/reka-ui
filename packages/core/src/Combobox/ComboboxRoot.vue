@@ -29,6 +29,7 @@ type ComboboxRootContext<T> = {
     filtered: { count: number, items: Map<string, number>, groups: Set<string> }
   }
   ignoreFilter: Ref<boolean>
+  openOnFocus: Ref<boolean>
 }
 
 export const [injectComboboxRootContext, provideComboboxRootContext]
@@ -62,6 +63,11 @@ export interface ComboboxRootProps<T = AcceptableValue> extends Omit<ListboxRoot
    * When `true`, disable the default filters
    */
   ignoreFilter?: boolean
+  /**
+   * Whether the popover should open when the input is focused.
+   * @defaultValue `false`
+   */
+  openOnFocus?: boolean
 }
 
 export default {
@@ -95,7 +101,7 @@ defineSlots<{
 }>()
 
 const { primitiveElement, currentElement: parentElement } = usePrimitiveElement<GenericComponentInstance<typeof ListboxRoot>>()
-const { multiple, disabled, ignoreFilter, resetSearchTermOnSelect, dir: propDir } = toRefs(props)
+const { multiple, disabled, ignoreFilter, openOnFocus, resetSearchTermOnSelect, dir: propDir } = toRefs(props)
 
 const dir = useDirection(propDir)
 
@@ -238,6 +244,7 @@ provideComboboxRootContext({
   allGroups,
   filterState,
   ignoreFilter,
+  openOnFocus,
 })
 </script>
 

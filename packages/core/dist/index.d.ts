@@ -3053,6 +3053,7 @@ declare type ComboboxRootContext<T> = {
         };
     };
     ignoreFilter: Ref<boolean>;
+    openOnFocus: Ref<boolean>;
 };
 
 export declare type ComboboxRootEmits<T = AcceptableValue> = {
@@ -3086,6 +3087,11 @@ export declare interface ComboboxRootProps<T = AcceptableValue> extends Omit<Lis
      * When `true`, disable the default filters
      */
     ignoreFilter?: boolean;
+    /**
+     * Whether the popover should open when the input is focused.
+     * @defaultValue `false`
+     */
+    openOnFocus?: boolean;
 }
 
 export declare const ComboboxSeparator: __VLS_WithTemplateSlots_46<DefineComponent<ComboboxSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ComboboxSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {

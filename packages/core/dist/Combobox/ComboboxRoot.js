@@ -22,6 +22,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     resetSearchTermOnBlur: { type: Boolean, default: true },
     resetSearchTermOnSelect: { type: Boolean, default: true },
     ignoreFilter: { type: Boolean },
+    openOnFocus: { type: Boolean },
     modelValue: {},
     defaultValue: {},
     multiple: { type: Boolean },
@@ -39,7 +40,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const props = __props;
     const emits = __emit;
     const { primitiveElement, currentElement: parentElement } = usePrimitiveElement();
-    const { multiple, disabled, ignoreFilter, resetSearchTermOnSelect, dir: propDir } = toRefs(props);
+    const { multiple, disabled, ignoreFilter, openOnFocus, resetSearchTermOnSelect, dir: propDir } = toRefs(props);
     const dir = useDirection(propDir);
     const modelValue = useVModel(props, "modelValue", emits, {
       // @ts-expect-error ignore the type error here
@@ -154,7 +155,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       allItems,
       allGroups,
       filterState,
-      ignoreFilter
+      ignoreFilter,
+      openOnFocus
     });
     return (_ctx, _cache) => {
       return openBlock(), createBlock(unref(_sfc_main$1), null, {
