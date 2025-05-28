@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { AcceptableValue, Direction, FormFieldProps } from '@/shared/types'
 import type { Ref } from 'vue'
+import type { AcceptableValue, Direction, FormFieldProps } from '@/shared/types'
 import { useCollection } from '@/Collection'
 import { createContext, isNullish, useDirection, useFormControl } from '@/shared'
 import { compare } from './utils'
@@ -69,20 +69,20 @@ export default {
 </script>
 
 <script setup lang="ts" generic="T extends AcceptableValue = AcceptableValue">
-import { PopperRoot } from '@/Popper'
 import { useVModel } from '@vueuse/core'
 import { computed, ref, toRefs } from 'vue'
+import { PopperRoot } from '@/Popper'
 import BubbleSelect from './BubbleSelect.vue'
 
 defineOptions({
   inheritAttrs: false,
 })
 
-const props = withDefaults(defineProps<SelectRootProps>(), {
+const props = withDefaults(defineProps<SelectRootProps<T>>(), {
   modelValue: undefined,
   open: undefined,
 })
-const emits = defineEmits<SelectRootEmits>()
+const emits = defineEmits<SelectRootEmits<T>>()
 
 defineSlots<{
   default: (props: {
@@ -96,6 +96,7 @@ defineSlots<{
 const { required, disabled, multiple, dir: propDir } = toRefs(props)
 
 const modelValue = useVModel(props, 'modelValue', emits, {
+  // @ts-expect-error Missing infer for AcceptableValue
   defaultValue: props.defaultValue ?? (multiple.value ? [] : undefined),
   passive: (props.modelValue === undefined) as false,
   deep: true,
@@ -162,6 +163,7 @@ provideSelectRootContext({
   modelValue,
   // @ts-expect-error Missing infer for AcceptableValue
   onValueChange: handleValueChange,
+  // @ts-expect-error Missing infer for AcceptableValue
   by: props.by,
   open,
   multiple,

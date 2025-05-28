@@ -1,9 +1,9 @@
 <script lang="ts">
 import type { ListboxItemEmits, ListboxItemProps } from '@/Listbox'
 import type { AcceptableValue } from '@/shared/types'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { usePrimitiveElement } from '@/Primitive'
 import { useId } from '@/shared'
-import { computed, onMounted, onUnmounted } from 'vue'
 import { injectComboboxGroupContext } from './ComboboxGroup.vue'
 import { injectComboboxRootContext } from './ComboboxRoot.vue'
 
@@ -86,12 +86,13 @@ onUnmounted(() => {
     v-bind="props"
     :id="id"
     ref="primitiveElement"
+    :disabled="rootContext.disabled.value || disabled"
     @select="(event) => {
       emits('select', event as any)
       if (event.defaultPrevented)
         return
 
-      if (!rootContext.multiple.value) {
+      if (!rootContext.multiple.value && !disabled && !rootContext.disabled.value) {
         event.preventDefault()
         rootContext.onOpenChange(false)
         rootContext.modelValue.value = props.value

@@ -8,8 +8,8 @@ export default {
 
 <script setup lang="ts">
 import type { SliderOrientationPrivateEmits, SliderOrientationPrivateProps } from './utils'
-import { useForwardExpose } from '@/shared'
 import { computed, ref, toRefs } from 'vue'
+import { useForwardExpose } from '@/shared'
 import SliderImpl from './SliderImpl.vue'
 import { injectSliderRootContext } from './SliderRoot.vue'
 import { BACK_KEYS, linearScale, provideSliderOrientationContext } from './utils'
@@ -23,7 +23,7 @@ const rootContext = injectSliderRootContext()
 const { forwardRef, currentElement: sliderElement } = useForwardExpose()
 
 const offsetPosition = ref<number>()
-const rectRef = ref<ClientRect>()
+const rectRef = ref<DOMRect>()
 const isSlidingFromBottom = computed(() => !inverted.value)
 
 function getValueFromPointerEvent(event: PointerEvent, slideStart?: boolean) {
@@ -51,11 +51,15 @@ function getValueFromPointerEvent(event: PointerEvent, slideStart?: boolean) {
   return value(position)
 }
 
+const startEdge = computed(() => isSlidingFromBottom.value ? 'bottom' : 'top')
+const endEdge = computed(() => isSlidingFromBottom.value ? 'top' : 'bottom')
+const direction = computed(() => isSlidingFromBottom.value ? 1 : -1)
+
 provideSliderOrientationContext({
-  startEdge: isSlidingFromBottom.value ? 'bottom' : 'top',
-  endEdge: isSlidingFromBottom.value ? 'top' : 'bottom',
+  startEdge,
+  endEdge,
+  direction,
   size: 'height',
-  direction: isSlidingFromBottom.value ? 1 : -1,
 })
 </script>
 

@@ -1,11 +1,12 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
+import type { DateValue } from '@internationalized/date'
 
+import type { Ref } from 'vue'
+import type { PrimitiveProps } from '@/Primitive'
 import type { Formatter } from '@/shared'
 import type { HourCycle, SegmentPart, SegmentValueObj, TimeValue } from '@/shared/date'
 import type { Direction, FormFieldProps } from '@/shared/types'
-import type { DateValue } from '@internationalized/date'
-import type { Ref } from 'vue'
+import { getLocalTimeZone, isEqualDay, Time, toCalendarDateTime, today } from '@internationalized/date'
 import { isBefore } from '@/date'
 import { createContext, isNullish, useDateFormatter, useDirection, useKbd, useLocale } from '@/shared'
 import {
@@ -19,7 +20,6 @@ import {
   syncTimeSegmentValues,
 
 } from '@/shared/date'
-import { getLocalTimeZone, isEqualDay, Time, toCalendarDateTime, today } from '@internationalized/date'
 
 type TimeFieldRootContext = {
   locale: Ref<string>
@@ -94,10 +94,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive, usePrimitiveElement } from '@/Primitive'
-import { VisuallyHidden } from '@/VisuallyHidden'
 import { useVModel } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, toRefs, watch } from 'vue'
+import { Primitive, usePrimitiveElement } from '@/Primitive'
+import { VisuallyHidden } from '@/VisuallyHidden'
 
 defineOptions({
   inheritAttrs: false,
@@ -150,9 +150,12 @@ const convertedModelValue = computed({
     return convertValue(modelValue.value)
   },
   set(newValue) {
-    if (newValue)
+    if (newValue) {
       modelValue.value = modelValue.value && 'day' in modelValue.value ? newValue : new Time(newValue.hour, newValue.minute, newValue.second, modelValue.value?.millisecond)
-
+    }
+    else {
+      modelValue.value = newValue
+    }
     return newValue
   },
 })
@@ -238,7 +241,8 @@ watch([convertedModelValue, locale], ([_modelValue]) => {
   if (!isNullish(_modelValue)) {
     segmentValues.value = { ...syncTimeSegmentValues({ value: _modelValue, formatter }) }
   }
-  else if (Object.values(segmentValues.value).every(value => value === null) || isNullish(_modelValue)) {
+  // If segment has null value, means that user modified it, thus do not reset the segmentValues
+  else if (Object.values(segmentValues.value).every(value => value !== null) && isNullish(_modelValue)) {
     segmentValues.value = { ...initialSegments }
   }
 })

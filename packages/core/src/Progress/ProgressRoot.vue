@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
 import type { ComputedRef, Ref } from 'vue'
+import type { PrimitiveProps } from '@/Primitive'
 import { createContext, isNullish, useForwardExpose } from '@/shared'
 
 export type ProgressRootEmits = {
@@ -20,7 +20,7 @@ export interface ProgressRootProps extends PrimitiveProps {
    *
    *  If not provided, the value label will be read as the numeric value as a percentage of the max value.
    */
-  getValueLabel?: (value: number, max: number) => string
+  getValueLabel?: (value: number | null | undefined, max: number) => string | undefined
 }
 
 const DEFAULT_MAX = 100
@@ -75,14 +75,14 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { useVModel } from '@vueuse/core'
 import { computed, nextTick, watch } from 'vue'
+import { Primitive } from '@/Primitive'
 
 const props = withDefaults(defineProps<ProgressRootProps>(), {
   max: DEFAULT_MAX,
-  getValueLabel: (value: number, max: number) =>
-    `${Math.round((value / max) * DEFAULT_MAX)}%`,
+  getValueLabel: (value: number | null | undefined, max: number) =>
+    isNumber(value) ? `${Math.round((value / max) * DEFAULT_MAX)}%` : undefined,
 })
 
 const emit = defineEmits<ProgressRootEmits>()

@@ -17,11 +17,11 @@ export default {
 
 <script setup lang="ts">
 import type { PopperAnchorProps } from '@/Popper'
+import { computed, onMounted, ref } from 'vue'
 import { PopperAnchor } from '@/Popper'
 import {
   Primitive,
 } from '@/Primitive'
-import { computed, onMounted, ref } from 'vue'
 import { injectTooltipProviderContext } from './TooltipProvider.vue'
 import { injectTooltipRootContext } from './TooltipRoot.vue'
 
@@ -65,7 +65,7 @@ function handlePointerUp() {
 }
 
 function handlePointerDown() {
-  if (rootContext.open) {
+  if (rootContext.open && !rootContext.disableClosingTrigger.value) {
     rootContext.onClose()
   }
   isPointerDown.value = true

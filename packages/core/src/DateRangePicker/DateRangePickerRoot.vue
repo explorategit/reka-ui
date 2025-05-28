@@ -1,12 +1,12 @@
 <script lang="ts">
-import type { Matcher, WeekDayFormat } from '@/date'
-
-import type { DateRange, Granularity, HourCycle } from '@/shared/date'
-import type { Direction } from '@/shared/types'
 import type { DateValue } from '@internationalized/date'
-import type { Ref } from 'vue'
 
+import type { Ref } from 'vue'
 import type { DateRangeFieldRoot, DateRangeFieldRootProps, PopoverRootEmits, PopoverRootProps, RangeCalendarRootProps } from '..'
+import type { Matcher, WeekDayFormat } from '@/date'
+import type { DateRange, Granularity, HourCycle } from '@/shared/date'
+
+import type { Direction } from '@/shared/types'
 import { createContext, useDirection } from '@/shared'
 import { getDefaultDate } from '@/shared/date'
 import { PopoverRoot } from '..'
@@ -43,9 +43,10 @@ type DateRangePickerRootContext = {
   onStartValueChange: (date: DateValue | undefined) => void
   dir: Ref<Direction>
   allowNonContiguousRanges: Ref<boolean>
+  fixedDate: Ref<'start' | 'end' | undefined>
 }
 
-export type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges'>
+export type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges' | 'fixedDate'>
 
 export type DateRangePickerRootEmits = {
   /** Event handler called whenever the model value changes */
@@ -120,6 +121,7 @@ const {
   hourCycle,
   dir: propsDir,
   allowNonContiguousRanges,
+  fixedDate,
 } = toRefs(props)
 
 const dir = useDirection(propsDir)
@@ -183,6 +185,7 @@ provideDateRangePickerRootContext({
   hourCycle,
   dateFieldRef,
   dir,
+  fixedDate,
   onStartValueChange(date: DateValue | undefined) {
     emits('update:startValue', date)
   },

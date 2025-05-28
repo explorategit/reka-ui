@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
 import type { Ref } from 'vue'
-import { createContext, useForwardExpose } from '@/shared'
+import type { PrimitiveProps } from '@/Primitive'
 import { toRefs } from 'vue'
+import { createContext, useForwardExpose } from '@/shared'
 
 export interface CollapsibleRootProps extends PrimitiveProps {
   /** The open state of the collapsible when it is initially rendered. <br> Use when you do not need to control its open state. */
@@ -39,8 +39,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { useVModel } from '@vueuse/core'
+import { Primitive } from '@/Primitive'
 
 const props = withDefaults(defineProps<CollapsibleRootProps>(), {
   open: undefined,
@@ -70,6 +70,9 @@ provideCollapsibleRootContext({
   open,
   unmountOnHide,
   onOpenToggle: () => {
+    if (disabled.value)
+      return
+
     open.value = !open.value
   },
 })

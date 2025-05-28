@@ -1,12 +1,12 @@
 import type { DateValue } from '@internationalized/date'
 import type { RangeCalendarRootProps } from './RangeCalendarRoot.vue'
-import { useTestKbd } from '@/shared'
 import { CalendarDate, CalendarDateTime, toZoned } from '@internationalized/date'
 import userEvent from '@testing-library/user-event'
 import { render } from '@testing-library/vue'
 import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
 import { axe } from 'vitest-axe'
+import { useTestKbd } from '@/shared'
 import RangeCalendar from './story/_RangeCalendar.vue'
 
 it('should pass axe accessibility tests', async () => {
@@ -426,7 +426,7 @@ describe('rangeCalendar', () => {
     const { getByTestId, user } = setup({
       calendarProps: {
         placeholder: calendarDateRange.start,
-        isDateUnavailable: (date) => {
+        isDateUnavailable: (date: DateValue) => {
           return date.day === 3
         },
       },
@@ -445,7 +445,7 @@ describe('rangeCalendar', () => {
       calendarProps: {
         placeholder: calendarDateRange.start,
         allowNonContiguousRanges: true,
-        isDateUnavailable: (date) => {
+        isDateUnavailable: (date: DateValue) => {
           return date.day === 3
         },
       },
@@ -667,5 +667,51 @@ describe('numberOfMonths > 1', () => {
     expect(getByTestId('date-0-12-31')).toHaveFocus()
     await user.keyboard(kbd.ARROW_RIGHT)
     expect(getByTestId('date-1-1-1')).toHaveFocus()
+  })
+
+  it('handles fixedDate with start correctly', async () => {
+    const { getByTestId, user } = setup({
+      calendarProps: {
+        defaultValue: calendarDateRange,
+        fixedDate: 'start',
+      },
+    })
+
+    const heading = getByTestId('heading')
+    expect(heading).toHaveTextContent('January 1980')
+
+    const nextDay = getByTestId('date-1-27')
+    await user.click(nextDay)
+
+    expect(getByTestId('date-1-26')).toHaveAttribute('data-selected')
+    expect(getByTestId('date-1-20')).toHaveAttribute('data-selection-start')
+    expect(getByTestId('date-1-27')).toHaveAttribute('data-selection-end')
+
+    await user.click(getByTestId('date-1-26'))
+    expect(getByTestId('date-1-20')).toHaveAttribute('data-selection-start')
+    expect(getByTestId('date-1-26')).toHaveAttribute('data-selection-end')
+  })
+
+  it('handles fixedDate with end correctly', async () => {
+    const { getByTestId, user } = setup({
+      calendarProps: {
+        defaultValue: calendarDateRange,
+        fixedDate: 'end',
+      },
+    })
+
+    const heading = getByTestId('heading')
+    expect(heading).toHaveTextContent('January 1980')
+
+    const nextDay = getByTestId('date-1-27')
+    await user.click(nextDay)
+
+    expect(getByTestId('date-1-26')).toHaveAttribute('data-selected')
+    expect(getByTestId('date-1-20')).toHaveAttribute('data-selection-start')
+    expect(getByTestId('date-1-27')).toHaveAttribute('data-selection-end')
+
+    await user.click(getByTestId('date-1-26'))
+    expect(getByTestId('date-1-26')).toHaveAttribute('data-selection-start')
+    expect(getByTestId('date-1-27')).toHaveAttribute('data-selection-end')
   })
 })

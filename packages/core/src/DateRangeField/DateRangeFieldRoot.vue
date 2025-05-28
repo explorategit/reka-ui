@@ -1,12 +1,12 @@
 <script lang="ts">
-import type { Matcher } from '@/date'
+import type { DateValue } from '@internationalized/date'
 
+import type { Ref } from 'vue'
+import type { Matcher } from '@/date'
 import type { PrimitiveProps } from '@/Primitive'
 import type { Formatter } from '@/shared'
 import type { DateRange, Granularity, HourCycle, SegmentPart, SegmentValueObj } from '@/shared/date'
 import type { Direction, FormFieldProps } from '@/shared/types'
-import type { DateValue } from '@internationalized/date'
-import type { Ref } from 'vue'
 import {
   areAllDaysBetweenValid,
   hasTime,
@@ -98,10 +98,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive, usePrimitiveElement } from '@/Primitive'
-import { VisuallyHidden } from '@/VisuallyHidden'
 import { useVModel } from '@vueuse/core'
 import { computed, nextTick, onMounted, ref, toRefs, watch } from 'vue'
+import { Primitive, usePrimitiveElement } from '@/Primitive'
+import { VisuallyHidden } from '@/VisuallyHidden'
 
 defineOptions({
   inheritAttrs: false,
@@ -251,13 +251,14 @@ watch(modelValue, (_modelValue) => {
     ? _modelValue.start.compare(startValue.value) !== 0
     : _modelValue?.start !== startValue.value
   if (isStartChanged) {
-    startValue.value = _modelValue?.start
+    startValue.value = _modelValue?.start?.copy()
   }
+
   const isEndChanged = _modelValue?.end && endValue.value
     ? _modelValue.end.compare(endValue.value) !== 0
     : _modelValue?.end !== endValue.value
   if (isEndChanged) {
-    endValue.value = _modelValue?.end
+    endValue.value = _modelValue?.end?.copy()
   }
 })
 

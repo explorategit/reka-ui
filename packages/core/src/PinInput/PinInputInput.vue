@@ -1,4 +1,5 @@
 <script lang="ts">
+import type { PinInputValue } from './PinInputRoot.vue'
 import type { PrimitiveProps } from '@/Primitive'
 import { Primitive, usePrimitiveElement } from '@/Primitive'
 import { getActiveElement, useArrowNavigation } from '@/shared'
@@ -121,7 +122,7 @@ function handlePaste(event: ClipboardEvent) {
 }
 
 function handleMultipleCharacter(values: string) {
-  const tempModelValue = [...context.currentModelValue.value]
+  const tempModelValue = [...context.currentModelValue.value] as PinInputValue<typeof context.type.value>
   const initialIndex = values.length >= inputElements.value.length ? 0 : props.index
   const lastIndex = Math.min(initialIndex + values.length, inputElements.value.length)
   for (let i = initialIndex; i < lastIndex; i++) {
@@ -137,7 +138,7 @@ function handleMultipleCharacter(values: string) {
   inputElements.value[lastIndex]?.focus()
 }
 
-function removeTrailingEmptyStrings(input: string[]) {
+function removeTrailingEmptyStrings(input: PinInputValue<typeof context.type.value>) {
   let i = input.length - 1
 
   while (i >= 0 && input[i] === '') {
@@ -149,8 +150,8 @@ function removeTrailingEmptyStrings(input: string[]) {
 }
 
 function updateModelValueAt(index: number, value: string) {
-  const tempModelValue = [...context.currentModelValue.value]
-  tempModelValue[index] = value
+  const tempModelValue = [...context.currentModelValue.value] as PinInputValue<typeof context.type.value>
+  tempModelValue[index] = isNumericMode.value ? +value : value
   context.modelValue.value = removeTrailingEmptyStrings(tempModelValue)
 }
 

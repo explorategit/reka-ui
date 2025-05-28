@@ -1,17 +1,17 @@
 <script lang="ts">
-import type { Grid, Matcher, WeekDayFormat } from '@/date'
+import type { DateValue } from '@internationalized/date'
 
+import type { Ref } from 'vue'
+import type { Grid, Matcher, WeekDayFormat } from '@/date'
 import type { PrimitiveProps } from '@/Primitive'
 import type { Formatter } from '@/shared'
 import type { DateRange } from '@/shared/date'
 import type { Direction } from '@/shared/types'
-import type { DateValue } from '@internationalized/date'
-import type { Ref } from 'vue'
+import { isEqualDay } from '@internationalized/date'
 import { useCalendar } from '@/Calendar/useCalendar'
 import { isBefore } from '@/date'
 import { createContext, isNullish, useDirection, useKbd, useLocale } from '@/shared'
 import { getDefaultDate, handleCalendarInitialFocus } from '@/shared/date'
-import { isEqualDay } from '@internationalized/date'
 import { useRangeCalendarState } from './useRangeCalendar'
 
 type RangeCalendarRootContext = {
@@ -54,6 +54,7 @@ type RangeCalendarRootContext = {
   isPrevButtonDisabled: (prevPageFunc?: (date: DateValue) => DateValue) => boolean
   formatter: Formatter
   dir: Ref<Direction>
+  fixedDate: Ref<'start' | 'end' | undefined>
 }
 
 export interface RangeCalendarRootProps extends PrimitiveProps {
@@ -105,6 +106,8 @@ export interface RangeCalendarRootProps extends PrimitiveProps {
   nextPage?: (placeholder: DateValue) => DateValue
   /** A function that returns the previous page of the calendar. It receives the current placeholder as an argument inside the component. */
   prevPage?: (placeholder: DateValue) => DateValue
+  /** Which part of the range should be fixed */
+  fixedDate?: 'start' | 'end'
 }
 
 export type RangeCalendarRootEmits = {
@@ -127,9 +130,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive, usePrimitiveElement } from '@/Primitive'
 import { useEventListener, useVModel } from '@vueuse/core'
 import { computed, onMounted, ref, toRefs, watch } from 'vue'
+import { Primitive, usePrimitiveElement } from '@/Primitive'
 
 const props = withDefaults(defineProps<RangeCalendarRootProps>(), {
   defaultValue: () => ({ start: undefined, end: undefined }),
@@ -191,6 +194,7 @@ const {
   nextPage: propsNextPage,
   prevPage: propsPrevPage,
   allowNonContiguousRanges,
+  fixedDate,
 } = toRefs(props)
 
 const { primitiveElement, currentElement: parentElement }
@@ -275,6 +279,7 @@ const {
   isDateHighlightable: propsIsDateHighlightable.value,
   focusedValue,
   allowNonContiguousRanges,
+  fixedDate,
 })
 
 watch(modelValue, (_modelValue, _prevValue) => {
@@ -377,6 +382,7 @@ provideRangeCalendarRootContext({
   dir,
   isHighlightedStart,
   isHighlightedEnd,
+  fixedDate,
 })
 
 onMounted(() => {

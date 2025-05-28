@@ -1,9 +1,6 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
 import type { DateValue } from '@internationalized/date'
-import { getSelectableCells } from '@/Calendar/utils'
-import { getDaysInMonth, isBetweenInclusive, toDate } from '@/date'
-import { useKbd } from '@/shared'
+import type { PrimitiveProps } from '@/Primitive'
 import {
 
   getLocalTimeZone,
@@ -12,6 +9,9 @@ import {
   isToday,
 } from '@internationalized/date'
 import { computed, nextTick } from 'vue'
+import { getSelectableCells } from '@/Calendar/utils'
+import { getDaysInMonth, isBetweenInclusive, toDate } from '@/date'
+import { useKbd } from '@/shared'
 
 export interface RangeCalendarCellTriggerProps extends PrimitiveProps {
   day: DateValue
@@ -138,8 +138,26 @@ function changeDate(e: MouseEvent | KeyboardEvent, date: DateValue) {
     rootContext.endValue.value = date.copy()
   }
   else if (rootContext.endValue.value && rootContext.startValue.value) {
-    rootContext.endValue.value = undefined
-    rootContext.startValue.value = date.copy()
+    if (!rootContext.fixedDate.value) {
+      rootContext.endValue.value = undefined
+      rootContext.startValue.value = date.copy()
+    }
+    else if (rootContext.fixedDate.value === 'start') {
+      if (date.compare(rootContext.startValue.value) < 0) {
+        rootContext.startValue.value = date.copy()
+      }
+      else {
+        rootContext.endValue.value = date.copy()
+      }
+    }
+    else if (rootContext.fixedDate.value === 'end') {
+      if (date.compare(rootContext.endValue.value) > 0) {
+        rootContext.endValue.value = date.copy()
+      }
+      else {
+        rootContext.startValue.value = date.copy()
+      }
+    }
   }
 }
 
