@@ -1,10 +1,12 @@
-import type { Formatter } from '@/shared'
-import type { CalendarDateTime, CycleTimeOptions, DateFields, DateValue, TimeFields } from '@internationalized/date'
+import type { CycleTimeOptions, DateFields, DateValue, TimeFields } from '@internationalized/date'
 import type { Ref } from 'vue'
 import type { AnyExceptLiteral, HourCycle, SegmentPart, SegmentValueObj } from './types'
+import type { Formatter } from '@/shared'
+import { CalendarDate, CalendarDateTime, parseAbsoluteToLocal, parseDate, parseDateTime } from '@internationalized/date'
+import { computed } from 'vue'
 import { getDaysInMonth, toDate } from '@/date'
 import { useKbd } from '@/shared'
-import { computed } from 'vue'
+import { isCopy, isCut, isPaste } from '../macro'
 import { isAcceptableSegmentKey, isNumberString, isSegmentNavigationKey } from './segment'
 
 type MinuteSecondIncrementProps = {
@@ -342,11 +344,11 @@ export function useDateField(props: UseDateFieldProps) {
     }
 
     if (prev === null) {
-    /**
-     * If the user types a 0 as the first number, we want
-     * to keep track of that so that when they type the next
-     * number, we can move to the next segment.
-     */
+      /**
+       * If the user types a 0 as the first number, we want
+       * to keep track of that so that when they type the next
+       * number, we can move to the next segment.
+       */
 
       if (num === 0) {
         props.lastKeyZero.value = true
@@ -360,7 +362,7 @@ export function useDateField(props: UseDateFieldProps) {
        */
 
       if (props.lastKeyZero.value || num > maxStart) {
-      // move to next
+        // move to next
         moveToNext = true
       }
       props.lastKeyZero.value = false
@@ -388,13 +390,13 @@ export function useDateField(props: UseDateFieldProps) {
      */
 
     if (digits === 2 || total > max) {
-    /**
-     * As we're doing elsewhere, we're checking if the number is greater
-     * than the max start digit (0-3 in most months), and if so, we're
-     * going to move to the next segment.
-     */
+      /**
+       * As we're doing elsewhere, we're checking if the number is greater
+       * than the max start digit (0-3 in most months), and if so, we're
+       * going to move to the next segment.
+       */
       if (num > maxStart || total > max) {
-      // move to next
+        // move to next
         moveToNext = true
       }
       return { value: num, moveToNext }
@@ -420,11 +422,11 @@ export function useDateField(props: UseDateFieldProps) {
     }
 
     if (prev === null) {
-    /**
-     * If the user types a 0 as the first number, we want
-     * to keep track of that so that when they type the next
-     * number, we can move to the next segment.
-     */
+      /**
+       * If the user types a 0 as the first number, we want
+       * to keep track of that so that when they type the next
+       * number, we can move to the next segment.
+       */
 
       if (num === 0) {
         props.lastKeyZero.value = true
@@ -438,7 +440,7 @@ export function useDateField(props: UseDateFieldProps) {
        */
 
       if (props.lastKeyZero.value || num > maxStart) {
-      // move to next
+        // move to next
         moveToNext = true
       }
       props.lastKeyZero.value = false
@@ -467,13 +469,13 @@ export function useDateField(props: UseDateFieldProps) {
      */
 
     if (digits === 2 || total > max) {
-    /**
-     * As we're doing elsewhere, we're checking if the number is greater
-     * than the max start digit (0-3 in most months), and if so, we're
-     * going to move to the next segment.
-     */
+      /**
+       * As we're doing elsewhere, we're checking if the number is greater
+       * than the max start digit (0-3 in most months), and if so, we're
+       * going to move to the next segment.
+       */
       if (num > maxStart) {
-      // move to next
+        // move to next
         moveToNext = true
       }
       return { value: num, moveToNext }
@@ -500,11 +502,11 @@ export function useDateField(props: UseDateFieldProps) {
     }
 
     if (prev === null) {
-    /**
-     * If the user types a 0 as the first number, we want
-     * to keep track of that so that when they type the next
-     * number, we can move to the next segment.
-     */
+      /**
+       * If the user types a 0 as the first number, we want
+       * to keep track of that so that when they type the next
+       * number, we can move to the next segment.
+       */
 
       if (num === 0) {
         props.lastKeyZero.value = true
@@ -518,7 +520,7 @@ export function useDateField(props: UseDateFieldProps) {
        */
 
       if (props.lastKeyZero.value || num > maxStart) {
-      // move to next
+        // move to next
         moveToNext = true
       }
       props.lastKeyZero.value = false
@@ -547,13 +549,13 @@ export function useDateField(props: UseDateFieldProps) {
      */
 
     if (digits === 2 || total > max) {
-    /**
-     * As we're doing elsewhere, we're checking if the number is greater
-     * than the max start digit (0-3 in most months), and if so, we're
-     * going to move to the next segment.
-     */
+      /**
+       * As we're doing elsewhere, we're checking if the number is greater
+       * than the max start digit (0-3 in most months), and if so, we're
+       * going to move to the next segment.
+       */
       if (num > maxStart) {
-      // move to next
+        // move to next
         moveToNext = true
       }
       return { value: num, moveToNext }
@@ -820,7 +822,8 @@ export function useDateField(props: UseDateFieldProps) {
   function handleSegmentKeydown(e: KeyboardEvent) {
     const disabled = props.disabled.value
     const readonly = props.readonly.value
-    if (e.key !== kbd.TAB)
+
+    if (e.key !== kbd.TAB && !isCut(e) && !isCopy(e) && !isPaste(e))
       e.preventDefault()
 
     if (disabled || readonly)
@@ -833,7 +836,7 @@ export function useDateField(props: UseDateFieldProps) {
       minute: handleMinuteSegmentKeydown,
       second: handleSecondSegmentKeydown,
       dayPeriod: handleDayPeriodSegmentKeydown,
-      timeZoneName: () => {},
+      timeZoneName: () => { },
     } as const
 
     segmentKeydownHandlers[props.part as keyof typeof segmentKeydownHandlers](e)
@@ -854,9 +857,82 @@ export function useDateField(props: UseDateFieldProps) {
     }
   }
 
+  function handleSegmentCopy(event: ClipboardEvent) {
+    event.preventDefault()
+
+    if (!props.modelValue.value)
+      return
+
+    const formattedValue = props.formatter.toParts(props.modelValue.value).map(part => part.value).join('')
+    event.clipboardData?.setData('text/plain', formattedValue)
+  }
+
+  function handleSegmentPaste(event: ClipboardEvent) {
+    event.preventDefault()
+
+    const dateString = event.clipboardData?.getData('text/plain').trim() || ''
+    if (!dateString)
+      return
+
+    /**
+     * Assume the date string is in ISO format, and try to parse it.
+     */
+    try {
+      const dateValue = parseDate(dateString)
+      props.modelValue.value = dateValue
+      return
+    }
+    catch { }
+
+    try {
+      const dateValue = parseDateTime(dateString)
+      props.modelValue.value = dateValue
+      return
+    }
+    catch { }
+
+    try {
+      const dateValue = parseAbsoluteToLocal(dateString)
+      props.modelValue.value = dateValue
+      return
+    }
+    catch { }
+
+    /**
+     * Fallback to native Date parsing to handle locale specific formats.
+     */
+    const date = new Date(dateString)
+    if (isNaN(date.getTime()))
+      return
+
+    const includesTime = /\d{1,2}:\d{2}:\d{2}/.test(dateString)
+
+    if (includesTime) {
+      const dateValue = new CalendarDateTime(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds(),
+      )
+      props.modelValue.value = dateValue
+    }
+    else {
+      const dateValue = new CalendarDate(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate(),
+      )
+      props.modelValue.value = dateValue
+    }
+  }
+
   return {
     handleSegmentClick,
+    handleSegmentCopy,
     handleSegmentKeydown,
+    handleSegmentPaste,
     attributes,
   }
 }

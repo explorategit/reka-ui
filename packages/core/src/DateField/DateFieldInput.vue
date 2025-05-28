@@ -1,9 +1,9 @@
 <script lang="ts">
 import type { PrimitiveProps } from '@/Primitive'
 import type { SegmentPart } from '@/shared/date'
+import { computed, ref } from 'vue'
 import { Primitive } from '@/Primitive'
 import { useDateField } from '@/shared/date/useDateField'
-import { computed, ref } from 'vue'
 import { injectDateFieldRootContext } from './DateFieldRoot.vue'
 
 export interface DateFieldInputProps extends PrimitiveProps {
@@ -23,6 +23,8 @@ const lastKeyZero = ref(false)
 const {
   handleSegmentClick,
   handleSegmentKeydown,
+  handleSegmentCopy,
+  handleSegmentPaste,
   attributes,
 } = useDateField({
   hasLeftFocus,
@@ -56,6 +58,8 @@ const isInvalid = computed(() => rootContext.isInvalid.value)
     :data-invalid="isInvalid ? '' : undefined"
     :aria-invalid="isInvalid ? true : undefined"
     v-on="part !== 'literal' ? {
+      copy: handleSegmentCopy,
+      paste: handleSegmentPaste,
       mousedown: handleSegmentClick,
       keydown: handleSegmentKeydown,
       focusout: () => { hasLeftFocus = true },
