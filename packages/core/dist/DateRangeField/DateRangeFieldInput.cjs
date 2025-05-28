@@ -27,6 +27,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const {
       handleSegmentClick,
       handleSegmentKeydown,
+      handleSegmentCopy,
+      handleSegmentPaste,
       attributes
     } = date_useDateField.useDateField({
       hasLeftFocus,
@@ -58,6 +60,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         "data-invalid": isInvalid.value ? "" : void 0,
         "aria-invalid": isInvalid.value ? true : void 0
       }, vue.toHandlers(_ctx.part !== "literal" ? {
+        copy: vue.unref(handleSegmentCopy),
+        paste: vue.unref(handleSegmentPaste),
         mousedown: vue.unref(handleSegmentClick),
         keydown: vue.unref(handleSegmentKeydown),
         focusout: () => {
