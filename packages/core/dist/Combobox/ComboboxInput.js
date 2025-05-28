@@ -80,6 +80,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       if (!rootContext.isUserInputted.value && rootContext.resetSearchTermOnSelect.value)
         resetSearchTerm();
     }, { immediate: true, deep: true });
+    watch(
+      () => props.modelValue,
+      () => {
+        if (props.modelValue !== void 0) {
+          rootContext.filterState.search = props.modelValue;
+        }
+      }
+    );
     return (_ctx, _cache) => {
       return openBlock(), createBlock(unref(_sfc_main$1), {
         ref_key: "primitiveElement",

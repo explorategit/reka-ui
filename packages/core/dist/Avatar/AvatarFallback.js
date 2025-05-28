@@ -1,4 +1,4 @@
-import { defineComponent, ref, watch, createBlock, createCommentVNode, unref, openBlock, withCtx, renderSlot } from 'vue';
+import { defineComponent, ref, watchEffect, createBlock, createCommentVNode, unref, openBlock, withCtx, renderSlot } from 'vue';
 import { i as injectAvatarRootContext } from './AvatarRoot.js';
 import { u as useForwardExpose } from '../shared/useForwardExpose.js';
 import { P as Primitive } from '../Primitive/Primitive.js';
@@ -12,7 +12,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   ...__default__,
   __name: "AvatarFallback",
   props: {
-    delayMs: { default: 0 },
+    delayMs: {},
     asChild: { type: Boolean },
     as: { default: "span" }
   },
@@ -20,21 +20,17 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const props = __props;
     const rootContext = injectAvatarRootContext();
     useForwardExpose();
-    const canRender = ref(false);
-    let timeout;
-    watch(rootContext.imageLoadingStatus, (value) => {
-      if (value === "loading") {
-        canRender.value = false;
-        if (props.delayMs) {
-          timeout = setTimeout(() => {
-            canRender.value = true;
-            clearTimeout(timeout);
-          }, props.delayMs);
-        } else {
+    const canRender = ref(props.delayMs === void 0);
+    watchEffect((onCleanup) => {
+      if (props.delayMs) {
+        const timerId = window.setTimeout(() => {
           canRender.value = true;
-        }
+        }, props.delayMs);
+        onCleanup(() => {
+          window.clearTimeout(timerId);
+        });
       }
-    }, { immediate: true });
+    });
     return (_ctx, _cache) => {
       return canRender.value && unref(rootContext).imageLoadingStatus.value !== "loaded" ? (openBlock(), createBlock(unref(Primitive), {
         key: 0,

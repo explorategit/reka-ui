@@ -72,6 +72,10 @@ declare type __VLS_PrettifyLocal_14<T> = {
     [K in keyof T]: T[K];
 } & {};
 
+declare type __VLS_PrettifyLocal_15<T> = {
+    [K in keyof T]: T[K];
+} & {};
+
 declare type __VLS_PrettifyLocal_2<T> = {
     [K in keyof T]: T[K];
 } & {};
@@ -1376,12 +1380,6 @@ declare type __VLS_WithTemplateSlots_29<T, S> = T & {
     };
 };
 
-declare type __VLS_WithTemplateSlots_290<T, S> = T & {
-    new (): {
-        $slots: S;
-    };
-};
-
 declare type __VLS_WithTemplateSlots_3<T, S> = T & {
     new (): {
         $slots: S;
@@ -2145,7 +2143,6 @@ export declare type AsTag = 'a' | 'button' | 'div' | 'form' | 'h2' | 'h3' | 'img
 
 export declare const AvatarFallback: __VLS_WithTemplateSlots_16<DefineComponent<AvatarFallbackProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<AvatarFallbackProps> & Readonly<{}>, {
 as: AsTag | Component;
-delayMs: number;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
@@ -2176,6 +2173,7 @@ export declare type AvatarImageEmits = {
 export declare interface AvatarImageProps extends PrimitiveProps {
     src: string;
     referrerPolicy?: ImgHTMLAttributes['referrerpolicy'];
+    crossOrigin?: ImgHTMLAttributes['crossorigin'];
 }
 
 export declare const AvatarRoot: __VLS_WithTemplateSlots_18<DefineComponent<AvatarRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<AvatarRootProps> & Readonly<{}>, {
@@ -3648,6 +3646,10 @@ onCloseAutoFocus?: ((event: Event) => any) | undefined;
 }>;
 
 export declare interface DatePickerContentProps extends PopoverContentProps {
+    /**
+     * Props to control the portal wrapped around the content.
+     */
+    portal?: PopoverPortalProps;
 }
 
 export declare const DatePickerField: __VLS_WithTemplateSlots_75<DefineComponent<    {}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>, {
@@ -4023,6 +4025,10 @@ onCloseAutoFocus?: ((event: Event) => any) | undefined;
 }>;
 
 export declare interface DateRangePickerContentProps extends PopoverContentProps {
+    /**
+     * Props to control the portal wrapped around the content.
+     */
+    portal?: PopoverPortalProps;
 }
 
 export declare const DateRangePickerField: __VLS_WithTemplateSlots_97<DefineComponent<    {}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>, {
@@ -4186,6 +4192,7 @@ declare type DateRangePickerRootContext = {
     onStartValueChange: (date: DateValue | undefined) => void;
     dir: Ref<Direction>;
     allowNonContiguousRanges: Ref<boolean>;
+    fixedDate: Ref<'start' | 'end' | undefined>;
 };
 
 export declare type DateRangePickerRootEmits = {
@@ -4197,7 +4204,7 @@ export declare type DateRangePickerRootEmits = {
     'update:startValue': [date: DateValue | undefined];
 };
 
-export declare type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges'>;
+export declare type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges' | 'fixedDate'>;
 
 export declare const DateRangePickerTrigger: __VLS_WithTemplateSlots_109<DefineComponent<DateRangePickerTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<DateRangePickerTriggerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -5237,7 +5244,7 @@ export declare const injectNumberFieldRootContext: <T extends NumberFieldRootCon
 
 export declare const injectPaginationRootContext: <T extends PaginationRootContext | null | undefined = PaginationRootContext>(fallback?: T | undefined) => T extends null ? PaginationRootContext | null : PaginationRootContext;
 
-export declare const injectPinInputRootContext: <T extends PinInputRootContext | null | undefined = PinInputRootContext>(fallback?: T | undefined) => T extends null ? PinInputRootContext | null : PinInputRootContext;
+export declare const injectPinInputRootContext: <T extends PinInputRootContext<PinInputType> | null | undefined = PinInputRootContext<PinInputType>>(fallback?: T | undefined) => T extends null ? PinInputRootContext<PinInputType> | null : PinInputRootContext<PinInputType>;
 
 export declare const injectPopoverRootContext: <T extends PopoverRootContext | null | undefined = PopoverRootContext>(fallback?: T | undefined) => T extends null ? PopoverRootContext | null : PopoverRootContext;
 
@@ -6801,34 +6808,36 @@ export declare interface PinInputInputProps extends PrimitiveProps {
     disabled?: boolean;
 }
 
-export declare const PinInputRoot: __VLS_WithTemplateSlots_192<DefineComponent<PinInputRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
-"update:modelValue": (value: string[]) => any;
-complete: (value: string[]) => any;
-}, string, PublicProps, Readonly<PinInputRootProps> & Readonly<{
-"onUpdate:modelValue"?: ((value: string[]) => any) | undefined;
-onComplete?: ((value: string[]) => any) | undefined;
-}>, {
-placeholder: string;
-type: "text" | "number";
-}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
-        /** Current input values */
-        modelValue: string[];
-    }) => any;
-}> & {
-    default: (props: {
-        /** Current input values */
-        modelValue: string[];
-    }) => any;
-}>;
+export declare const PinInputRoot: <Type extends PinInputType = "text">(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_9<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_9<Pick<Partial<{}> & Omit<{
+        readonly "onUpdate:modelValue"?: ((value: PinInputValue<Type>) => any) | undefined;
+        readonly onComplete?: ((value: PinInputValue<Type>) => any) | undefined;
+    } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onUpdate:modelValue" | "onComplete"> & PinInputRootProps<Type> & Partial<{}>> & PublicProps;
+    expose(exposed: ShallowUnwrapRef<    {}>): void;
+    attrs: any;
+    slots: Readonly<{
+        default: (props: {
+            /** Current input values */
+            modelValue: PinInputValue<Type>;
+        }) => any;
+    }> & {
+        default: (props: {
+            /** Current input values */
+            modelValue: PinInputValue<Type>;
+        }) => any;
+    };
+    emit: ((evt: "update:modelValue", value: PinInputValue<Type>) => void) & ((evt: "complete", value: PinInputValue<Type>) => void);
+}>) => VNode & {
+    __ctx?: Awaited<typeof __VLS_setup>;
+};
 
-declare interface PinInputRootContext {
-    modelValue: Ref<string[]>;
-    currentModelValue: ComputedRef<string[]>;
+declare interface PinInputRootContext<Type extends PinInputType = 'text'> {
+    modelValue: Ref<PinInputValue<Type>>;
+    currentModelValue: ComputedRef<PinInputValue<Type>>;
     mask: Ref<boolean>;
     otp: Ref<boolean>;
     placeholder: Ref<string>;
-    type: Ref<PinInputRootProps['type']>;
+    type: Ref<PinInputType>;
     dir: Ref<Direction>;
     disabled: Ref<boolean>;
     isCompleted: ComputedRef<boolean>;
@@ -6836,16 +6845,16 @@ declare interface PinInputRootContext {
     onInputElementChange: (el: HTMLInputElement) => void;
 }
 
-export declare type PinInputRootEmits = {
-    'update:modelValue': [value: string[]];
-    'complete': [value: string[]];
+export declare type PinInputRootEmits<Type extends PinInputType = 'text'> = {
+    'update:modelValue': [value: PinInputValue<Type>];
+    'complete': [value: PinInputValue<Type>];
 };
 
-export declare interface PinInputRootProps extends PrimitiveProps, FormFieldProps {
+export declare interface PinInputRootProps<Type extends PinInputType = 'text'> extends PrimitiveProps, FormFieldProps {
     /** The controlled checked state of the pin input. Can be binded as `v-model`. */
-    modelValue?: string[] | null;
+    modelValue?: PinInputValue<Type> | null;
     /** The default value of the pin inputs when it is initially rendered. Use when you do not need to control its checked state. */
-    defaultValue?: string[];
+    defaultValue?: PinInputValue<Type>[];
     /** The placeholder character to use for empty pin-inputs. */
     placeholder?: string;
     /** When `true`, pin inputs will be treated as password. */
@@ -6853,7 +6862,7 @@ export declare interface PinInputRootProps extends PrimitiveProps, FormFieldProp
     /** When `true`, mobile devices will autodetect the OTP from messages or clipboard, and enable the autocomplete field. */
     otp?: boolean;
     /** Input type for the inputs. */
-    type?: 'text' | 'number';
+    type?: Type;
     /** The reading direction of the combobox when applicable. <br> If omitted, inherits globally from `ConfigProvider` or assumes LTR (left-to-right) reading mode. */
     dir?: Direction;
     /** When `true`, prevents the user from interacting with the pin input */
@@ -6861,6 +6870,10 @@ export declare interface PinInputRootProps extends PrimitiveProps, FormFieldProp
     /** Id of the element */
     id?: string;
 }
+
+declare type PinInputType = 'text' | 'number';
+
+declare type PinInputValue<Type extends PinInputType = 'text'> = Type extends 'number' ? number[] : string[];
 
 declare type PointerDownOutsideEvent = CustomEvent<{
     originalEvent: PointerEvent;
@@ -6871,14 +6884,14 @@ declare type PointerHitAreaMargins = {
     fine: number;
 };
 
-export declare const PopoverAnchor: __VLS_WithTemplateSlots_193<DefineComponent<PopoverAnchorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverAnchorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const PopoverAnchor: __VLS_WithTemplateSlots_192<DefineComponent<PopoverAnchorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverAnchorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface PopoverAnchorProps extends PopperAnchorProps {
 }
 
-export declare const PopoverArrow: __VLS_WithTemplateSlots_194<DefineComponent<PopoverArrowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverArrowProps> & Readonly<{}>, {
+export declare const PopoverArrow: __VLS_WithTemplateSlots_193<DefineComponent<PopoverArrowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverArrowProps> & Readonly<{}>, {
 width: number;
 height: number;
 as: AsTag | Component;
@@ -6889,7 +6902,7 @@ as: AsTag | Component;
 export declare interface PopoverArrowProps extends PopperArrowProps {
 }
 
-export declare const PopoverClose: __VLS_WithTemplateSlots_195<DefineComponent<PopoverCloseProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverCloseProps> & Readonly<{}>, {
+export declare const PopoverClose: __VLS_WithTemplateSlots_194<DefineComponent<PopoverCloseProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverCloseProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -6898,7 +6911,7 @@ as: AsTag | Component;
 export declare interface PopoverCloseProps extends PrimitiveProps {
 }
 
-export declare const PopoverContent: __VLS_WithTemplateSlots_196<DefineComponent<PopoverContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const PopoverContent: __VLS_WithTemplateSlots_195<DefineComponent<PopoverContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 escapeKeyDown: (event: KeyboardEvent) => any;
 pointerDownOutside: (event: PointerDownOutsideEvent) => any;
 focusOutside: (event: FocusOutsideEvent) => any;
@@ -6943,14 +6956,14 @@ export declare interface PopoverContentProps extends PopoverContentImplProps {
     forceMount?: boolean;
 }
 
-export declare const PopoverPortal: __VLS_WithTemplateSlots_197<DefineComponent<PopoverPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const PopoverPortal: __VLS_WithTemplateSlots_196<DefineComponent<PopoverPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface PopoverPortalProps extends TeleportProps {
 }
 
-export declare const PopoverRoot: __VLS_WithTemplateSlots_198<DefineComponent<PopoverRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const PopoverRoot: __VLS_WithTemplateSlots_197<DefineComponent<PopoverRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:open": (value: boolean) => any;
 }, string, PublicProps, Readonly<PopoverRootProps> & Readonly<{
 "onUpdate:open"?: ((value: boolean) => any) | undefined;
@@ -7005,7 +7018,7 @@ export declare interface PopoverRootProps {
     modal?: boolean;
 }
 
-export declare const PopoverTrigger: __VLS_WithTemplateSlots_199<DefineComponent<PopoverTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverTriggerProps> & Readonly<{}>, {
+export declare const PopoverTrigger: __VLS_WithTemplateSlots_198<DefineComponent<PopoverTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PopoverTriggerProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7215,14 +7228,14 @@ export declare interface PrimitiveProps {
     as?: AsTag | Component;
 }
 
-export declare const ProgressIndicator: __VLS_WithTemplateSlots_200<DefineComponent<ProgressIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ProgressIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ProgressIndicator: __VLS_WithTemplateSlots_199<DefineComponent<ProgressIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ProgressIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ProgressIndicatorProps extends PrimitiveProps {
 }
 
-export declare const ProgressRoot: __VLS_WithTemplateSlots_201<DefineComponent<ProgressRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const ProgressRoot: __VLS_WithTemplateSlots_200<DefineComponent<ProgressRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (value: string[] | undefined) => any;
 "update:max": (value: number) => any;
 }, string, PublicProps, Readonly<ProgressRootProps> & Readonly<{
@@ -7230,7 +7243,7 @@ export declare const ProgressRoot: __VLS_WithTemplateSlots_201<DefineComponent<P
 "onUpdate:max"?: ((value: number) => any) | undefined;
 }>, {
 max: number;
-getValueLabel: (value: number, max: number) => string;
+getValueLabel: (value: number | null | undefined, max: number) => string | undefined;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
     default: (props: {
         /** Current input values */
@@ -7270,12 +7283,12 @@ export declare interface ProgressRootProps extends PrimitiveProps {
      *
      *  If not provided, the value label will be read as the numeric value as a percentage of the max value.
      */
-    getValueLabel?: (value: number, max: number) => string;
+    getValueLabel?: (value: number | null | undefined, max: number) => string | undefined;
 }
 
 declare type ProgressState = 'indeterminate' | 'loading' | 'complete';
 
-export declare const RadioGroupIndicator: __VLS_WithTemplateSlots_202<DefineComponent<RadioGroupIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RadioGroupIndicatorProps> & Readonly<{}>, {
+export declare const RadioGroupIndicator: __VLS_WithTemplateSlots_201<DefineComponent<RadioGroupIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RadioGroupIndicatorProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7289,7 +7302,7 @@ export declare interface RadioGroupIndicatorProps extends PrimitiveProps {
     forceMount?: boolean;
 }
 
-export declare const RadioGroupItem: __VLS_WithTemplateSlots_203<DefineComponent<RadioGroupItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const RadioGroupItem: __VLS_WithTemplateSlots_202<DefineComponent<RadioGroupItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 select: (event: RadioGroupItemSelectEvent) => any;
 }, string, PublicProps, Readonly<RadioGroupItemProps> & Readonly<{
 onSelect?: ((event: RadioGroupItemSelectEvent) => any) | undefined;
@@ -7329,7 +7342,7 @@ export declare type RadioGroupItemSelectEvent = CustomEvent<{
     value?: AcceptableValue;
 }>;
 
-export declare const RadioGroupRoot: __VLS_WithTemplateSlots_204<DefineComponent<RadioGroupRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const RadioGroupRoot: __VLS_WithTemplateSlots_203<DefineComponent<RadioGroupRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: string) => any;
 }, string, PublicProps, Readonly<RadioGroupRootProps> & Readonly<{
 "onUpdate:modelValue"?: ((payload: string) => any) | undefined;
@@ -7393,7 +7406,7 @@ declare interface RadioProps extends PrimitiveProps, FormFieldProps {
     checked?: boolean;
 }
 
-export declare const RangeCalendarCell: __VLS_WithTemplateSlots_205<DefineComponent<RangeCalendarCellProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarCellProps> & Readonly<{}>, {
+export declare const RangeCalendarCell: __VLS_WithTemplateSlots_204<DefineComponent<RangeCalendarCellProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarCellProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7403,7 +7416,7 @@ export declare interface RangeCalendarCellProps extends PrimitiveProps {
     date: DateValue;
 }
 
-export declare const RangeCalendarCellTrigger: __VLS_WithTemplateSlots_206<DefineComponent<RangeCalendarCellTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarCellTriggerProps> & Readonly<{}>, {
+export declare const RangeCalendarCellTrigger: __VLS_WithTemplateSlots_205<DefineComponent<RangeCalendarCellTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarCellTriggerProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {
 primitiveElement: CreateComponentPublicInstanceWithMixins<Readonly<ExtractPropTypes<    {
@@ -7478,13 +7491,13 @@ declare interface RangeCalendarCellTriggerSlot {
     }) => any;
 }
 
-export declare const RangeCalendarGrid: __VLS_WithTemplateSlots_207<DefineComponent<RangeCalendarGridProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridProps> & Readonly<{}>, {
+export declare const RangeCalendarGrid: __VLS_WithTemplateSlots_206<DefineComponent<RangeCalendarGridProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
-export declare const RangeCalendarGridBody: __VLS_WithTemplateSlots_208<DefineComponent<RangeCalendarGridBodyProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridBodyProps> & Readonly<{}>, {
+export declare const RangeCalendarGridBody: __VLS_WithTemplateSlots_207<DefineComponent<RangeCalendarGridBodyProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridBodyProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7493,7 +7506,7 @@ as: AsTag | Component;
 export declare interface RangeCalendarGridBodyProps extends PrimitiveProps {
 }
 
-export declare const RangeCalendarGridHead: __VLS_WithTemplateSlots_209<DefineComponent<RangeCalendarGridHeadProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridHeadProps> & Readonly<{}>, {
+export declare const RangeCalendarGridHead: __VLS_WithTemplateSlots_208<DefineComponent<RangeCalendarGridHeadProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridHeadProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7505,7 +7518,7 @@ export declare interface RangeCalendarGridHeadProps extends PrimitiveProps {
 export declare interface RangeCalendarGridProps extends PrimitiveProps {
 }
 
-export declare const RangeCalendarGridRow: __VLS_WithTemplateSlots_210<DefineComponent<RangeCalendarGridRowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridRowProps> & Readonly<{}>, {
+export declare const RangeCalendarGridRow: __VLS_WithTemplateSlots_209<DefineComponent<RangeCalendarGridRowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarGridRowProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7514,7 +7527,7 @@ as: AsTag | Component;
 export declare interface RangeCalendarGridRowProps extends PrimitiveProps {
 }
 
-export declare const RangeCalendarHeadCell: __VLS_WithTemplateSlots_211<DefineComponent<RangeCalendarHeadCellProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeadCellProps> & Readonly<{}>, {
+export declare const RangeCalendarHeadCell: __VLS_WithTemplateSlots_210<DefineComponent<RangeCalendarHeadCellProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeadCellProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7523,7 +7536,7 @@ as: AsTag | Component;
 export declare interface RangeCalendarHeadCellProps extends PrimitiveProps {
 }
 
-export declare const RangeCalendarHeader: __VLS_WithTemplateSlots_212<DefineComponent<RangeCalendarHeaderProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeaderProps> & Readonly<{}>, {
+export declare const RangeCalendarHeader: __VLS_WithTemplateSlots_211<DefineComponent<RangeCalendarHeaderProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeaderProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -7532,7 +7545,7 @@ as: AsTag | Component;
 export declare interface RangeCalendarHeaderProps extends PrimitiveProps {
 }
 
-export declare const RangeCalendarHeading: __VLS_WithTemplateSlots_213<DefineComponent<RangeCalendarHeadingProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeadingProps> & Readonly<{}>, {
+export declare const RangeCalendarHeading: __VLS_WithTemplateSlots_212<DefineComponent<RangeCalendarHeadingProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeadingProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
     default: (props: {
@@ -7549,7 +7562,7 @@ as: AsTag | Component;
 export declare interface RangeCalendarHeadingProps extends PrimitiveProps {
 }
 
-export declare const RangeCalendarNext: __VLS_WithTemplateSlots_214<DefineComponent<RangeCalendarNextProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarNextProps> & Readonly<{}>, {
+export declare const RangeCalendarNext: __VLS_WithTemplateSlots_213<DefineComponent<RangeCalendarNextProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarNextProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<RangeCalendarNextSlot> & RangeCalendarNextSlot>;
 
@@ -7565,7 +7578,7 @@ declare interface RangeCalendarNextSlot {
     }) => any;
 }
 
-export declare const RangeCalendarPrev: __VLS_WithTemplateSlots_215<DefineComponent<RangeCalendarPrevProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarPrevProps> & Readonly<{}>, {
+export declare const RangeCalendarPrev: __VLS_WithTemplateSlots_214<DefineComponent<RangeCalendarPrevProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarPrevProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<RangeCalendarPrevSlot> & RangeCalendarPrevSlot>;
 
@@ -7581,7 +7594,7 @@ declare interface RangeCalendarPrevSlot {
     }) => any;
 }
 
-export declare const RangeCalendarRoot: __VLS_WithTemplateSlots_216<DefineComponent<RangeCalendarRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const RangeCalendarRoot: __VLS_WithTemplateSlots_215<DefineComponent<RangeCalendarRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (date: DateRange) => any;
 "update:placeholder": (date: DateValue) => any;
 "update:startValue": (date: DateValue | undefined) => any;
@@ -7722,6 +7735,7 @@ declare type RangeCalendarRootContext = {
     isPrevButtonDisabled: (prevPageFunc?: (date: DateValue) => DateValue) => boolean;
     formatter: Formatter;
     dir: Ref<Direction>;
+    fixedDate: Ref<'start' | 'end' | undefined>;
 };
 
 export declare type RangeCalendarRootEmits = {
@@ -7782,6 +7796,8 @@ export declare interface RangeCalendarRootProps extends PrimitiveProps {
     nextPage?: (placeholder: DateValue) => DateValue;
     /** A function that returns the previous page of the calendar. It receives the current placeholder as an argument inside the component. */
     prevPage?: (placeholder: DateValue) => DateValue;
+    /** Which part of the range should be fixed */
+    fixedDate?: 'start' | 'end';
 }
 
 declare type RawProps = VNodeProps & {
@@ -7795,7 +7811,7 @@ declare type ResizeEvent = KeyboardEvent | MouseEvent | TouchEvent;
 
 declare type ResizeHandler = (event: ResizeEvent) => void;
 
-export declare const RovingFocusGroup: __VLS_WithTemplateSlots_217<DefineComponent<RovingFocusGroupProps, {
+export declare const RovingFocusGroup: __VLS_WithTemplateSlots_216<DefineComponent<RovingFocusGroupProps, {
 getItems: (includeDisabledItem?: boolean) => {
 ref: HTMLElement;
 value?: any;
@@ -7848,7 +7864,7 @@ export declare interface RovingFocusGroupProps extends PrimitiveProps {
     preventScrollOnEntryFocus?: boolean;
 }
 
-export declare const RovingFocusItem: __VLS_WithTemplateSlots_218<DefineComponent<RovingFocusItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RovingFocusItemProps> & Readonly<{}>, {
+export declare const RovingFocusItem: __VLS_WithTemplateSlots_217<DefineComponent<RovingFocusItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RovingFocusItemProps> & Readonly<{}>, {
 as: AsTag | Component;
 focusable: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
@@ -7868,14 +7884,14 @@ export declare interface RovingFocusItemProps extends PrimitiveProps {
     allowShiftKey?: boolean;
 }
 
-export declare const ScrollAreaCorner: __VLS_WithTemplateSlots_219<DefineComponent<ScrollAreaCornerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaCornerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ScrollAreaCorner: __VLS_WithTemplateSlots_218<DefineComponent<ScrollAreaCornerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaCornerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ScrollAreaCornerProps extends PrimitiveProps {
 }
 
-export declare const ScrollAreaRoot: __VLS_WithTemplateSlots_220<DefineComponent<ScrollAreaRootProps, {
+export declare const ScrollAreaRoot: __VLS_WithTemplateSlots_219<DefineComponent<ScrollAreaRootProps, {
 /** Viewport element within ScrollArea */
 viewport: Ref<HTMLElement | undefined, HTMLElement | undefined>;
 /** Scroll viewport to top */
@@ -7934,7 +7950,7 @@ declare interface ScrollAreaScollbarContext {
     asChild: Ref<boolean>;
 }
 
-export declare const ScrollAreaScrollbar: __VLS_WithTemplateSlots_221<DefineComponent<ScrollAreaScrollbarProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaScrollbarProps> & Readonly<{}>, {
+export declare const ScrollAreaScrollbar: __VLS_WithTemplateSlots_220<DefineComponent<ScrollAreaScrollbarProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaScrollbarProps> & Readonly<{}>, {
 as: AsTag | Component;
 orientation: "vertical" | "horizontal";
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
@@ -7954,14 +7970,14 @@ export declare interface ScrollAreaScrollbarProps extends PrimitiveProps {
     forceMount?: boolean;
 }
 
-export declare const ScrollAreaThumb: __VLS_WithTemplateSlots_222<DefineComponent<ScrollAreaThumbProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaThumbProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ScrollAreaThumb: __VLS_WithTemplateSlots_221<DefineComponent<ScrollAreaThumbProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaThumbProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ScrollAreaThumbProps extends PrimitiveProps {
 }
 
-export declare const ScrollAreaViewport: __VLS_WithTemplateSlots_223<DefineComponent<ScrollAreaViewportProps, {
+export declare const ScrollAreaViewport: __VLS_WithTemplateSlots_222<DefineComponent<ScrollAreaViewportProps, {
 viewportElement: Ref<HTMLElement | undefined, HTMLElement | undefined>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ScrollAreaViewportProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {
 viewportElement: HTMLDivElement;
@@ -7992,7 +8008,7 @@ declare type SegmentPart = EditableSegmentPart | NonEditableSegmentPart;
 
 declare type SegmentValueObj = DateSegmentObj | DateAndTimeSegmentObj;
 
-export declare const SelectArrow: __VLS_WithTemplateSlots_224<DefineComponent<SelectArrowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectArrowProps> & Readonly<{}>, {
+export declare const SelectArrow: __VLS_WithTemplateSlots_223<DefineComponent<SelectArrowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectArrowProps> & Readonly<{}>, {
 width: number;
 height: number;
 as: AsTag | Component;
@@ -8003,7 +8019,7 @@ as: AsTag | Component;
 export declare interface SelectArrowProps extends PopperArrowProps {
 }
 
-export declare const SelectContent: __VLS_WithTemplateSlots_225<DefineComponent<SelectContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SelectContent: __VLS_WithTemplateSlots_224<DefineComponent<SelectContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 escapeKeyDown: (event: KeyboardEvent) => any;
 pointerDownOutside: (event: PointerDownOutsideEvent) => any;
 closeAutoFocus: (event: Event) => any;
@@ -8093,7 +8109,7 @@ export declare interface SelectContentProps extends SelectContentImplProps {
     forceMount?: boolean;
 }
 
-export declare const SelectGroup: __VLS_WithTemplateSlots_226<DefineComponent<SelectGroupProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectGroupProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const SelectGroup: __VLS_WithTemplateSlots_225<DefineComponent<SelectGroupProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectGroupProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -8104,7 +8120,7 @@ declare interface SelectGroupContext {
 export declare interface SelectGroupProps extends PrimitiveProps {
 }
 
-export declare const SelectIcon: __VLS_WithTemplateSlots_227<DefineComponent<SelectIconProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectIconProps> & Readonly<{}>, {
+export declare const SelectIcon: __VLS_WithTemplateSlots_226<DefineComponent<SelectIconProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectIconProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8113,8 +8129,8 @@ as: AsTag | Component;
 export declare interface SelectIconProps extends PrimitiveProps {
 }
 
-export declare const SelectItem: <T extends AcceptableValue = AcceptableValue>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_9<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
-    props: __VLS_PrettifyLocal_9<Pick<Partial<{}> & Omit<{
+export declare const SelectItem: <T extends AcceptableValue = AcceptableValue>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_10<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_10<Pick<Partial<{}> & Omit<{
         readonly onSelect?: ((event: SelectItemSelectEvent<T>) => any) | undefined;
     } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onSelect"> & SelectItemProps<AcceptableValue> & Partial<{}>> & PublicProps;
     expose(exposed: ShallowUnwrapRef<    {}>): void;
@@ -8135,7 +8151,7 @@ declare interface SelectItemContext<T = AcceptableValue> {
     onItemTextChange: (node: HTMLElement | undefined) => void;
 }
 
-export declare const SelectItemIndicator: __VLS_WithTemplateSlots_228<DefineComponent<SelectItemIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectItemIndicatorProps> & Readonly<{}>, {
+export declare const SelectItemIndicator: __VLS_WithTemplateSlots_227<DefineComponent<SelectItemIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectItemIndicatorProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8164,7 +8180,7 @@ export declare type SelectItemSelectEvent<T> = CustomEvent<{
     value?: T;
 }>;
 
-export declare const SelectItemText: __VLS_WithTemplateSlots_229<DefineComponent<SelectItemTextProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectItemTextProps> & Readonly<{}>, {
+export declare const SelectItemText: __VLS_WithTemplateSlots_228<DefineComponent<SelectItemTextProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectItemTextProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8173,7 +8189,7 @@ as: AsTag | Component;
 export declare interface SelectItemTextProps extends PrimitiveProps {
 }
 
-export declare const SelectLabel: __VLS_WithTemplateSlots_230<DefineComponent<SelectLabelProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectLabelProps> & Readonly<{}>, {
+export declare const SelectLabel: __VLS_WithTemplateSlots_229<DefineComponent<SelectLabelProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectLabelProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8189,18 +8205,18 @@ declare interface SelectOption {
     textContent: string;
 }
 
-export declare const SelectPortal: __VLS_WithTemplateSlots_231<DefineComponent<SelectPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const SelectPortal: __VLS_WithTemplateSlots_230<DefineComponent<SelectPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface SelectPortalProps extends TeleportProps {
 }
 
-export declare const SelectRoot: <T extends AcceptableValue = AcceptableValue>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_10<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
-    props: __VLS_PrettifyLocal_10<Pick<Partial<{}> & Omit<{
+export declare const SelectRoot: <T extends AcceptableValue = AcceptableValue>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_11<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_11<Pick<Partial<{}> & Omit<{
         readonly "onUpdate:open"?: ((value: boolean) => any) | undefined;
-        readonly "onUpdate:modelValue"?: ((value: AcceptableValue) => any) | undefined;
-    } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onUpdate:open" | "onUpdate:modelValue"> & SelectRootProps<AcceptableValue> & Partial<{}>> & PublicProps;
+        readonly "onUpdate:modelValue"?: ((value: T) => any) | undefined;
+    } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onUpdate:open" | "onUpdate:modelValue"> & SelectRootProps<T> & Partial<{}>> & PublicProps;
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
@@ -8218,7 +8234,7 @@ export declare const SelectRoot: <T extends AcceptableValue = AcceptableValue>(_
             open: boolean;
         }) => any;
     };
-    emit: ((evt: "update:open", value: boolean) => void) & ((evt: "update:modelValue", value: AcceptableValue) => void);
+    emit: ((evt: "update:open", value: boolean) => void) & ((evt: "update:modelValue", value: T) => void);
 }>) => VNode & {
     __ctx?: Awaited<typeof __VLS_setup>;
 };
@@ -8276,28 +8292,28 @@ export declare interface SelectRootProps<T = AcceptableValue> extends FormFieldP
     disabled?: boolean;
 }
 
-export declare const SelectScrollDownButton: __VLS_WithTemplateSlots_232<DefineComponent<SelectScrollDownButtonProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectScrollDownButtonProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const SelectScrollDownButton: __VLS_WithTemplateSlots_231<DefineComponent<SelectScrollDownButtonProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectScrollDownButtonProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface SelectScrollDownButtonProps extends PrimitiveProps {
 }
 
-export declare const SelectScrollUpButton: __VLS_WithTemplateSlots_233<DefineComponent<SelectScrollUpButtonProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectScrollUpButtonProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const SelectScrollUpButton: __VLS_WithTemplateSlots_232<DefineComponent<SelectScrollUpButtonProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectScrollUpButtonProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface SelectScrollUpButtonProps extends PrimitiveProps {
 }
 
-export declare const SelectSeparator: __VLS_WithTemplateSlots_234<DefineComponent<SelectSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const SelectSeparator: __VLS_WithTemplateSlots_233<DefineComponent<SelectSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface SelectSeparatorProps extends PrimitiveProps {
 }
 
-export declare const SelectTrigger: __VLS_WithTemplateSlots_235<DefineComponent<SelectTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectTriggerProps> & Readonly<{}>, {
+export declare const SelectTrigger: __VLS_WithTemplateSlots_234<DefineComponent<SelectTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectTriggerProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8307,7 +8323,7 @@ export declare interface SelectTriggerProps extends PopperAnchorProps {
     disabled?: boolean;
 }
 
-export declare const SelectValue: __VLS_WithTemplateSlots_236<DefineComponent<SelectValueProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectValueProps> & Readonly<{}>, {
+export declare const SelectValue: __VLS_WithTemplateSlots_235<DefineComponent<SelectValueProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectValueProps> & Readonly<{}>, {
 placeholder: string;
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
@@ -8322,7 +8338,7 @@ export declare interface SelectValueProps extends PrimitiveProps {
     placeholder?: string;
 }
 
-export declare const SelectViewport: __VLS_WithTemplateSlots_237<DefineComponent<SelectViewportProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectViewportProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const SelectViewport: __VLS_WithTemplateSlots_236<DefineComponent<SelectViewportProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SelectViewportProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -8333,7 +8349,7 @@ export declare interface SelectViewportProps extends PrimitiveProps {
     nonce?: string;
 }
 
-export declare const Separator: __VLS_WithTemplateSlots_238<DefineComponent<SeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SeparatorProps> & Readonly<{}>, {
+export declare const Separator: __VLS_WithTemplateSlots_237<DefineComponent<SeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SeparatorProps> & Readonly<{}>, {
 orientation: DataOrientation;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8376,7 +8392,7 @@ declare interface SingleOrMultipleProps<T = AcceptableValue | AcceptableValue[]>
 
 declare type SingleOrMultipleType = 'single' | 'multiple';
 
-export declare const SliderRange: __VLS_WithTemplateSlots_239<DefineComponent<SliderRangeProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SliderRangeProps> & Readonly<{}>, {
+export declare const SliderRange: __VLS_WithTemplateSlots_238<DefineComponent<SliderRangeProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SliderRangeProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8385,7 +8401,7 @@ as: AsTag | Component;
 export declare interface SliderRangeProps extends PrimitiveProps {
 }
 
-export declare const SliderRoot: __VLS_WithTemplateSlots_240<DefineComponent<SliderRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SliderRoot: __VLS_WithTemplateSlots_239<DefineComponent<SliderRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: number[] | undefined) => any;
 valueCommit: (payload: number[]) => any;
 }, string, PublicProps, Readonly<SliderRootProps> & Readonly<{
@@ -8469,7 +8485,7 @@ export declare interface SliderRootProps extends PrimitiveProps, FormFieldProps 
     thumbAlignment?: ThumbAlignment;
 }
 
-export declare const SliderThumb: __VLS_WithTemplateSlots_241<DefineComponent<SliderThumbProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SliderThumbProps> & Readonly<{}>, {
+export declare const SliderThumb: __VLS_WithTemplateSlots_240<DefineComponent<SliderThumbProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SliderThumbProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8478,7 +8494,7 @@ as: AsTag | Component;
 export declare interface SliderThumbProps extends PrimitiveProps {
 }
 
-export declare const SliderTrack: __VLS_WithTemplateSlots_242<DefineComponent<SliderTrackProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SliderTrackProps> & Readonly<{}>, {
+export declare const SliderTrack: __VLS_WithTemplateSlots_241<DefineComponent<SliderTrackProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SliderTrackProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8493,7 +8509,7 @@ export declare const Slot: DefineComponent<    {}, () => VNode<RendererNode, Ren
 [key: string]: any;
 }>[] | null, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>;
 
-export declare const SplitterGroup: __VLS_WithTemplateSlots_243<DefineComponent<SplitterGroupProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SplitterGroup: __VLS_WithTemplateSlots_242<DefineComponent<SplitterGroupProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 layout: (val: number[]) => any;
 }, string, PublicProps, Readonly<SplitterGroupProps> & Readonly<{
 onLayout?: ((val: number[]) => any) | undefined;
@@ -8531,7 +8547,7 @@ export declare interface SplitterGroupProps extends PrimitiveProps {
     storage?: PanelGroupStorage;
 }
 
-export declare const SplitterPanel: __VLS_WithTemplateSlots_244<DefineComponent<SplitterPanelProps, {
+export declare const SplitterPanel: __VLS_WithTemplateSlots_243<DefineComponent<SplitterPanelProps, {
 /** If panel is `collapsible`, collapse it fully. */
 collapse: () => void;
 /** If panel is currently collapsed, expand it to its most recent size. */
@@ -8558,6 +8574,12 @@ onExpand?: (() => any) | undefined;
         isCollapsed: boolean;
         /** Is the panel expanded */
         isExpanded: boolean;
+        /** If panel is `collapsible`, collapse it fully. */
+        collapse: () => void;
+        /** If panel is currently collapsed, expand it to its most recent size. */
+        expand: () => void;
+        /** Resize panel to the specified percentage (1 - 100). */
+        resize: (size: number) => void;
     }) => any;
 }> & {
     default: (props: {
@@ -8565,6 +8587,12 @@ onExpand?: (() => any) | undefined;
         isCollapsed: boolean;
         /** Is the panel expanded */
         isExpanded: boolean;
+        /** If panel is `collapsible`, collapse it fully. */
+        collapse: () => void;
+        /** If panel is currently collapsed, expand it to its most recent size. */
+        expand: () => void;
+        /** Resize panel to the specified percentage (1 - 100). */
+        resize: (size: number) => void;
     }) => any;
 }>;
 
@@ -8594,7 +8622,7 @@ export declare interface SplitterPanelProps extends PrimitiveProps {
     order?: number;
 }
 
-export declare const SplitterResizeHandle: __VLS_WithTemplateSlots_245<DefineComponent<SplitterResizeHandleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SplitterResizeHandle: __VLS_WithTemplateSlots_244<DefineComponent<SplitterResizeHandleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 dragging: (isDragging: boolean) => any;
 }, string, PublicProps, Readonly<SplitterResizeHandleProps> & Readonly<{
 onDragging?: ((isDragging: boolean) => any) | undefined;
@@ -8620,7 +8648,7 @@ export declare interface SplitterResizeHandleProps extends PrimitiveProps {
     disabled?: boolean;
 }
 
-export declare const StepperDescription: __VLS_WithTemplateSlots_246<DefineComponent<StepperDescriptionProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperDescriptionProps> & Readonly<{}>, {
+export declare const StepperDescription: __VLS_WithTemplateSlots_245<DefineComponent<StepperDescriptionProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperDescriptionProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8629,7 +8657,7 @@ as: AsTag | Component;
 export declare interface StepperDescriptionProps extends PrimitiveProps {
 }
 
-export declare const StepperIndicator: __VLS_WithTemplateSlots_247<DefineComponent<StepperIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
+export declare const StepperIndicator: __VLS_WithTemplateSlots_246<DefineComponent<StepperIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
     default: (props: {
         /** Current step */
         step: number;
@@ -8644,7 +8672,7 @@ export declare const StepperIndicator: __VLS_WithTemplateSlots_247<DefineCompone
 export declare interface StepperIndicatorProps extends PrimitiveProps {
 }
 
-export declare const StepperItem: __VLS_WithTemplateSlots_248<DefineComponent<StepperItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperItemProps> & Readonly<{}>, {
+export declare const StepperItem: __VLS_WithTemplateSlots_247<DefineComponent<StepperItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperItemProps> & Readonly<{}>, {
 disabled: boolean;
 completed: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
@@ -8677,7 +8705,7 @@ export declare interface StepperItemProps extends PrimitiveProps {
     completed?: boolean;
 }
 
-export declare const StepperRoot: __VLS_WithTemplateSlots_249<DefineComponent<StepperRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const StepperRoot: __VLS_WithTemplateSlots_248<DefineComponent<StepperRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: number | undefined) => any;
 }, string, PublicProps, Readonly<StepperRootProps> & Readonly<{
 "onUpdate:modelValue"?: ((payload: number | undefined) => any) | undefined;
@@ -8764,7 +8792,7 @@ export declare interface StepperRootProps extends PrimitiveProps {
     linear?: boolean;
 }
 
-export declare const StepperSeparator: __VLS_WithTemplateSlots_250<DefineComponent<StepperSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const StepperSeparator: __VLS_WithTemplateSlots_249<DefineComponent<StepperSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -8773,7 +8801,7 @@ export declare interface StepperSeparatorProps extends SeparatorProps {
 
 declare type StepperState = 'completed' | 'active' | 'inactive';
 
-export declare const StepperTitle: __VLS_WithTemplateSlots_251<DefineComponent<StepperTitleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperTitleProps> & Readonly<{}>, {
+export declare const StepperTitle: __VLS_WithTemplateSlots_250<DefineComponent<StepperTitleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperTitleProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8782,7 +8810,7 @@ as: AsTag | Component;
 export declare interface StepperTitleProps extends PrimitiveProps {
 }
 
-export declare const StepperTrigger: __VLS_WithTemplateSlots_252<DefineComponent<StepperTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperTriggerProps> & Readonly<{}>, {
+export declare const StepperTrigger: __VLS_WithTemplateSlots_251<DefineComponent<StepperTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperTriggerProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8807,7 +8835,7 @@ declare type SwipeEvent = {
     };
 }>, 'currentTarget'>;
 
-export declare const SwitchRoot: __VLS_WithTemplateSlots_253<DefineComponent<SwitchRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const SwitchRoot: __VLS_WithTemplateSlots_252<DefineComponent<SwitchRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: boolean) => any;
 }, string, PublicProps, Readonly<SwitchRootProps> & Readonly<{
 "onUpdate:modelValue"?: ((payload: boolean) => any) | undefined;
@@ -8850,7 +8878,7 @@ export declare interface SwitchRootProps extends PrimitiveProps, FormFieldProps 
     value?: string;
 }
 
-export declare const SwitchThumb: __VLS_WithTemplateSlots_254<DefineComponent<SwitchThumbProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SwitchThumbProps> & Readonly<{}>, {
+export declare const SwitchThumb: __VLS_WithTemplateSlots_253<DefineComponent<SwitchThumbProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<SwitchThumbProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8859,7 +8887,7 @@ as: AsTag | Component;
 export declare interface SwitchThumbProps extends PrimitiveProps {
 }
 
-export declare const TabsContent: __VLS_WithTemplateSlots_255<DefineComponent<TabsContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsContentProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const TabsContent: __VLS_WithTemplateSlots_254<DefineComponent<TabsContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsContentProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -8873,14 +8901,14 @@ export declare interface TabsContentProps extends PrimitiveProps {
     forceMount?: boolean;
 }
 
-export declare const TabsIndicator: __VLS_WithTemplateSlots_256<DefineComponent<TabsIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const TabsIndicator: __VLS_WithTemplateSlots_255<DefineComponent<TabsIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface TabsIndicatorProps extends PrimitiveProps {
 }
 
-export declare const TabsList: __VLS_WithTemplateSlots_257<DefineComponent<TabsListProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsListProps> & Readonly<{}>, {
+export declare const TabsList: __VLS_WithTemplateSlots_256<DefineComponent<TabsListProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsListProps> & Readonly<{}>, {
 loop: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8891,8 +8919,8 @@ export declare interface TabsListProps extends PrimitiveProps {
     loop?: boolean;
 }
 
-export declare const TabsRoot: <T extends StringOrNumber = StringOrNumber>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_11<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
-    props: __VLS_PrettifyLocal_11<Pick<Partial<{}> & Omit<{
+export declare const TabsRoot: <T extends StringOrNumber = StringOrNumber>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_12<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_12<Pick<Partial<{}> & Omit<{
         readonly "onUpdate:modelValue"?: ((payload: T) => any) | undefined;
     } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onUpdate:modelValue"> & TabsRootProps<T> & Partial<{}>> & PublicProps;
     expose(exposed: ShallowUnwrapRef<    {}>): void;
@@ -8959,7 +8987,7 @@ export declare interface TabsRootProps<T extends StringOrNumber = StringOrNumber
     unmountOnHide?: boolean;
 }
 
-export declare const TabsTrigger: __VLS_WithTemplateSlots_258<DefineComponent<TabsTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsTriggerProps> & Readonly<{}>, {
+export declare const TabsTrigger: __VLS_WithTemplateSlots_257<DefineComponent<TabsTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TabsTriggerProps> & Readonly<{}>, {
 disabled: boolean;
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
@@ -8973,7 +9001,7 @@ export declare interface TabsTriggerProps extends PrimitiveProps {
     disabled?: boolean;
 }
 
-export declare const TagsInputClear: __VLS_WithTemplateSlots_259<DefineComponent<TagsInputClearProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputClearProps> & Readonly<{}>, {
+export declare const TagsInputClear: __VLS_WithTemplateSlots_258<DefineComponent<TagsInputClearProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputClearProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8982,7 +9010,7 @@ as: AsTag | Component;
 export declare interface TagsInputClearProps extends PrimitiveProps {
 }
 
-export declare const TagsInputInput: __VLS_WithTemplateSlots_260<DefineComponent<TagsInputInputProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputInputProps> & Readonly<{}>, {
+export declare const TagsInputInput: __VLS_WithTemplateSlots_259<DefineComponent<TagsInputInputProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputInputProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -8997,7 +9025,7 @@ export declare interface TagsInputInputProps extends PrimitiveProps {
     maxLength?: number;
 }
 
-export declare const TagsInputItem: __VLS_WithTemplateSlots_261<DefineComponent<TagsInputItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputItemProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const TagsInputItem: __VLS_WithTemplateSlots_260<DefineComponent<TagsInputItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputItemProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -9009,7 +9037,7 @@ declare interface TagsInputItemContext {
     textId: string;
 }
 
-export declare const TagsInputItemDelete: __VLS_WithTemplateSlots_262<DefineComponent<TagsInputItemDeleteProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputItemDeleteProps> & Readonly<{}>, {
+export declare const TagsInputItemDelete: __VLS_WithTemplateSlots_261<DefineComponent<TagsInputItemDeleteProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputItemDeleteProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9025,7 +9053,7 @@ export declare interface TagsInputItemProps extends PrimitiveProps {
     disabled?: boolean;
 }
 
-export declare const TagsInputItemText: __VLS_WithTemplateSlots_263<DefineComponent<TagsInputItemTextProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputItemTextProps> & Readonly<{}>, {
+export declare const TagsInputItemText: __VLS_WithTemplateSlots_262<DefineComponent<TagsInputItemTextProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TagsInputItemTextProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9034,8 +9062,8 @@ as: AsTag | Component;
 export declare interface TagsInputItemTextProps extends PrimitiveProps {
 }
 
-export declare const TagsInputRoot: <T extends AcceptableInputValue = string>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_12<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
-    props: __VLS_PrettifyLocal_12<Pick<Partial<{}> & Omit<{
+export declare const TagsInputRoot: <T extends AcceptableInputValue = string>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_13<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_13<Pick<Partial<{}> & Omit<{
         readonly onInvalid?: ((payload: T) => any) | undefined;
         readonly "onUpdate:modelValue"?: ((payload: T[]) => any) | undefined;
         readonly onAddTag?: ((payload: T) => any) | undefined;
@@ -9147,7 +9175,7 @@ declare type ThumbAlignment = 'contain' | 'overflow';
 
 declare const TIME_SEGMENT_PARTS: readonly ["hour", "minute", "second", "dayPeriod"];
 
-export declare const TimeFieldInput: __VLS_WithTemplateSlots_264<DefineComponent<TimeFieldInputProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TimeFieldInputProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const TimeFieldInput: __VLS_WithTemplateSlots_263<DefineComponent<TimeFieldInputProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TimeFieldInputProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -9156,7 +9184,7 @@ export declare interface TimeFieldInputProps extends PrimitiveProps {
     part: SegmentPart;
 }
 
-export declare const TimeFieldRoot: __VLS_WithTemplateSlots_265<DefineComponent<TimeFieldRootProps, {
+export declare const TimeFieldRoot: __VLS_WithTemplateSlots_264<DefineComponent<TimeFieldRootProps, {
 /** Helper to set the focused element inside the DateField */
 setFocusedElement: (el: HTMLElement) => void;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
@@ -9298,7 +9326,7 @@ declare type TimeSegmentPart = (typeof TIME_SEGMENT_PARTS)[number];
 
 declare type TimeValue = Time | CalendarDateTime | ZonedDateTime;
 
-export declare const ToastAction: __VLS_WithTemplateSlots_266<DefineComponent<ToastActionProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastActionProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ToastAction: __VLS_WithTemplateSlots_265<DefineComponent<ToastActionProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastActionProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
@@ -9312,7 +9340,7 @@ export declare interface ToastActionProps extends ToastCloseProps {
     altText: string;
 }
 
-export declare const ToastClose: __VLS_WithTemplateSlots_267<DefineComponent<ToastCloseProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastCloseProps> & Readonly<{}>, {
+export declare const ToastClose: __VLS_WithTemplateSlots_266<DefineComponent<ToastCloseProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastCloseProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9321,21 +9349,21 @@ as: AsTag | Component;
 export declare interface ToastCloseProps extends PrimitiveProps {
 }
 
-export declare const ToastDescription: __VLS_WithTemplateSlots_268<DefineComponent<ToastDescriptionProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastDescriptionProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ToastDescription: __VLS_WithTemplateSlots_267<DefineComponent<ToastDescriptionProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastDescriptionProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ToastDescriptionProps extends PrimitiveProps {
 }
 
-export declare const ToastPortal: __VLS_WithTemplateSlots_269<DefineComponent<ToastPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ToastPortal: __VLS_WithTemplateSlots_268<DefineComponent<ToastPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ToastPortalProps extends TeleportProps {
 }
 
-export declare const ToastProvider: __VLS_WithTemplateSlots_270<DefineComponent<ToastProviderProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastProviderProps> & Readonly<{}>, {
+export declare const ToastProvider: __VLS_WithTemplateSlots_269<DefineComponent<ToastProviderProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastProviderProps> & Readonly<{}>, {
 label: string;
 duration: number;
 swipeDirection: SwipeDirection;
@@ -9382,7 +9410,7 @@ export declare interface ToastProviderProps {
     swipeThreshold?: number;
 }
 
-export declare const ToastRoot: __VLS_WithTemplateSlots_271<DefineComponent<ToastRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const ToastRoot: __VLS_WithTemplateSlots_270<DefineComponent<ToastRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 pause: () => any;
 "update:open": (value: boolean) => any;
 escapeKeyDown: (event: KeyboardEvent) => any;
@@ -9476,14 +9504,14 @@ export declare interface ToastRootProps extends ToastRootImplProps {
     forceMount?: boolean;
 }
 
-export declare const ToastTitle: __VLS_WithTemplateSlots_272<DefineComponent<ToastTitleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastTitleProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ToastTitle: __VLS_WithTemplateSlots_271<DefineComponent<ToastTitleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastTitleProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ToastTitleProps extends PrimitiveProps {
 }
 
-export declare const ToastViewport: __VLS_WithTemplateSlots_273<DefineComponent<ToastViewportProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastViewportProps> & Readonly<{}>, {
+export declare const ToastViewport: __VLS_WithTemplateSlots_272<DefineComponent<ToastViewportProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToastViewportProps> & Readonly<{}>, {
 label: string | ((hotkey: string) => string);
 as: AsTag | Component;
 hotkey: string[];
@@ -9506,7 +9534,7 @@ export declare interface ToastViewportProps extends PrimitiveProps {
     label?: string | ((hotkey: string) => string);
 }
 
-export declare const Toggle: __VLS_WithTemplateSlots_274<DefineComponent<ToggleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const Toggle: __VLS_WithTemplateSlots_273<DefineComponent<ToggleProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (value: boolean) => any;
 }, string, PublicProps, Readonly<ToggleProps> & Readonly<{
 "onUpdate:modelValue"?: ((value: boolean) => any) | undefined;
@@ -9543,7 +9571,7 @@ export declare type ToggleEmits = {
     'update:modelValue': [value: boolean];
 };
 
-export declare const ToggleGroupItem: __VLS_WithTemplateSlots_275<DefineComponent<ToggleGroupItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToggleGroupItemProps> & Readonly<{}>, {
+export declare const ToggleGroupItem: __VLS_WithTemplateSlots_274<DefineComponent<ToggleGroupItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToggleGroupItemProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {
@@ -9561,7 +9589,7 @@ export declare interface ToggleGroupItemProps extends Omit<ToggleProps, 'name' |
     value: AcceptableValue;
 }
 
-export declare const ToggleGroupRoot: __VLS_WithTemplateSlots_276<DefineComponent<ToggleGroupRootProps<AcceptableValue | AcceptableValue[]>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const ToggleGroupRoot: __VLS_WithTemplateSlots_275<DefineComponent<ToggleGroupRootProps<AcceptableValue | AcceptableValue[]>, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: AcceptableValue | AcceptableValue[]) => any;
 }, string, PublicProps, Readonly<ToggleGroupRootProps<AcceptableValue | AcceptableValue[]>> & Readonly<{
 "onUpdate:modelValue"?: ((payload: AcceptableValue | AcceptableValue[]) => any) | undefined;
@@ -9625,7 +9653,7 @@ export declare interface ToggleProps extends PrimitiveProps, FormFieldProps {
     disabled?: boolean;
 }
 
-export declare const ToolbarButton: __VLS_WithTemplateSlots_277<DefineComponent<ToolbarButtonProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarButtonProps> & Readonly<{}>, {
+export declare const ToolbarButton: __VLS_WithTemplateSlots_276<DefineComponent<ToolbarButtonProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarButtonProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9635,7 +9663,7 @@ export declare interface ToolbarButtonProps extends PrimitiveProps {
     disabled?: boolean;
 }
 
-export declare const ToolbarLink: __VLS_WithTemplateSlots_278<DefineComponent<ToolbarLinkProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarLinkProps> & Readonly<{}>, {
+export declare const ToolbarLink: __VLS_WithTemplateSlots_277<DefineComponent<ToolbarLinkProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarLinkProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9644,7 +9672,7 @@ as: AsTag | Component;
 export declare interface ToolbarLinkProps extends PrimitiveProps {
 }
 
-export declare const ToolbarRoot: __VLS_WithTemplateSlots_279<DefineComponent<ToolbarRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarRootProps> & Readonly<{}>, {
+export declare const ToolbarRoot: __VLS_WithTemplateSlots_278<DefineComponent<ToolbarRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarRootProps> & Readonly<{}>, {
 orientation: DataOrientation;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9664,14 +9692,14 @@ export declare interface ToolbarRootProps extends PrimitiveProps {
     loop?: boolean;
 }
 
-export declare const ToolbarSeparator: __VLS_WithTemplateSlots_280<DefineComponent<ToolbarSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ToolbarSeparator: __VLS_WithTemplateSlots_279<DefineComponent<ToolbarSeparatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarSeparatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ToolbarSeparatorProps extends PrimitiveProps {
 }
 
-export declare const ToolbarToggleGroup: __VLS_WithTemplateSlots_281<DefineComponent<ToolbarToggleGroupProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const ToolbarToggleGroup: __VLS_WithTemplateSlots_280<DefineComponent<ToolbarToggleGroupProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: AcceptableValue | AcceptableValue[]) => any;
 }, string, PublicProps, Readonly<ToolbarToggleGroupProps> & Readonly<{
 "onUpdate:modelValue"?: ((payload: AcceptableValue | AcceptableValue[]) => any) | undefined;
@@ -9684,14 +9712,14 @@ export declare type ToolbarToggleGroupEmits = ToggleGroupRootEmits;
 export declare interface ToolbarToggleGroupProps extends ToggleGroupRootProps {
 }
 
-export declare const ToolbarToggleItem: __VLS_WithTemplateSlots_282<DefineComponent<ToolbarToggleItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarToggleItemProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const ToolbarToggleItem: __VLS_WithTemplateSlots_281<DefineComponent<ToolbarToggleItemProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ToolbarToggleItemProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface ToolbarToggleItemProps extends ToggleGroupItemProps {
 }
 
-export declare const TooltipArrow: __VLS_WithTemplateSlots_283<DefineComponent<TooltipArrowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipArrowProps> & Readonly<{}>, {
+export declare const TooltipArrow: __VLS_WithTemplateSlots_282<DefineComponent<TooltipArrowProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipArrowProps> & Readonly<{}>, {
 width: number;
 height: number;
 as: AsTag | Component;
@@ -9714,7 +9742,7 @@ export declare interface TooltipArrowProps extends PrimitiveProps {
     height?: number;
 }
 
-export declare const TooltipContent: __VLS_WithTemplateSlots_284<DefineComponent<TooltipContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const TooltipContent: __VLS_WithTemplateSlots_283<DefineComponent<TooltipContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 escapeKeyDown: (event: KeyboardEvent) => any;
 pointerDownOutside: (event: Event) => any;
 }, string, PublicProps, Readonly<TooltipContentProps> & Readonly<{
@@ -9771,14 +9799,14 @@ declare interface TooltipContext {
     ignoreNonKeyboardFocus: Ref<boolean>;
 }
 
-export declare const TooltipPortal: __VLS_WithTemplateSlots_285<DefineComponent<TooltipPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const TooltipPortal: __VLS_WithTemplateSlots_284<DefineComponent<TooltipPortalProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipPortalProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 
 export declare interface TooltipPortalProps extends TeleportProps {
 }
 
-export declare const TooltipProvider: __VLS_WithTemplateSlots_286<DefineComponent<TooltipProviderProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipProviderProps> & Readonly<{}>, {
+export declare const TooltipProvider: __VLS_WithTemplateSlots_285<DefineComponent<TooltipProviderProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipProviderProps> & Readonly<{}>, {
 delayDuration: number;
 skipDelayDuration: number;
 disableHoverableContent: boolean;
@@ -9835,7 +9863,7 @@ export declare interface TooltipProviderProps {
     ignoreNonKeyboardFocus?: boolean;
 }
 
-export declare const TooltipRoot: __VLS_WithTemplateSlots_287<DefineComponent<TooltipRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const TooltipRoot: __VLS_WithTemplateSlots_286<DefineComponent<TooltipRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:open": (value: boolean) => any;
 }, string, PublicProps, Readonly<TooltipRootProps> & Readonly<{
 "onUpdate:open"?: ((value: boolean) => any) | undefined;
@@ -9907,7 +9935,7 @@ export declare interface TooltipRootProps {
     ignoreNonKeyboardFocus?: boolean;
 }
 
-export declare const TooltipTrigger: __VLS_WithTemplateSlots_288<DefineComponent<TooltipTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipTriggerProps> & Readonly<{}>, {
+export declare const TooltipTrigger: __VLS_WithTemplateSlots_287<DefineComponent<TooltipTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TooltipTriggerProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -9916,8 +9944,8 @@ as: AsTag | Component;
 export declare interface TooltipTriggerProps extends PopperAnchorProps {
 }
 
-export declare const TreeItem: <T extends Record<string, any>>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_13<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
-    props: __VLS_PrettifyLocal_13<Pick<Partial<{}> & Omit<{
+export declare const TreeItem: <T extends Record<string, any>>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_14<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_14<Pick<Partial<{}> & Omit<{
         readonly onSelect?: ((event: TreeItemSelectEvent<T>) => any) | undefined;
         readonly onToggle?: ((event: TreeItemToggleEvent<T>) => any) | undefined;
     } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onSelect" | "onToggle"> & TreeItemProps<T> & Partial<{}>> & PublicProps;
@@ -9979,27 +10007,27 @@ export declare type TreeItemToggleEvent<T> = CustomEvent<{
     isSelected: boolean;
 }>;
 
-export declare const TreeRoot: <T extends Record<string, any>, U extends Record<string, any>>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_14<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
-    props: __VLS_PrettifyLocal_14<Pick<Partial<{}> & Omit<{
-        readonly "onUpdate:modelValue"?: ((val: U) => any) | undefined;
+export declare const TreeRoot: <T extends Record<string, any>, U extends Record<string, any>, M extends boolean = false>(__VLS_props: NonNullable<Awaited<typeof __VLS_setup>>["props"], __VLS_ctx?: __VLS_PrettifyLocal_15<Pick<NonNullable<Awaited<typeof __VLS_setup>>, "attrs" | "emit" | "slots">>, __VLS_expose?: NonNullable<Awaited<typeof __VLS_setup>>["expose"], __VLS_setup?: Promise<{
+    props: __VLS_PrettifyLocal_15<Pick<Partial<{}> & Omit<{
+        readonly "onUpdate:modelValue"?: ((val: M extends true ? U[] : U) => any) | undefined;
         readonly "onUpdate:expanded"?: ((val: string[]) => any) | undefined;
-    } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onUpdate:modelValue" | "onUpdate:expanded"> & TreeRootProps<T, U> & Partial<{}>> & PublicProps;
+    } & VNodeProps & AllowedComponentProps & ComponentCustomProps, never>, "onUpdate:modelValue" | "onUpdate:expanded"> & TreeRootProps<T, U, M> & Partial<{}>> & PublicProps;
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
         default: (props: {
             flattenItems: FlattenedItem<T>[];
-            modelValue: U | U[];
+            modelValue: M extends true ? U[] : U;
             expanded: string[];
         }) => any;
     }> & {
         default: (props: {
             flattenItems: FlattenedItem<T>[];
-            modelValue: U | U[];
+            modelValue: M extends true ? U[] : U;
             expanded: string[];
         }) => any;
     };
-    emit: ((evt: "update:modelValue", val: U) => void) & ((evt: "update:expanded", val: string[]) => void);
+    emit: ((evt: "update:modelValue", val: M extends true ? U[] : U) => void) & ((evt: "update:expanded", val: string[]) => void);
 }>) => VNode & {
     __ctx?: Awaited<typeof __VLS_setup>;
 };
@@ -10018,21 +10046,22 @@ declare interface TreeRootContext<T = Record<string, any>> {
     disabled: Ref<boolean>;
     dir: Ref<Direction>;
     propagateSelect: Ref<boolean>;
+    bubbleSelect: Ref<boolean>;
     isVirtual: Ref<boolean>;
     virtualKeydownHook: EventHook<KeyboardEvent>;
     handleMultipleReplace: ReturnType<typeof useSelectionBehavior>['handleMultipleReplace'];
 }
 
-export declare type TreeRootEmits<T = Record<string, any>> = {
-    'update:modelValue': [val: T];
+export declare type TreeRootEmits<T = Record<string, any>, M extends boolean = false> = {
+    'update:modelValue': [val: M extends true ? T[] : T];
     'update:expanded': [val: string[]];
 };
 
-export declare interface TreeRootProps<T = Record<string, any>, U extends Record<string, any> = Record<string, any>> extends PrimitiveProps {
+export declare interface TreeRootProps<T = Record<string, any>, U extends Record<string, any> = Record<string, any>, M extends boolean = false> extends PrimitiveProps {
     /** The controlled value of the tree. Can be binded with with `v-model`. */
-    modelValue?: U | U[];
+    modelValue?: M extends true ? U[] : U;
     /** The value of the tree when initially rendered. Use when you do not need to control the state of the tree */
-    defaultValue?: U | U[];
+    defaultValue?: M extends true ? U[] : U;
     /** List of items */
     items?: T[];
     /** The controlled value of the expanded item. Can be binded with with `v-model`. */
@@ -10046,16 +10075,18 @@ export declare interface TreeRootProps<T = Record<string, any>, U extends Record
     /** How multiple selection should behave in the collection. */
     selectionBehavior?: 'toggle' | 'replace';
     /** Whether multiple options can be selected or not.  */
-    multiple?: boolean;
+    multiple?: M;
     /** The reading direction of the listbox when applicable. <br> If omitted, inherits globally from `ConfigProvider` or assumes LTR (left-to-right) reading mode. */
     dir?: Direction;
     /** When `true`, prevents the user from interacting with tree  */
     disabled?: boolean;
     /** When `true`, selecting parent will select the descendants. */
     propagateSelect?: boolean;
+    /** When `true`, selecting children will update the parent state. */
+    bubbleSelect?: boolean;
 }
 
-export declare const TreeVirtualizer: __VLS_WithTemplateSlots_289<DefineComponent<TreeVirtualizerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TreeVirtualizerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>, Readonly<{
+export declare const TreeVirtualizer: __VLS_WithTemplateSlots_288<DefineComponent<TreeVirtualizerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TreeVirtualizerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>, Readonly<{
     default: (props: {
         item: FlattenedItem<Record<string, any>>;
         virtualizer: Virtualizer<Element | Window, Element>;
@@ -10191,7 +10222,7 @@ export declare function useStateMachine<M>(initialState: MachineState<M>, machin
     dispatch: (event: MachineEvent<M>) => void;
 };
 
-export declare const Viewport: __VLS_WithTemplateSlots_290<DefineComponent<ViewportProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ViewportProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
+export declare const Viewport: __VLS_WithTemplateSlots_289<DefineComponent<ViewportProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<ViewportProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
 }>;
 

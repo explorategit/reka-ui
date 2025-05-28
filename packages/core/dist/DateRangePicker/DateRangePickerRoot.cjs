@@ -51,7 +51,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     numberOfMonths: { default: 1 },
     preventDeselect: { type: Boolean, default: false },
     isDateHighlightable: { type: Function, default: void 0 },
-    allowNonContiguousRanges: { type: Boolean, default: false }
+    allowNonContiguousRanges: { type: Boolean, default: false },
+    fixedDate: {}
   },
   emits: ["update:modelValue", "update:placeholder", "update:startValue", "update:open"],
   setup(__props, { emit: __emit }) {
@@ -81,7 +82,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       hideTimeZone,
       hourCycle,
       dir: propsDir,
-      allowNonContiguousRanges
+      allowNonContiguousRanges,
+      fixedDate
     } = vue.toRefs(props);
     const dir = shared_useDirection.useDirection(propsDir);
     const modelValue = core.useVModel(props, "modelValue", emits, {
@@ -137,6 +139,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       hourCycle,
       dateFieldRef,
       dir,
+      fixedDate,
       onStartValueChange(date) {
         emits("update:startValue", date);
       },

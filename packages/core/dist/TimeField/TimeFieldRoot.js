@@ -1,7 +1,7 @@
 import { defineComponent, toRefs, ref, computed, onMounted, watch, nextTick, createBlock, openBlock, unref, mergeProps, withKeys, withCtx, renderSlot, createVNode } from 'vue';
 import { useVModel } from '@vueuse/core';
-import { o as getDefaultTime, b as isBefore } from '../date/comparators.js';
 import { today, Time, isEqualDay, toCalendarDateTime, getLocalTimeZone } from '@internationalized/date';
+import { o as getDefaultTime, b as isBefore } from '../date/comparators.js';
 import { c as createContext } from '../shared/createContext.js';
 import { u as useLocale } from '../shared/useLocale.js';
 import { u as useDirection } from '../shared/useDirection.js';
@@ -78,8 +78,11 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         return convertValue(modelValue.value);
       },
       set(newValue) {
-        if (newValue)
+        if (newValue) {
           modelValue.value = modelValue.value && "day" in modelValue.value ? newValue : new Time(newValue.hour, newValue.minute, newValue.second, modelValue.value?.millisecond);
+        } else {
+          modelValue.value = newValue;
+        }
         return newValue;
       }
     });
@@ -145,7 +148,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     watch([convertedModelValue, locale], ([_modelValue]) => {
       if (!isNullish(_modelValue)) {
         segmentValues.value = { ...syncTimeSegmentValues({ value: _modelValue, formatter }) };
-      } else if (Object.values(segmentValues.value).every((value) => value === null) || isNullish(_modelValue)) {
+      } else if (Object.values(segmentValues.value).every((value) => value !== null) && isNullish(_modelValue)) {
         segmentValues.value = { ...initialSegments };
       }
     });

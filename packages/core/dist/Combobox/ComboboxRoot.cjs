@@ -45,7 +45,6 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const { multiple, disabled, ignoreFilter, openOnFocus, resetSearchTermOnSelect, dir: propDir } = vue.toRefs(props);
     const dir = shared_useDirection.useDirection(propDir);
     const modelValue = core.useVModel(props, "modelValue", emits, {
-      // @ts-expect-error ignore the type error here
       defaultValue: props.defaultValue ?? (multiple.value ? [] : void 0),
       passive: props.modelValue === void 0,
       deep: true

@@ -1,9 +1,9 @@
 'use strict';
 
 const vue = require('vue');
+const date = require('@internationalized/date');
 const Calendar_utils = require('../Calendar/utils.cjs');
 const date_comparators = require('../date/comparators.cjs');
-const date = require('@internationalized/date');
 const Primitive_usePrimitiveElement = require('../Primitive/usePrimitiveElement.cjs');
 const Primitive_Primitive = require('../Primitive/Primitive.cjs');
 const shared_useKbd = require('../shared/useKbd.cjs');
@@ -84,8 +84,22 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       } else if (!rootContext.endValue.value) {
         rootContext.endValue.value = date$1.copy();
       } else if (rootContext.endValue.value && rootContext.startValue.value) {
-        rootContext.endValue.value = void 0;
-        rootContext.startValue.value = date$1.copy();
+        if (!rootContext.fixedDate.value) {
+          rootContext.endValue.value = void 0;
+          rootContext.startValue.value = date$1.copy();
+        } else if (rootContext.fixedDate.value === "start") {
+          if (date$1.compare(rootContext.startValue.value) < 0) {
+            rootContext.startValue.value = date$1.copy();
+          } else {
+            rootContext.endValue.value = date$1.copy();
+          }
+        } else if (rootContext.fixedDate.value === "end") {
+          if (date$1.compare(rootContext.endValue.value) > 0) {
+            rootContext.endValue.value = date$1.copy();
+          } else {
+            rootContext.startValue.value = date$1.copy();
+          }
+        }
       }
     }
     function handleClick(e) {

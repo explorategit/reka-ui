@@ -82,6 +82,14 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       if (!rootContext.isUserInputted.value && rootContext.resetSearchTermOnSelect.value)
         resetSearchTerm();
     }, { immediate: true, deep: true });
+    vue.watch(
+      () => props.modelValue,
+      () => {
+        if (props.modelValue !== void 0) {
+          rootContext.filterState.search = props.modelValue;
+        }
+      }
+    );
     return (_ctx, _cache) => {
       return vue.openBlock(), vue.createBlock(vue.unref(Listbox_ListboxFilter._sfc_main), {
         ref_key: "primitiveElement",

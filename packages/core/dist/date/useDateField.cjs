@@ -1,7 +1,9 @@
 'use strict';
 
-const date_comparators = require('./comparators.cjs');
+const date = require('@internationalized/date');
 const vue = require('vue');
+const date_comparators = require('./comparators.cjs');
+const shared_macro = require('../shared/macro.cjs');
 const date_segment = require('./segment.cjs');
 const shared_useKbd = require('../shared/useKbd.cjs');
 
@@ -521,7 +523,7 @@ function useDateField(props) {
   function handleSegmentKeydown(e) {
     const disabled = props.disabled.value;
     const readonly = props.readonly.value;
-    if (e.key !== kbd.TAB && !(e.ctrlKey || e.metaKey))
+    if (e.key !== kbd.TAB && !shared_macro.isCut(e) && !shared_macro.isCopy(e) && !shared_macro.isPaste(e))
       e.preventDefault();
     if (disabled || readonly)
       return;
@@ -549,9 +551,64 @@ function useDateField(props) {
       }
     }
   }
+  function handleSegmentCopy(event) {
+    event.preventDefault();
+    if (!props.modelValue.value)
+      return;
+    const formattedValue = props.formatter.toParts(props.modelValue.value).map((part) => part.value).join("");
+    event.clipboardData?.setData("text/plain", formattedValue);
+  }
+  function handleSegmentPaste(event) {
+    event.preventDefault();
+    const dateString = event.clipboardData?.getData("text/plain").trim() || "";
+    if (!dateString)
+      return;
+    try {
+      const dateValue = date.parseDate(dateString);
+      props.modelValue.value = dateValue;
+      return;
+    } catch {
+    }
+    try {
+      const dateValue = date.parseDateTime(dateString);
+      props.modelValue.value = dateValue;
+      return;
+    } catch {
+    }
+    try {
+      const dateValue = date.parseAbsoluteToLocal(dateString);
+      props.modelValue.value = dateValue;
+      return;
+    } catch {
+    }
+    const date$1 = new Date(dateString);
+    if (isNaN(date$1.getTime()))
+      return;
+    const includesTime = /\d{1,2}:\d{2}:\d{2}/.test(dateString);
+    if (includesTime) {
+      const dateValue = new date.CalendarDateTime(
+        date$1.getFullYear(),
+        date$1.getMonth() + 1,
+        date$1.getDate(),
+        date$1.getHours(),
+        date$1.getMinutes(),
+        date$1.getSeconds()
+      );
+      props.modelValue.value = dateValue;
+    } else {
+      const dateValue = new date.CalendarDate(
+        date$1.getFullYear(),
+        date$1.getMonth() + 1,
+        date$1.getDate()
+      );
+      props.modelValue.value = dateValue;
+    }
+  }
   return {
     handleSegmentClick,
+    handleSegmentCopy,
     handleSegmentKeydown,
+    handleSegmentPaste,
     attributes
   };
 }

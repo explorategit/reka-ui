@@ -1,8 +1,8 @@
 'use strict';
 
-const date_comparators = require('../date/comparators.cjs');
 const date = require('@internationalized/date');
 const vue = require('vue');
+const date_comparators = require('../date/comparators.cjs');
 
 function useRangeCalendarState(props) {
   const isStartInvalid = vue.computed(() => {
@@ -53,7 +53,7 @@ function useRangeCalendarState(props) {
     return false;
   };
   const highlightedRange = vue.computed(() => {
-    if (props.start.value && props.end.value)
+    if (props.start.value && props.end.value && !props.fixedDate.value)
       return null;
     if (!props.start.value || !props.focusedValue.value)
       return null;

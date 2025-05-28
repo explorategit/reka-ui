@@ -1,4 +1,4 @@
-import { defineComponent, createBlock, openBlock, unref, withCtx, createVNode, normalizeProps, guardReactiveProps, renderSlot } from 'vue';
+import { defineComponent, computed, createBlock, openBlock, unref, normalizeProps, guardReactiveProps, withCtx, createVNode, renderSlot } from 'vue';
 import '@floating-ui/vue';
 import { u as useForwardPropsEmits } from '../shared/useForwardPropsEmits.js';
 import { _ as _sfc_main$1 } from '../Popover/PopoverPortal.js';
@@ -13,6 +13,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   ...__default__,
   __name: "DateRangePickerContent",
   props: {
+    portal: {},
     forceMount: { type: Boolean },
     side: {},
     sideOffset: {},
@@ -37,9 +38,13 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   setup(__props, { emit: __emit }) {
     const props = __props;
     const emits = __emit;
-    const forwarded = useForwardPropsEmits(props, emits);
+    const propsToForward = computed(() => ({
+      ...props,
+      portal: void 0
+    }));
+    const forwarded = useForwardPropsEmits(propsToForward, emits);
     return (_ctx, _cache) => {
-      return openBlock(), createBlock(unref(_sfc_main$1), null, {
+      return openBlock(), createBlock(unref(_sfc_main$1), normalizeProps(guardReactiveProps(_ctx.portal)), {
         default: withCtx(() => [
           createVNode(unref(_sfc_main$2), normalizeProps(guardReactiveProps({ ...unref(forwarded), ..._ctx.$attrs })), {
             default: withCtx(() => [
@@ -49,7 +54,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           }, 16)
         ]),
         _: 3
-      });
+      }, 16);
     };
   }
 });

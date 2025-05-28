@@ -154,11 +154,11 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     vue.watch(modelValue, (_modelValue) => {
       const isStartChanged = _modelValue?.start && startValue.value ? _modelValue.start.compare(startValue.value) !== 0 : _modelValue?.start !== startValue.value;
       if (isStartChanged) {
-        startValue.value = _modelValue?.start;
+        startValue.value = _modelValue?.start?.copy();
       }
       const isEndChanged = _modelValue?.end && endValue.value ? _modelValue.end.compare(endValue.value) !== 0 : _modelValue?.end !== endValue.value;
       if (isEndChanged) {
-        endValue.value = _modelValue?.end;
+        endValue.value = _modelValue?.end?.copy();
       }
     });
     vue.watch([startValue, locale], ([_startValue]) => {

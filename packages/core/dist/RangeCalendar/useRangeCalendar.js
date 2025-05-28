@@ -1,6 +1,6 @@
-import { b as isBefore, m as areAllDaysBetweenValid, j as isBetween } from '../date/comparators.js';
 import { isSameDay } from '@internationalized/date';
 import { computed } from 'vue';
+import { b as isBefore, m as areAllDaysBetweenValid, j as isBetween } from '../date/comparators.js';
 
 function useRangeCalendarState(props) {
   const isStartInvalid = computed(() => {
@@ -51,7 +51,7 @@ function useRangeCalendarState(props) {
     return false;
   };
   const highlightedRange = computed(() => {
-    if (props.start.value && props.end.value)
+    if (props.start.value && props.end.value && !props.fixedDate.value)
       return null;
     if (!props.start.value || !props.focusedValue.value)
       return null;

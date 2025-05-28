@@ -9,13 +9,7 @@ const shared_useDirection = require('../shared/useDirection.cjs');
 const Primitive_Primitive = require('../Primitive/Primitive.cjs');
 
 const [injectPinInputRootContext, providePinInputRootContext] = shared_createContext.createContext("PinInputRoot");
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
 const _sfc_main = /* @__PURE__ */ vue.defineComponent({
-  ...__default__,
   ...{
     inheritAttrs: false
   },

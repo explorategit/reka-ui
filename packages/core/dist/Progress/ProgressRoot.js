@@ -40,7 +40,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   props: {
     modelValue: {},
     max: { default: DEFAULT_MAX },
-    getValueLabel: { type: Function, default: (value, max) => `${Math.round(value / max * DEFAULT_MAX)}%` },
+    getValueLabel: { type: Function, default: (value, max) => isNumber(value) ? `${Math.round(value / max * DEFAULT_MAX)}%` : void 0 },
     asChild: { type: Boolean },
     as: {}
   },

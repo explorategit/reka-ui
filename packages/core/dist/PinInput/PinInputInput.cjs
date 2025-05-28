@@ -125,7 +125,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     }
     function updateModelValueAt(index, value) {
       const tempModelValue = [...context.currentModelValue.value];
-      tempModelValue[index] = value;
+      tempModelValue[index] = isNumericMode.value ? +value : value;
       context.modelValue.value = removeTrailingEmptyStrings(tempModelValue);
     }
     vue.watch(currentValue, () => {

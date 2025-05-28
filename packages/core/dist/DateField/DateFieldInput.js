@@ -24,6 +24,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const {
       handleSegmentClick,
       handleSegmentKeydown,
+      handleSegmentCopy,
+      handleSegmentPaste,
       attributes
     } = useDateField({
       hasLeftFocus,
@@ -54,6 +56,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         "data-invalid": isInvalid.value ? "" : void 0,
         "aria-invalid": isInvalid.value ? true : void 0
       }, toHandlers(_ctx.part !== "literal" ? {
+        copy: unref(handleSegmentCopy),
+        paste: unref(handleSegmentPaste),
         mousedown: unref(handleSegmentClick),
         keydown: unref(handleSegmentKeydown),
         focusout: () => {

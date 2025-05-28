@@ -49,7 +49,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     numberOfMonths: { default: 1 },
     preventDeselect: { type: Boolean, default: false },
     isDateHighlightable: { type: Function, default: void 0 },
-    allowNonContiguousRanges: { type: Boolean, default: false }
+    allowNonContiguousRanges: { type: Boolean, default: false },
+    fixedDate: {}
   },
   emits: ["update:modelValue", "update:placeholder", "update:startValue", "update:open"],
   setup(__props, { emit: __emit }) {
@@ -79,7 +80,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       hideTimeZone,
       hourCycle,
       dir: propsDir,
-      allowNonContiguousRanges
+      allowNonContiguousRanges,
+      fixedDate
     } = toRefs(props);
     const dir = useDirection(propsDir);
     const modelValue = useVModel(props, "modelValue", emits, {
@@ -135,6 +137,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       hourCycle,
       dateFieldRef,
       dir,
+      fixedDate,
       onStartValueChange(date) {
         emits("update:startValue", date);
       },

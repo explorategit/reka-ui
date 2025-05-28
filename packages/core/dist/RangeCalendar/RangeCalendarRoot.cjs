@@ -2,9 +2,9 @@
 
 const vue = require('vue');
 const core = require('@vueuse/core');
+const date = require('@internationalized/date');
 const Calendar_useCalendar = require('../Calendar/useCalendar.cjs');
 const date_comparators = require('../date/comparators.cjs');
-const date = require('@internationalized/date');
 const RangeCalendar_useRangeCalendar = require('./useRangeCalendar.cjs');
 const Primitive_usePrimitiveElement = require('../Primitive/usePrimitiveElement.cjs');
 const shared_useDirection = require('../shared/useDirection.cjs');
@@ -54,6 +54,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     dir: {},
     nextPage: {},
     prevPage: {},
+    fixedDate: {},
     asChild: { type: Boolean },
     as: { default: "div" }
   },
@@ -81,7 +82,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       locale: propLocale,
       nextPage: propsNextPage,
       prevPage: propsPrevPage,
-      allowNonContiguousRanges
+      allowNonContiguousRanges,
+      fixedDate
     } = vue.toRefs(props);
     const { primitiveElement, currentElement: parentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
     const dir = shared_useDirection.useDirection(propDir);
@@ -154,7 +156,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       isDateUnavailable,
       isDateHighlightable: propsIsDateHighlightable.value,
       focusedValue,
-      allowNonContiguousRanges
+      allowNonContiguousRanges,
+      fixedDate
     });
     vue.watch(modelValue, (_modelValue, _prevValue) => {
       if (!_prevValue?.start && _modelValue?.start || !_modelValue || !_modelValue.start || startValue.value && !date.isEqualDay(_modelValue.start, startValue.value)) {
@@ -237,7 +240,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       locale,
       dir,
       isHighlightedStart,
-      isHighlightedEnd
+      isHighlightedEnd,
+      fixedDate
     });
     vue.onMounted(() => {
       if (initialFocus.value)

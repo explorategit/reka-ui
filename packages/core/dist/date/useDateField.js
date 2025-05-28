@@ -1,5 +1,7 @@
-import { t as toDate, g as getDaysInMonth } from './comparators.js';
+import { parseDate, parseDateTime, parseAbsoluteToLocal, CalendarDateTime, CalendarDate } from '@internationalized/date';
 import { computed } from 'vue';
+import { t as toDate, g as getDaysInMonth } from './comparators.js';
+import { i as isCut, a as isCopy, b as isPaste } from '../shared/macro.js';
 import { b as isAcceptableSegmentKey, i as isSegmentNavigationKey, c as isNumberString } from './segment.js';
 import { u as useKbd } from '../shared/useKbd.js';
 
@@ -519,7 +521,7 @@ function useDateField(props) {
   function handleSegmentKeydown(e) {
     const disabled = props.disabled.value;
     const readonly = props.readonly.value;
-    if (e.key !== kbd.TAB && !(e.ctrlKey || e.metaKey))
+    if (e.key !== kbd.TAB && !isCut(e) && !isCopy(e) && !isPaste(e))
       e.preventDefault();
     if (disabled || readonly)
       return;
@@ -547,9 +549,64 @@ function useDateField(props) {
       }
     }
   }
+  function handleSegmentCopy(event) {
+    event.preventDefault();
+    if (!props.modelValue.value)
+      return;
+    const formattedValue = props.formatter.toParts(props.modelValue.value).map((part) => part.value).join("");
+    event.clipboardData?.setData("text/plain", formattedValue);
+  }
+  function handleSegmentPaste(event) {
+    event.preventDefault();
+    const dateString = event.clipboardData?.getData("text/plain").trim() || "";
+    if (!dateString)
+      return;
+    try {
+      const dateValue = parseDate(dateString);
+      props.modelValue.value = dateValue;
+      return;
+    } catch {
+    }
+    try {
+      const dateValue = parseDateTime(dateString);
+      props.modelValue.value = dateValue;
+      return;
+    } catch {
+    }
+    try {
+      const dateValue = parseAbsoluteToLocal(dateString);
+      props.modelValue.value = dateValue;
+      return;
+    } catch {
+    }
+    const date = new Date(dateString);
+    if (isNaN(date.getTime()))
+      return;
+    const includesTime = /\d{1,2}:\d{2}:\d{2}/.test(dateString);
+    if (includesTime) {
+      const dateValue = new CalendarDateTime(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate(),
+        date.getHours(),
+        date.getMinutes(),
+        date.getSeconds()
+      );
+      props.modelValue.value = dateValue;
+    } else {
+      const dateValue = new CalendarDate(
+        date.getFullYear(),
+        date.getMonth() + 1,
+        date.getDate()
+      );
+      props.modelValue.value = dateValue;
+    }
+  }
   return {
     handleSegmentClick,
+    handleSegmentCopy,
     handleSegmentKeydown,
+    handleSegmentPaste,
     attributes
   };
 }

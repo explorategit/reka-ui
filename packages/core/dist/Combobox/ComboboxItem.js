@@ -63,11 +63,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         id: unref(id),
         ref_key: "primitiveElement",
         ref: primitiveElement,
+        disabled: unref(rootContext).disabled.value || _ctx.disabled,
         onSelect: _cache[0] || (_cache[0] = (event) => {
           emits("select", event);
           if (event.defaultPrevented)
             return;
-          if (!unref(rootContext).multiple.value) {
+          if (!unref(rootContext).multiple.value && !_ctx.disabled && !unref(rootContext).disabled.value) {
             event.preventDefault();
             unref(rootContext).onOpenChange(false);
             unref(rootContext).modelValue.value = props.value;
@@ -80,7 +81,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           ])
         ]),
         _: 3
-      }, 16, ["id"])) : createCommentVNode("", true);
+      }, 16, ["id", "disabled"])) : createCommentVNode("", true);
     };
   }
 });

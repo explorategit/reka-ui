@@ -1,7 +1,7 @@
 import { defineComponent, computed, createBlock, openBlock, unref, mergeProps, withKeys, withCtx, renderSlot, createTextVNode, toDisplayString, nextTick } from 'vue';
+import { isToday, getLocalTimeZone, isSameMonth, isSameDay } from '@internationalized/date';
 import { g as getSelectableCells } from '../Calendar/utils.js';
 import { t as toDate, f as isBetweenInclusive, g as getDaysInMonth } from '../date/comparators.js';
-import { isToday, getLocalTimeZone, isSameMonth, isSameDay } from '@internationalized/date';
 import { u as usePrimitiveElement } from '../Primitive/usePrimitiveElement.js';
 import { P as Primitive } from '../Primitive/Primitive.js';
 import { u as useKbd } from '../shared/useKbd.js';
@@ -82,8 +82,22 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       } else if (!rootContext.endValue.value) {
         rootContext.endValue.value = date.copy();
       } else if (rootContext.endValue.value && rootContext.startValue.value) {
-        rootContext.endValue.value = void 0;
-        rootContext.startValue.value = date.copy();
+        if (!rootContext.fixedDate.value) {
+          rootContext.endValue.value = void 0;
+          rootContext.startValue.value = date.copy();
+        } else if (rootContext.fixedDate.value === "start") {
+          if (date.compare(rootContext.startValue.value) < 0) {
+            rootContext.startValue.value = date.copy();
+          } else {
+            rootContext.endValue.value = date.copy();
+          }
+        } else if (rootContext.fixedDate.value === "end") {
+          if (date.compare(rootContext.endValue.value) > 0) {
+            rootContext.endValue.value = date.copy();
+          } else {
+            rootContext.startValue.value = date.copy();
+          }
+        }
       }
     }
     function handleClick(e) {

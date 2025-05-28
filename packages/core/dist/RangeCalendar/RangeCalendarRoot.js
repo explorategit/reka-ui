@@ -1,8 +1,8 @@
 import { defineComponent, toRefs, ref, computed, watch, onMounted, createBlock, openBlock, unref, withCtx, createElementVNode, renderSlot, toDisplayString } from 'vue';
 import { useVModel, useEventListener } from '@vueuse/core';
+import { isEqualDay } from '@internationalized/date';
 import { u as useCalendar } from '../Calendar/useCalendar.js';
 import { n as getDefaultDate, b as isBefore } from '../date/comparators.js';
-import { isEqualDay } from '@internationalized/date';
 import { u as useRangeCalendarState } from './useRangeCalendar.js';
 import { u as usePrimitiveElement } from '../Primitive/usePrimitiveElement.js';
 import { u as useDirection } from '../shared/useDirection.js';
@@ -52,6 +52,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     dir: {},
     nextPage: {},
     prevPage: {},
+    fixedDate: {},
     asChild: { type: Boolean },
     as: { default: "div" }
   },
@@ -79,7 +80,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       locale: propLocale,
       nextPage: propsNextPage,
       prevPage: propsPrevPage,
-      allowNonContiguousRanges
+      allowNonContiguousRanges,
+      fixedDate
     } = toRefs(props);
     const { primitiveElement, currentElement: parentElement } = usePrimitiveElement();
     const dir = useDirection(propDir);
@@ -152,7 +154,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       isDateUnavailable,
       isDateHighlightable: propsIsDateHighlightable.value,
       focusedValue,
-      allowNonContiguousRanges
+      allowNonContiguousRanges,
+      fixedDate
     });
     watch(modelValue, (_modelValue, _prevValue) => {
       if (!_prevValue?.start && _modelValue?.start || !_modelValue || !_modelValue.start || startValue.value && !isEqualDay(_modelValue.start, startValue.value)) {
@@ -235,7 +238,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       locale,
       dir,
       isHighlightedStart,
-      isHighlightedEnd
+      isHighlightedEnd,
+      fixedDate
     });
     onMounted(() => {
       if (initialFocus.value)

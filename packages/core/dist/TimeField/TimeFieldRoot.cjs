@@ -2,8 +2,8 @@
 
 const vue = require('vue');
 const core = require('@vueuse/core');
-const date_comparators = require('../date/comparators.cjs');
 const date = require('@internationalized/date');
+const date_comparators = require('../date/comparators.cjs');
 const shared_createContext = require('../shared/createContext.cjs');
 const shared_useLocale = require('../shared/useLocale.cjs');
 const shared_useDirection = require('../shared/useDirection.cjs');
@@ -80,8 +80,11 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         return convertValue(modelValue.value);
       },
       set(newValue) {
-        if (newValue)
+        if (newValue) {
           modelValue.value = modelValue.value && "day" in modelValue.value ? newValue : new date.Time(newValue.hour, newValue.minute, newValue.second, modelValue.value?.millisecond);
+        } else {
+          modelValue.value = newValue;
+        }
         return newValue;
       }
     });
@@ -147,7 +150,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     vue.watch([convertedModelValue, locale], ([_modelValue]) => {
       if (!shared_nullish.isNullish(_modelValue)) {
         segmentValues.value = { ...date_parser.syncTimeSegmentValues({ value: _modelValue, formatter }) };
-      } else if (Object.values(segmentValues.value).every((value) => value === null) || shared_nullish.isNullish(_modelValue)) {
+      } else if (Object.values(segmentValues.value).every((value) => value !== null) && shared_nullish.isNullish(_modelValue)) {
         segmentValues.value = { ...initialSegments };
       }
     });

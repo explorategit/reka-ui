@@ -7,13 +7,7 @@ import { u as useDirection } from '../shared/useDirection.js';
 import { P as Primitive } from '../Primitive/Primitive.js';
 
 const [injectPinInputRootContext, providePinInputRootContext] = createContext("PinInputRoot");
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
 const _sfc_main = /* @__PURE__ */ defineComponent({
-  ...__default__,
   ...{
     inheritAttrs: false
   },

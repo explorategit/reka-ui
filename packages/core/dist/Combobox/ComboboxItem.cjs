@@ -65,11 +65,12 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         id: vue.unref(id),
         ref_key: "primitiveElement",
         ref: primitiveElement,
+        disabled: vue.unref(rootContext).disabled.value || _ctx.disabled,
         onSelect: _cache[0] || (_cache[0] = (event) => {
           emits("select", event);
           if (event.defaultPrevented)
             return;
-          if (!vue.unref(rootContext).multiple.value) {
+          if (!vue.unref(rootContext).multiple.value && !_ctx.disabled && !vue.unref(rootContext).disabled.value) {
             event.preventDefault();
             vue.unref(rootContext).onOpenChange(false);
             vue.unref(rootContext).modelValue.value = props.value;
@@ -82,7 +83,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           ])
         ]),
         _: 3
-      }, 16, ["id"])) : vue.createCommentVNode("", true);
+      }, 16, ["id", "disabled"])) : vue.createCommentVNode("", true);
     };
   }
 });

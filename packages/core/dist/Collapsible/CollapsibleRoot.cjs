@@ -38,6 +38,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       open,
       unmountOnHide,
       onOpenToggle: () => {
+        if (disabled.value)
+          return;
         open.value = !open.value;
       }
     });

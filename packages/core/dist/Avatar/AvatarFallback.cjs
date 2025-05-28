@@ -14,7 +14,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
   ...__default__,
   __name: "AvatarFallback",
   props: {
-    delayMs: { default: 0 },
+    delayMs: {},
     asChild: { type: Boolean },
     as: { default: "span" }
   },
@@ -22,21 +22,17 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const props = __props;
     const rootContext = Avatar_AvatarRoot.injectAvatarRootContext();
     shared_useForwardExpose.useForwardExpose();
-    const canRender = vue.ref(false);
-    let timeout;
-    vue.watch(rootContext.imageLoadingStatus, (value) => {
-      if (value === "loading") {
-        canRender.value = false;
-        if (props.delayMs) {
-          timeout = setTimeout(() => {
-            canRender.value = true;
-            clearTimeout(timeout);
-          }, props.delayMs);
-        } else {
+    const canRender = vue.ref(props.delayMs === void 0);
+    vue.watchEffect((onCleanup) => {
+      if (props.delayMs) {
+        const timerId = window.setTimeout(() => {
           canRender.value = true;
-        }
+        }, props.delayMs);
+        onCleanup(() => {
+          window.clearTimeout(timerId);
+        });
       }
-    }, { immediate: true });
+    });
     return (_ctx, _cache) => {
       return canRender.value && vue.unref(rootContext).imageLoadingStatus.value !== "loaded" ? (vue.openBlock(), vue.createBlock(vue.unref(Primitive_Primitive.Primitive), {
         key: 0,
