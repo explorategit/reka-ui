@@ -19,10 +19,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { computed, nextTick, onMounted, ref, toRefs } from 'vue'
 import { MenuAnchor } from '@/Menu'
 import { Primitive } from '@/Primitive'
 import { useForwardExpose } from '@/shared'
-import { computed, nextTick, onMounted, ref, toRefs } from 'vue'
 import { injectContextMenuRootContext } from './ContextMenuRoot.vue'
 import { isTouchOrPen } from './utils'
 

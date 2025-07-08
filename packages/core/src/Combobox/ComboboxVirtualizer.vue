@@ -9,16 +9,16 @@ export default {
 </script>
 
 <script setup lang="ts" generic="T extends AcceptableValue = AcceptableValue">
+import type { VirtualItem, Virtualizer } from '@tanstack/vue-virtual'
 import type { ListboxVirtualizerProps } from '@/Listbox/ListboxVirtualizer.vue'
 import type { AcceptableValue } from '@/shared/types'
-import type { VirtualItem, Virtualizer } from '@tanstack/vue-virtual'
 import ListboxVirtualizer from '@/Listbox/ListboxVirtualizer.vue'
 import { injectComboboxRootContext } from './ComboboxRoot.vue'
 
 const props = defineProps<ComboboxVirtualizerProps<T>>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     option: T
     virtualizer: Virtualizer<HTMLElement, Element>
     virtualItem: VirtualItem

@@ -1,4 +1,9 @@
 <script lang="ts">
+import type { Ref } from 'vue'
+import type {
+  GraceIntent,
+  Side,
+} from './utils'
 import type {
   DismissableLayerEmits,
   DismissableLayerProps,
@@ -6,11 +11,6 @@ import type {
 import type { FocusScopeProps } from '@/FocusScope'
 import type { PopperContentProps } from '@/Popper'
 import type { RovingFocusGroupEmits } from '@/RovingFocus'
-import type { Ref } from 'vue'
-import type {
-  GraceIntent,
-  Side,
-} from './utils'
 
 import {
   createContext,
@@ -91,6 +91,12 @@ export default {
 </script>
 
 <script setup lang="ts">
+import {
+  onUnmounted,
+  ref,
+  toRefs,
+  watch,
+} from 'vue'
 import { DismissableLayer } from '@/DismissableLayer'
 import { FocusScope } from '@/FocusScope'
 import {
@@ -98,12 +104,6 @@ import {
   PopperContentPropsDefaultValue,
 } from '@/Popper'
 import { RovingFocusGroup } from '@/RovingFocus'
-import {
-  onUnmounted,
-  ref,
-  toRefs,
-  watch,
-} from 'vue'
 import { injectMenuContext, injectMenuRootContext } from './MenuRoot.vue'
 import {
   FIRST_LAST_KEYS,

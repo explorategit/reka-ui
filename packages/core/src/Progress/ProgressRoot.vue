@@ -16,11 +16,15 @@ export interface ProgressRootProps extends PrimitiveProps {
   /** The maximum progress value. */
   max?: number
   /**
-   * A function to get the accessible label text representing the current value in a human-readable format.
+   * A function to get the accessible label text in a human-readable format.
    *
    *  If not provided, the value label will be read as the numeric value as a percentage of the max value.
    */
   getValueLabel?: (value: number | null | undefined, max: number) => string | undefined
+  /**
+   * A function to get the accessible value text representing the current value in a human-readable format.
+   */
+  getValueText?: (value: number | null | undefined, max: number) => string | undefined
 }
 
 const DEFAULT_MAX = 100
@@ -88,7 +92,7 @@ const props = withDefaults(defineProps<ProgressRootProps>(), {
 const emit = defineEmits<ProgressRootEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current input values */
     modelValue: typeof modelValue.value
     /** Whether the progress is indeterminate */

@@ -75,7 +75,7 @@ const props = defineProps<SplitterPanelProps>()
 const emits = defineEmits<SplitterPanelEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Is the panel collapsed */
     isCollapsed: typeof isCollapsed.value
     /** Is the panel expanded */

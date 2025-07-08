@@ -40,10 +40,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { DismissableLayer } from '@/DismissableLayer'
 import { FocusScope } from '@/FocusScope'
 import { getOpenState } from '@/Menu/utils'
-import { onMounted } from 'vue'
 import { injectDialogRootContext } from './DialogRoot.vue'
 import { useWarning } from './utils'
 

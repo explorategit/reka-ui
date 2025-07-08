@@ -15,11 +15,11 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { nextTick, onMounted } from 'vue'
 import { MenuAnchor } from '@/Menu'
 import {
   Primitive,
 } from '@/Primitive'
-import { nextTick, onMounted } from 'vue'
 import { injectDropdownMenuRootContext } from './DropdownMenuRoot.vue'
 
 const props = withDefaults(defineProps<DropdownMenuTriggerProps>(), {

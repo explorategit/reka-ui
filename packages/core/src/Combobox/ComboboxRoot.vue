@@ -93,7 +93,7 @@ const props = withDefaults(defineProps<ComboboxRootProps<T>>(), {
 const emits = defineEmits<ComboboxRootEmits<T>>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current open state */
     open: typeof open.value
     /** Current active value */

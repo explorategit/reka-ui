@@ -18,8 +18,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { computed } from 'vue'
+import { Primitive } from '@/Primitive'
 
 defineOptions({
   inheritAttrs: false,
@@ -29,7 +29,7 @@ const props = withDefaults(defineProps<AspectRatioProps>(), {
   ratio: 1,
 })
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current aspect ratio (in %) */
     aspect: typeof aspect.value
   }) => any

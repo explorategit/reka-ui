@@ -19,12 +19,12 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { nextTick, ref } from 'vue'
 import { useCollection } from '@/Collection'
 import {
   Primitive,
 } from '@/Primitive'
 import { useForwardExpose } from '@/shared'
-import { nextTick, ref } from 'vue'
 import { injectMenuContentContext } from './MenuContentImpl.vue'
 import { isMouseEvent } from './utils'
 

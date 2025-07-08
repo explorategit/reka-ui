@@ -18,10 +18,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onMounted, ref, toRefs } from 'vue'
 import {
   Primitive,
 } from '@/Primitive'
-import { onMounted, ref, toRefs } from 'vue'
 import { injectSelectContentContext } from './SelectContentImpl.vue'
 import { injectSelectItemAlignedPositionContext } from './SelectItemAlignedPosition.vue'
 import { CONTENT_MARGIN } from './utils'

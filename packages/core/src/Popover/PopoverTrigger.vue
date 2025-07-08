@@ -12,9 +12,9 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { PopperAnchor } from '@/Popper'
 import { Primitive } from '@/Primitive'
-import { onMounted } from 'vue'
 import { injectPopoverRootContext } from './PopoverRoot.vue'
 
 const props = withDefaults(defineProps<PopoverTriggerProps>(), {

@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { Ref } from 'vue'
 import type { PrimitiveProps } from '@/Primitive'
 import type { AcceptableValue } from '@/shared/types'
-import type { Ref } from 'vue'
 import { useCollection } from '@/Collection'
 import { createContext, getActiveElement, handleAndDispatchCustomEvent, useForwardExpose, useId } from '@/shared'
 
@@ -46,7 +46,6 @@ export default {
 </script>
 
 <script setup lang="ts" generic="T extends AcceptableValue = AcceptableValue">
-import { Primitive } from '@/Primitive'
 import {
   computed,
   nextTick,
@@ -54,6 +53,7 @@ import {
   ref,
   toRefs,
 } from 'vue'
+import { Primitive } from '@/Primitive'
 import { injectSelectContentContext } from './SelectContentImpl.vue'
 import { injectSelectRootContext } from './SelectRoot.vue'
 import { SELECTION_KEYS, valueComparator } from './utils'

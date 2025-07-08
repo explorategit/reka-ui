@@ -13,8 +13,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { Primitive } from '@/Primitive'
 import { injectSelectContentContext } from './SelectContentImpl.vue'
 import { injectSelectItemContext } from './SelectItem.vue'
 

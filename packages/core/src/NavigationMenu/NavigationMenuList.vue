@@ -12,10 +12,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import {
   Primitive,
 } from '@/Primitive'
-import { onMounted } from 'vue'
 import { injectNavigationMenuContext } from './NavigationMenuRoot.vue'
 
 defineOptions({

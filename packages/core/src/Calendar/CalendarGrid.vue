@@ -11,8 +11,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { computed } from 'vue'
+import { Primitive } from '@/Primitive'
 import { injectCalendarRootContext } from './CalendarRoot.vue'
 
 const props = withDefaults(defineProps<CalendarGridProps>(), { as: 'table' })

@@ -1,6 +1,6 @@
 import type { CycleTimeOptions, DateFields, DateValue, TimeFields } from '@internationalized/date'
 import type { Ref } from 'vue'
-import type { AnyExceptLiteral, HourCycle, SegmentPart, SegmentValueObj } from './types'
+import type { AnyExceptLiteral, DateStep, HourCycle, SegmentPart, SegmentValueObj } from './types'
 import type { Formatter } from '@/shared'
 import { CalendarDate, CalendarDateTime, parseAbsoluteToLocal, parseDate, parseDateTime } from '@internationalized/date'
 import { computed } from 'vue'
@@ -275,6 +275,7 @@ export type UseDateFieldProps = {
   lastKeyZero: Ref<boolean>
   placeholder: Ref<DateValue>
   hourCycle: HourCycle
+  step: Ref<DateStep>
   formatter: Formatter
   segmentValues: Ref<SegmentValueObj>
   disabled: Ref<boolean>
@@ -288,7 +289,8 @@ export function useDateField(props: UseDateFieldProps) {
   const kbd = useKbd()
 
   function minuteSecondIncrementation({ e, part, dateRef, prevValue }: MinuteSecondIncrementProps): number {
-    const sign = e.key === kbd.ARROW_UP ? 1 : -1
+    const step = props.step.value[part] ?? 1
+    const sign = e.key === kbd.ARROW_UP ? step : -step
     const min = 0
     const max = 59
 
@@ -313,7 +315,8 @@ export function useDateField(props: UseDateFieldProps) {
     return Number.parseInt(str.slice(0, -1))
   }
   function dateTimeValueIncrementation({ e, part, dateRef, prevValue, hourCycle }: DateTimeValueIncrementation): number {
-    const sign = e.key === kbd.ARROW_UP ? 1 : -1
+    const step = props.step.value[part] ?? 1
+    const sign = e.key === kbd.ARROW_UP ? step : -step
 
     if (prevValue === null)
       return dateRef[part as keyof Omit<DateFields, 'era'>]
@@ -324,8 +327,21 @@ export function useDateField(props: UseDateFieldProps) {
     }
 
     const cycleArgs: [keyof DateFields, number] = [part as keyof DateFields, sign]
-    if (part === 'day' && props.segmentValues.value.month !== null)
-      return dateRef.set({ [part as keyof DateValue]: prevValue, month: props.segmentValues.value.month }).cycle(...cycleArgs)[part as keyof Omit<DateFields, 'era'>]
+    if (part === 'day') {
+      return dateRef.set({
+        [part as keyof DateValue]: prevValue,
+        /**
+         * Edge case for the day field:
+         *
+         * 1. If the month is filled,
+         *   we need to ensure that the day snaps to the maximum value of that month.
+         * 2. If the month is not filled,
+         *   we default to the month with the maximum number of days (here just using January, 31 days),
+         *   so that user can input any possible day.
+         */
+        month: props.segmentValues.value.month ?? 1,
+      }).cycle(...cycleArgs)[part as keyof Omit<DateFields, 'era'>]
+    }
 
     return dateRef.set({ [part as keyof DateValue]: prevValue }).cycle(...cycleArgs)[part as keyof Omit<DateFields, 'era'>]
   }
@@ -620,7 +636,9 @@ export function useDateField(props: UseDateFieldProps) {
 
       const daysInMonth = segmentMonthValue
         ? getDaysInMonth(props.placeholder.value.set({ month: segmentMonthValue }))
-        : getDaysInMonth(props.placeholder.value)
+        // if the month is not set, we default to the maximum number of days in a month
+        // so that user can input any possible day
+        : 31
 
       const { value, moveToNext } = updateDayOrMonth(daysInMonth, num, prevValue)
 
@@ -741,7 +759,9 @@ export function useDateField(props: UseDateFieldProps) {
 
     const prevValue = props.segmentValues.value.minute
 
-    props.segmentValues.value.minute = minuteSecondIncrementation({ e, part: 'minute', dateRef: props.placeholder.value, prevValue })
+    if (e.key === kbd.ARROW_UP || e.key === kbd.ARROW_DOWN) {
+      props.segmentValues.value.minute = minuteSecondIncrementation({ e, part: 'minute', dateRef: props.placeholder.value, prevValue })
+    }
 
     if (isNumberString(e.key)) {
       const num = Number.parseInt(e.key)
@@ -768,7 +788,9 @@ export function useDateField(props: UseDateFieldProps) {
 
     const prevValue = props.segmentValues.value.second
 
-    props.segmentValues.value.second = minuteSecondIncrementation({ e, part: 'second', dateRef: props.placeholder.value, prevValue })
+    if (e.key === kbd.ARROW_UP || e.key === kbd.ARROW_DOWN) {
+      props.segmentValues.value.second = minuteSecondIncrementation({ e, part: 'second', dateRef: props.placeholder.value, prevValue })
+    }
 
     if (isNumberString(e.key)) {
       const num = Number.parseInt(e.key)

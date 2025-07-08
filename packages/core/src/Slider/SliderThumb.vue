@@ -12,8 +12,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useCollection } from '@/Collection'
 import { computed } from 'vue'
+import { useCollection } from '@/Collection'
 import SliderThumbImpl from './SliderThumbImpl.vue'
 
 const props = withDefaults(defineProps<SliderThumbProps>(), {

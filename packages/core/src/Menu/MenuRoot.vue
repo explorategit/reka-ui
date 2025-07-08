@@ -53,12 +53,12 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { PopperRoot } from '@/Popper'
 import { useVModel } from '@vueuse/core'
 import {
   ref,
   toRefs,
 } from 'vue'
+import { PopperRoot } from '@/Popper'
 
 const props = withDefaults(defineProps<MenuProps>(), {
   open: false,

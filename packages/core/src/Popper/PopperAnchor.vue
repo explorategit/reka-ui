@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
 import type { ReferenceElement } from '@floating-ui/vue'
+import type { PrimitiveProps } from '@/Primitive'
 import { useForwardExpose } from '@/shared'
 
 export interface PopperAnchorProps extends PrimitiveProps {
@@ -20,10 +20,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { watchPostEffect } from 'vue'
 import {
   Primitive,
 } from '@/Primitive'
-import { watchPostEffect } from 'vue'
 import { injectPopperRootContext } from './PopperRoot.vue'
 
 const props = defineProps<PopperAnchorProps>()

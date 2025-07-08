@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { SelectEvent } from './utils'
 import type { PrimitiveProps } from '@/Primitive'
 import type { AcceptableValue, FormFieldProps } from '@/shared/types'
-import type { SelectEvent } from './utils'
 
 export type RadioEmits = {
   'update:checked': [value: boolean]
@@ -25,11 +25,11 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { useVModel } from '@vueuse/core'
+import { computed, toRefs } from 'vue'
 import { Primitive } from '@/Primitive'
 import { useFormControl, useForwardExpose } from '@/shared'
 import { VisuallyHiddenInput } from '@/VisuallyHidden'
-import { useVModel } from '@vueuse/core'
-import { computed, toRefs } from 'vue'
 import { handleSelect } from './utils'
 
 const props = withDefaults(defineProps<RadioProps>(), {
@@ -40,7 +40,7 @@ const props = withDefaults(defineProps<RadioProps>(), {
 const emits = defineEmits<RadioEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current checked state */
     checked: typeof checked.value
   }) => any
@@ -57,6 +57,9 @@ const isFormControl = useFormControl(triggerElement)
 const ariaLabel = computed(() => props.id && triggerElement.value ? (document.querySelector(`[for="${props.id}"]`) as HTMLLabelElement)?.innerText ?? props.value : undefined)
 
 function handleClick(event: MouseEvent) {
+  if (props.disabled)
+    return
+
   handleSelect(event, props.value, (ev) => {
     emits('select', ev)
     if (ev?.defaultPrevented)

@@ -99,7 +99,7 @@ const props = withDefaults(defineProps<TreeRootProps<T, U, M>>(), {
 const emits = defineEmits<TreeRootEmits<U, M>>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     flattenItems: FlattenedItem<T>[]
     modelValue: M extends true ? U[] : U
     expanded: typeof expanded.value

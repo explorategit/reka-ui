@@ -13,8 +13,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useKbd } from '@/shared'
 import { computed, nextTick, onMounted, watch } from 'vue'
+import { useKbd } from '@/shared'
 import { injectEditableRootContext } from './EditableRoot.vue'
 
 const props = withDefaults(defineProps<EditableInputProps>(), {

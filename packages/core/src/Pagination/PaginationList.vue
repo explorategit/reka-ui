@@ -12,15 +12,15 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { computed } from 'vue'
+import { Primitive } from '@/Primitive'
 import { injectPaginationRootContext } from './PaginationRoot.vue'
 import { getRange, transform } from './utils'
 
 const props = defineProps<PaginationListProps>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Pages item */
     items: typeof transformedRange.value
   }) => any

@@ -7,10 +7,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onBeforeUnmount, ref, watchEffect } from 'vue'
 import { useCollection } from '@/Collection'
 import { Primitive } from '@/Primitive'
 import { getActiveElement } from '@/shared'
-import { onBeforeUnmount, ref, watchEffect } from 'vue'
 import { injectSelectContentContext } from './SelectContentImpl.vue'
 
 export type SelectScrollButtonImplEmits = {

@@ -11,9 +11,9 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onMounted, onUnmounted, ref } from 'vue'
 import { Presence } from '@/Presence'
 import { useForwardExpose } from '@/shared'
-import { onMounted, onUnmounted, ref } from 'vue'
 import { injectScrollAreaRootContext } from './ScrollAreaRoot.vue'
 import ScrollAreaScrollbarAuto from './ScrollAreaScrollbarAuto.vue'
 

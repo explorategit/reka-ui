@@ -30,8 +30,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { MenuRoot } from '@/Menu'
 import { computed, ref, watch } from 'vue'
+import { MenuRoot } from '@/Menu'
 import { injectMenubarRootContext } from './MenubarRoot.vue'
 
 const props = defineProps<MenubarMenuProps>()

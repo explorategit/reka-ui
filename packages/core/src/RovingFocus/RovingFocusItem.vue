@@ -22,10 +22,10 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { useCollection } from '@/Collection'
 import { Primitive } from '@/Primitive'
 import { useId } from '@/shared'
-import { computed, nextTick, onMounted, onUnmounted } from 'vue'
 import { injectRovingFocusGroupContext } from './RovingFocusGroup.vue'
 import { focusFirst, getFocusIntent, wrapArray } from './utils'
 

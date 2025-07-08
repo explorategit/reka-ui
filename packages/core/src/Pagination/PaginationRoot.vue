@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
 import type { Ref } from 'vue'
+import type { PrimitiveProps } from '@/Primitive'
 import { createContext, useForwardExpose } from '@/shared'
 
 type PaginationRootContext = {
@@ -49,9 +49,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { useVModel } from '@vueuse/core'
 import { computed, toRefs } from 'vue'
+import { Primitive } from '@/Primitive'
 
 const props = withDefaults(defineProps<PaginationRootProps>(), {
   as: 'nav',
@@ -63,7 +63,7 @@ const props = withDefaults(defineProps<PaginationRootProps>(), {
 const emits = defineEmits<PaginationRootEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current page state */
     page: typeof page.value
     /** Number of pages */

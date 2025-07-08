@@ -18,8 +18,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
 import { onMounted, ref, toRefs } from 'vue'
+import { Primitive } from '@/Primitive'
 import { injectScrollAreaRootContext } from './ScrollAreaRoot.vue'
 
 defineOptions({

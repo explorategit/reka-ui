@@ -84,10 +84,10 @@ export default {
 <script setup lang="ts" generic="T extends AcceptableValue = AcceptableValue">
 import type { EventHook } from '@vueuse/core'
 import type { Ref } from 'vue'
-import { useCollection } from '@/Collection'
-import { VisuallyHiddenInput } from '@/VisuallyHidden'
 import { createEventHook, useVModel } from '@vueuse/core'
 import { nextTick, ref, toRefs, watch } from 'vue'
+import { useCollection } from '@/Collection'
+import { VisuallyHiddenInput } from '@/VisuallyHidden'
 import { compare } from './utils'
 
 const props = withDefaults(defineProps<ListboxRootProps>(), {
@@ -97,7 +97,7 @@ const props = withDefaults(defineProps<ListboxRootProps>(), {
 const emits = defineEmits<ListboxRootEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current active value */
     modelValue: typeof modelValue.value
   }) => any

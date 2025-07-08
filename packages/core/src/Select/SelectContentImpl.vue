@@ -1,11 +1,11 @@
 <script lang="ts">
-import type { PointerDownOutsideEvent } from '@/DismissableLayer'
-import type { PopperContentProps } from '@/Popper'
-import type { AcceptableValue } from '@/shared/types'
 import type {
   ComponentPublicInstance,
   Ref,
 } from 'vue'
+import type { PointerDownOutsideEvent } from '@/DismissableLayer'
+import type { PopperContentProps } from '@/Popper'
+import type { AcceptableValue } from '@/shared/types'
 import { useCollection } from '@/Collection'
 import {
   createContext,
@@ -87,9 +87,6 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { DismissableLayer } from '@/DismissableLayer'
-import { FocusScope } from '@/FocusScope'
-import { focusFirst } from '@/Menu/utils'
 import { unrefElement } from '@vueuse/core'
 import {
   computed,
@@ -97,6 +94,9 @@ import {
   watch,
   watchEffect,
 } from 'vue'
+import { DismissableLayer } from '@/DismissableLayer'
+import { FocusScope } from '@/FocusScope'
+import { focusFirst } from '@/Menu/utils'
 import SelectItemAlignedPosition from './SelectItemAlignedPosition.vue'
 import SelectPopperPosition from './SelectPopperPosition.vue'
 import { injectSelectRootContext } from './SelectRoot.vue'

@@ -1,6 +1,5 @@
 <script lang="ts">
 import type { DateValue } from '@internationalized/date'
-
 import type { Ref } from 'vue'
 import type { Grid, Matcher, WeekDayFormat } from '@/date'
 import type { PrimitiveProps } from '@/Primitive'
@@ -10,7 +9,13 @@ import type { Direction } from '@/shared/types'
 import { isEqualDay } from '@internationalized/date'
 import { useCalendar } from '@/Calendar/useCalendar'
 import { isBefore } from '@/date'
-import { createContext, isNullish, useDirection, useKbd, useLocale } from '@/shared'
+import {
+  createContext,
+  isNullish,
+  useDirection,
+  useKbd,
+  useLocale,
+} from '@/shared'
 import { getDefaultDate, handleCalendarInitialFocus } from '@/shared/date'
 import { useRangeCalendarState } from './useRangeCalendar'
 
@@ -40,6 +45,7 @@ type RangeCalendarRootContext = {
   isDateUnavailable?: Matcher
   isDateHighlightable?: Matcher
   isOutsideVisibleView: (date: DateValue) => boolean
+  allowNonContiguousRanges: Ref<boolean>
   highlightedRange: Ref<{ start: DateValue, end: DateValue } | null>
   focusedValue: Ref<DateValue | undefined>
   lastPressedDateValue: Ref<DateValue | undefined>
@@ -50,11 +56,17 @@ type RangeCalendarRootContext = {
   isHighlightedEnd: (date: DateValue) => boolean
   prevPage: (prevPageFunc?: (date: DateValue) => DateValue) => void
   nextPage: (nextPageFunc?: (date: DateValue) => DateValue) => void
-  isNextButtonDisabled: (nextPageFunc?: (date: DateValue) => DateValue) => boolean
-  isPrevButtonDisabled: (prevPageFunc?: (date: DateValue) => DateValue) => boolean
+  isNextButtonDisabled: (
+    nextPageFunc?: (date: DateValue) => DateValue
+  ) => boolean
+  isPrevButtonDisabled: (
+    prevPageFunc?: (date: DateValue) => DateValue
+  ) => boolean
   formatter: Formatter
   dir: Ref<Direction>
+  disableDaysOutsideCurrentView: Ref<boolean>
   fixedDate: Ref<'start' | 'end' | undefined>
+  maximumDays: Ref<number | undefined>
 }
 
 export interface RangeCalendarRootProps extends PrimitiveProps {
@@ -72,6 +84,8 @@ export interface RangeCalendarRootProps extends PrimitiveProps {
   pagedNavigation?: boolean
   /** Whether or not to prevent the user from deselecting a date without selecting another date first */
   preventDeselect?: boolean
+  /** The maximum number of days that can be selected in a range */
+  maximumDays?: number
   /** The day of the week to start the calendar on */
   weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6
   /** The format to use for the weekday strings provided via the weekdays slot prop */
@@ -106,6 +120,8 @@ export interface RangeCalendarRootProps extends PrimitiveProps {
   nextPage?: (placeholder: DateValue) => DateValue
   /** A function that returns the previous page of the calendar. It receives the current placeholder as an argument inside the component. */
   prevPage?: (placeholder: DateValue) => DateValue
+  /** Whether or not to disable days outside the current view. */
+  disableDaysOutsideCurrentView?: boolean
   /** Which part of the range should be fixed */
   fixedDate?: 'start' | 'end'
 }
@@ -151,11 +167,13 @@ const props = withDefaults(defineProps<RangeCalendarRootProps>(), {
   isDateUnavailable: undefined,
   isDateHighlightable: undefined,
   allowNonContiguousRanges: false,
+  maximumDays: undefined,
+  disableDaysOutsideCurrentView: false,
 })
 const emits = defineEmits<RangeCalendarRootEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** The current date of the placeholder */
     date: DateValue
     /** The grid of dates */
@@ -194,7 +212,9 @@ const {
   nextPage: propsNextPage,
   prevPage: propsPrevPage,
   allowNonContiguousRanges,
+  disableDaysOutsideCurrentView,
   fixedDate,
+  maximumDays,
 } = toRefs(props)
 
 const { primitiveElement, currentElement: parentElement }
@@ -211,7 +231,11 @@ const modelValue = useVModel(props, 'modelValue', emits, {
   passive: (props.modelValue === undefined) as false,
 }) as Ref<DateRange>
 
-const currentModelValue = computed(() => isNullish(modelValue.value) ? { start: undefined, end: undefined } : modelValue.value)
+const currentModelValue = computed(() =>
+  isNullish(modelValue.value)
+    ? { start: undefined, end: undefined }
+    : modelValue.value,
+)
 
 const defaultDate = getDefaultDate({
   defaultPlaceholder: props.placeholder,
@@ -219,7 +243,9 @@ const defaultDate = getDefaultDate({
   locale: props.locale,
 })
 
-const startValue = ref(currentModelValue.value.start) as Ref<DateValue | undefined>
+const startValue = ref(currentModelValue.value.start) as Ref<
+  DateValue | undefined
+>
 const endValue = ref(currentModelValue.value.end) as Ref<DateValue | undefined>
 
 const placeholder = useVModel(props, 'placeholder', emits, {
@@ -271,6 +297,7 @@ const {
   isSelectionEnd,
   isHighlightedStart,
   isHighlightedEnd,
+  isDateDisabled: rangeIsDateDisabled,
 } = useRangeCalendarState({
   start: startValue,
   end: endValue,
@@ -280,10 +307,12 @@ const {
   focusedValue,
   allowNonContiguousRanges,
   fixedDate,
+  maximumDays,
 })
 
 watch(modelValue, (_modelValue, _prevValue) => {
-  if ((!_prevValue?.start && _modelValue?.start)
+  if (
+    (!_prevValue?.start && _modelValue?.start)
     || !_modelValue
     || !_modelValue.start
     || (startValue.value && !isEqualDay(_modelValue.start, startValue.value))
@@ -291,7 +320,8 @@ watch(modelValue, (_modelValue, _prevValue) => {
     startValue.value = _modelValue?.start?.copy?.()
   }
 
-  if ((!_prevValue?.end && _modelValue.end)
+  if (
+    (!_prevValue?.end && _modelValue.end)
     || !_modelValue
     || !_modelValue.end
     || (endValue.value && !isEqualDay(_modelValue.end, endValue.value))
@@ -310,14 +340,29 @@ watch(startValue, (_startValue) => {
 watch([startValue, endValue], ([_startValue, _endValue]) => {
   const value = currentModelValue.value
 
-  if (value && value.start && value.end && _startValue && _endValue && isEqualDay(value.start, _startValue) && isEqualDay(value.end, _endValue))
+  if (
+    value
+    && value.start
+    && value.end
+    && _startValue
+    && _endValue
+    && isEqualDay(value.start, _startValue)
+    && isEqualDay(value.end, _endValue)
+  ) {
     return
+  }
 
   isEditing.value = true
   if (_startValue && _endValue) {
     isEditing.value = false
-    if (value.start && value.end && isEqualDay(value.start, _startValue) && isEqualDay(value.end, _endValue))
+    if (
+      value.start
+      && value.end
+      && isEqualDay(value.start, _startValue)
+      && isEqualDay(value.end, _endValue)
+    ) {
       return
+    }
     if (isBefore(_endValue, _startValue)) {
       modelValue.value = {
         start: _endValue.copy(),
@@ -364,7 +409,8 @@ provideRangeCalendarRootContext({
   fullCalendarLabel,
   headingValue,
   isInvalid,
-  isDateDisabled,
+  isDateDisabled: rangeIsDateDisabled,
+  allowNonContiguousRanges,
   highlightedRange,
   focusedValue,
   lastPressedDateValue,
@@ -382,7 +428,9 @@ provideRangeCalendarRootContext({
   dir,
   isHighlightedStart,
   isHighlightedEnd,
+  disableDaysOutsideCurrentView,
   fixedDate,
+  maximumDays,
 })
 
 onMounted(() => {
@@ -403,7 +451,20 @@ onMounted(() => {
     :data-invalid="isInvalid ? '' : undefined"
     :dir="dir"
   >
-    <div style="border: 0px; clip: rect(0px, 0px, 0px, 0px); clip-path: inset(50%); height: 1px; margin: -1px; overflow: hidden; padding: 0px; position: absolute; white-space: nowrap; width: 1px;">
+    <div
+      style="
+        border: 0px;
+        clip: rect(0px, 0px, 0px, 0px);
+        clip-path: inset(50%);
+        height: 1px;
+        margin: -1px;
+        overflow: hidden;
+        padding: 0px;
+        position: absolute;
+        white-space: nowrap;
+        width: 1px;
+      "
+    >
       <div
         role="heading"
         aria-level="2"

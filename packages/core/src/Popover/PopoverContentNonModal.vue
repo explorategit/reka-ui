@@ -8,8 +8,8 @@ export default {
 
 <script setup lang="ts">
 import type { PopoverContentImplEmits, PopoverContentImplProps } from './PopoverContentImpl.vue'
-import { useForwardPropsEmits } from '@/shared'
 import { ref } from 'vue'
+import { useForwardPropsEmits } from '@/shared'
 import PopoverContentImpl from './PopoverContentImpl.vue'
 import { injectPopoverRootContext } from './PopoverRoot.vue'
 

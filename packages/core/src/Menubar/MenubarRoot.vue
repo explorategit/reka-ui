@@ -43,10 +43,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
-import { RovingFocusGroup } from '@/RovingFocus'
 import { useVModel } from '@vueuse/core'
 import { ref, toRefs } from 'vue'
+import { Primitive } from '@/Primitive'
+import { RovingFocusGroup } from '@/RovingFocus'
 
 const props = withDefaults(defineProps<MenubarRootProps>(), {
   loop: false,
@@ -54,7 +54,7 @@ const props = withDefaults(defineProps<MenubarRootProps>(), {
 const emit = defineEmits<MenubarRootEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current input values */
     modelValue: typeof modelValue.value
   }) => any

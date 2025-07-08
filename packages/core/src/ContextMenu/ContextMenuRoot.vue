@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { Ref } from 'vue'
 import type { MenuEmits, MenuProps } from '@/Menu'
 import type { Direction } from '@/shared/types'
-import type { Ref } from 'vue'
 import { createContext, useDirection, useForwardExpose } from '@/shared'
 
 type ContextMenuRootContext = {
@@ -26,8 +26,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { MenuRoot } from '@/Menu'
 import { ref, toRefs, watch } from 'vue'
+import { MenuRoot } from '@/Menu'
 
 defineOptions({
   inheritAttrs: false,

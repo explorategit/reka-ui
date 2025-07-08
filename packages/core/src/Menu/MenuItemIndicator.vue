@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { PrimitiveProps } from '@/Primitive'
 import type { Ref } from 'vue'
 import type { CheckedState } from './utils'
+import type { PrimitiveProps } from '@/Primitive'
 import { createContext } from '@/shared'
 
 interface MenuItemIndicatorContext {
@@ -30,9 +30,9 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { ref } from 'vue'
 import { Presence } from '@/Presence'
 import { Primitive } from '@/Primitive'
-import { ref } from 'vue'
 import { getCheckedState, isIndeterminate } from './utils'
 
 withDefaults(defineProps<MenuItemIndicatorProps>(), {

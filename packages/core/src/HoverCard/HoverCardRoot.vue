@@ -40,9 +40,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { PopperRoot } from '@/Popper'
 import { useVModel } from '@vueuse/core'
 import { ref, toRefs } from 'vue'
+import { PopperRoot } from '@/Popper'
 
 const props = withDefaults(defineProps<HoverCardRootProps>(), {
   defaultOpen: false,
@@ -53,7 +53,7 @@ const props = withDefaults(defineProps<HoverCardRootProps>(), {
 const emit = defineEmits<HoverCardRootEmits>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current open state */
     open: typeof open.value
   }) => any

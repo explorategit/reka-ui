@@ -11,10 +11,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Presence } from '@/Presence'
-import { useForwardExpose } from '@/shared'
 import { useDebounceFn, useResizeObserver } from '@vueuse/core'
 import { onMounted, ref } from 'vue'
+import { Presence } from '@/Presence'
+import { useForwardExpose } from '@/shared'
 import { injectScrollAreaRootContext } from './ScrollAreaRoot.vue'
 import { injectScrollAreaScrollbarContext } from './ScrollAreaScrollbar.vue'
 import ScrollAreaScrollbarVisible from './ScrollAreaScrollbarVisible.vue'

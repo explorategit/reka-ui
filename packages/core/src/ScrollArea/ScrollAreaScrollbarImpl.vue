@@ -17,10 +17,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { Primitive } from '@/Primitive'
-import { useForwardExpose } from '@/shared'
 import { useResizeObserver } from '@vueuse/core'
 import { onMounted, onUnmounted, ref } from 'vue'
+import { Primitive } from '@/Primitive'
+import { useForwardExpose } from '@/shared'
 import { injectScrollAreaRootContext } from './ScrollAreaRoot.vue'
 import { injectScrollAreaScrollbarContext } from './ScrollAreaScrollbar.vue'
 import { injectScrollAreaScrollbarVisibleContext } from './ScrollAreaScrollbarVisible.vue'

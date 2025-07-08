@@ -21,9 +21,9 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { computed, onMounted, ref } from 'vue'
 import { Presence } from '@/Presence'
 import { Primitive } from '@/Primitive'
-import { computed, onMounted, ref } from 'vue'
 import { injectTabsRootContext } from './TabsRoot.vue'
 import { makeContentId, makeTriggerId } from './utils'
 

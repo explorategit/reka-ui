@@ -11,9 +11,9 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { onMounted } from 'vue'
 import { Primitive } from '@/Primitive'
 import { useForwardExpose, useId } from '@/shared'
-import { onMounted } from 'vue'
 import { injectDialogRootContext } from './DialogRoot.vue'
 
 const props = withDefaults(defineProps<DialogTriggerProps>(), {
