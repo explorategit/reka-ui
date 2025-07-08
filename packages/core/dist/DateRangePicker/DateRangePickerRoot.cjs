@@ -26,6 +26,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     placeholder: { default: void 0 },
     modelValue: {},
     hourCycle: {},
+    step: {},
     granularity: {},
     hideTimeZone: { type: Boolean },
     maxValue: {},
@@ -52,7 +53,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     preventDeselect: { type: Boolean, default: false },
     isDateHighlightable: { type: Function, default: void 0 },
     allowNonContiguousRanges: { type: Boolean, default: false },
-    fixedDate: {}
+    fixedDate: {},
+    maximumDays: { default: void 0 }
   },
   emits: ["update:modelValue", "update:placeholder", "update:startValue", "update:open"],
   setup(__props, { emit: __emit }) {
@@ -83,7 +85,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       hourCycle,
       dir: propsDir,
       allowNonContiguousRanges,
-      fixedDate
+      fixedDate,
+      maximumDays
     } = vue.toRefs(props);
     const dir = shared_useDirection.useDirection(propsDir);
     const modelValue = core.useVModel(props, "modelValue", emits, {
@@ -140,6 +143,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       dateFieldRef,
       dir,
       fixedDate,
+      maximumDays,
       onStartValueChange(date) {
         emits("update:startValue", date);
       },

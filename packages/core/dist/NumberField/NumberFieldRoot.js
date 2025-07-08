@@ -8,6 +8,7 @@ import { u as useFormControl } from '../shared/useFormControl.js';
 import { c as clamp, s as snapValueToStep } from '../shared/clamp.js';
 import { P as Primitive } from '../Primitive/Primitive.js';
 import { _ as _sfc_main$1 } from '../VisuallyHidden/VisuallyHiddenInput.js';
+import { i as isNullish } from '../shared/nullish.js';
 
 const [injectNumberFieldRootContext, provideNumberFieldRootContext] = createContext("NumberFieldRoot");
 const __default__ = {
@@ -31,7 +32,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     formatOptions: {},
     locale: {},
     disabled: { type: Boolean },
+    readonly: { type: Boolean },
     disableWheelChange: { type: Boolean },
+    invertWheelChange: { type: Boolean },
     id: {},
     asChild: { type: Boolean },
     as: { default: "div" },
@@ -42,7 +45,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   setup(__props, { emit: __emit }) {
     const props = __props;
     const emits = __emit;
-    const { disabled, disableWheelChange, min, max, step, stepSnapping, formatOptions, id, locale: propLocale } = toRefs(props);
+    const { disabled, readonly, disableWheelChange, invertWheelChange, min, max, step, stepSnapping, formatOptions, id, locale: propLocale } = toRefs(props);
     const modelValue = useVModel(props, "modelValue", emits, {
       defaultValue: props.defaultValue,
       passive: props.modelValue === void 0
@@ -52,16 +55,16 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const isFormControl = useFormControl(currentElement);
     const inputEl = ref();
     const isDecreaseDisabled = computed(
-      () => clampInputValue(modelValue.value) === min.value || (min.value && !isNaN(modelValue.value) ? handleDecimalOperation("-", modelValue.value, step.value) < min.value : false)
+      () => !isNullish(modelValue.value) && (clampInputValue(modelValue.value) === min.value || min.value && !isNaN(modelValue.value) ? handleDecimalOperation("-", modelValue.value, step.value) < min.value : false)
     );
     const isIncreaseDisabled = computed(
-      () => clampInputValue(modelValue.value) === max.value || (max.value && !isNaN(modelValue.value) ? handleDecimalOperation("+", modelValue.value, step.value) > max.value : false)
+      () => !isNullish(modelValue.value) && (clampInputValue(modelValue.value) === max.value || max.value && !isNaN(modelValue.value) ? handleDecimalOperation("+", modelValue.value, step.value) > max.value : false)
     );
     function handleChangingValue(type, multiplier = 1) {
       inputEl.value?.focus();
-      const currentInputValue = numberParser.parse(inputEl.value?.value ?? "");
-      if (props.disabled)
+      if (props.disabled || props.readonly)
         return;
+      const currentInputValue = numberParser.parse(inputEl.value?.value ?? "");
       if (isNaN(currentInputValue)) {
         modelValue.value = min.value ?? 0;
       } else {
@@ -90,7 +93,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       return hasDecimals ? "decimal" : "numeric";
     });
     const textValueFormatter = useNumberFormatter(locale, formatOptions);
-    const textValue = computed(() => isNaN(modelValue.value) ? "" : textValueFormatter.format(modelValue.value));
+    const textValue = computed(() => isNullish(modelValue.value) || isNaN(modelValue.value) ? "" : textValueFormatter.format(modelValue.value));
     function validate(val) {
       return numberParser.isValidPartialNumber(val, min.value, max.value);
     }
@@ -109,7 +112,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     }
     function applyInputValue(val) {
       const parsedValue = numberParser.parse(val);
-      modelValue.value = clampInputValue(parsedValue);
+      modelValue.value = isNaN(parsedValue) ? void 0 : clampInputValue(parsedValue);
       if (!val.length)
         return setInputValue(val);
       if (isNaN(parsedValue))
@@ -125,10 +128,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       inputEl,
       onInputElement: (el) => inputEl.value = el,
       textValue,
+      readonly,
       validate,
       applyInputValue,
       disabled,
       disableWheelChange,
+      invertWheelChange,
       max,
       min,
       isDecreaseDisabled,
@@ -142,12 +147,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         role: "group",
         as: _ctx.as,
         "as-child": _ctx.asChild,
-        "data-disabled": unref(disabled) ? "" : void 0
+        "data-disabled": unref(disabled) ? "" : void 0,
+        "data-readonly": unref(readonly) ? "" : void 0
       }), {
         default: withCtx(() => [
           renderSlot(_ctx.$slots, "default", {
             modelValue: unref(modelValue),
-            textValue: textValue.value
+            textValue: textValue.value,
+            readonly: unref(readonly)
           }),
           unref(isFormControl) && _ctx.name ? (openBlock(), createBlock(unref(_sfc_main$1), {
             key: 0,
@@ -159,7 +166,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           }, null, 8, ["value", "name", "disabled", "required"])) : createCommentVNode("", true)
         ]),
         _: 3
-      }, 16, ["as", "as-child", "data-disabled"]);
+      }, 16, ["as", "as-child", "data-disabled", "data-readonly"]);
     };
   }
 });

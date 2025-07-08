@@ -22,7 +22,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
   setup(__props) {
     const props = __props;
     const rootContext = NumberField_NumberFieldRoot.injectNumberFieldRootContext();
-    const isDisabled = vue.computed(() => rootContext.disabled?.value || props.disabled || rootContext.isDecreaseDisabled.value);
+    const isDisabled = vue.computed(() => rootContext.disabled?.value || props.disabled || rootContext.readonly.value || rootContext.isDecreaseDisabled.value);
     const { primitiveElement, currentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
     const { isPressed, onTrigger } = NumberField_utils.usePressedHold({ target: currentElement, disabled: isDisabled });
     onTrigger(() => {

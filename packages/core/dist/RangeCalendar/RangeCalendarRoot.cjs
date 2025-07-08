@@ -37,6 +37,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     allowNonContiguousRanges: { type: Boolean, default: false },
     pagedNavigation: { type: Boolean, default: false },
     preventDeselect: { type: Boolean, default: false },
+    maximumDays: { default: void 0 },
     weekStartsOn: { default: 0 },
     weekdayFormat: { default: "narrow" },
     calendarLabel: {},
@@ -54,6 +55,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     dir: {},
     nextPage: {},
     prevPage: {},
+    disableDaysOutsideCurrentView: { type: Boolean, default: false },
     fixedDate: {},
     asChild: { type: Boolean },
     as: { default: "div" }
@@ -83,7 +85,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       nextPage: propsNextPage,
       prevPage: propsPrevPage,
       allowNonContiguousRanges,
-      fixedDate
+      disableDaysOutsideCurrentView,
+      fixedDate,
+      maximumDays
     } = vue.toRefs(props);
     const { primitiveElement, currentElement: parentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
     const dir = shared_useDirection.useDirection(propDir);
@@ -95,7 +99,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       defaultValue: props.defaultValue ?? { start: void 0, end: void 0 },
       passive: props.modelValue === void 0
     });
-    const currentModelValue = vue.computed(() => shared_nullish.isNullish(modelValue.value) ? { start: void 0, end: void 0 } : modelValue.value);
+    const currentModelValue = vue.computed(
+      () => shared_nullish.isNullish(modelValue.value) ? { start: void 0, end: void 0 } : modelValue.value
+    );
     const defaultDate = date_comparators.getDefaultDate({
       defaultPlaceholder: props.placeholder,
       defaultValue: currentModelValue.value.start,
@@ -148,7 +154,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       isSelectionStart,
       isSelectionEnd,
       isHighlightedStart,
-      isHighlightedEnd
+      isHighlightedEnd,
+      isDateDisabled: rangeIsDateDisabled
     } = RangeCalendar_useRangeCalendar.useRangeCalendarState({
       start: startValue,
       end: endValue,
@@ -157,7 +164,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       isDateHighlightable: propsIsDateHighlightable.value,
       focusedValue,
       allowNonContiguousRanges,
-      fixedDate
+      fixedDate,
+      maximumDays
     });
     vue.watch(modelValue, (_modelValue, _prevValue) => {
       if (!_prevValue?.start && _modelValue?.start || !_modelValue || !_modelValue.start || startValue.value && !date.isEqualDay(_modelValue.start, startValue.value)) {
@@ -174,13 +182,15 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     });
     vue.watch([startValue, endValue], ([_startValue, _endValue]) => {
       const value = currentModelValue.value;
-      if (value && value.start && value.end && _startValue && _endValue && date.isEqualDay(value.start, _startValue) && date.isEqualDay(value.end, _endValue))
+      if (value && value.start && value.end && _startValue && _endValue && date.isEqualDay(value.start, _startValue) && date.isEqualDay(value.end, _endValue)) {
         return;
+      }
       isEditing.value = true;
       if (_startValue && _endValue) {
         isEditing.value = false;
-        if (value.start && value.end && date.isEqualDay(value.start, _startValue) && date.isEqualDay(value.end, _endValue))
+        if (value.start && value.end && date.isEqualDay(value.start, _startValue) && date.isEqualDay(value.end, _endValue)) {
           return;
+        }
         if (date_comparators.isBefore(_endValue, _startValue)) {
           modelValue.value = {
             start: _endValue.copy(),
@@ -223,7 +233,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       fullCalendarLabel,
       headingValue,
       isInvalid,
-      isDateDisabled,
+      isDateDisabled: rangeIsDateDisabled,
+      allowNonContiguousRanges,
       highlightedRange,
       focusedValue,
       lastPressedDateValue,
@@ -241,7 +252,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       dir,
       isHighlightedStart,
       isHighlightedEnd,
-      fixedDate
+      disableDaysOutsideCurrentView,
+      fixedDate,
+      maximumDays
     });
     vue.onMounted(() => {
       if (initialFocus.value)

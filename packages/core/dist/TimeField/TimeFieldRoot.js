@@ -12,6 +12,7 @@ import { a as initializeTimeSegmentValues, b as syncTimeSegmentValues, c as crea
 import { P as Primitive } from '../Primitive/Primitive.js';
 import { _ as _sfc_main$1 } from '../VisuallyHidden/VisuallyHidden.js';
 import { u as useKbd } from '../shared/useKbd.js';
+import { n as normalizeHourCycle, a as normalizeDateStep } from '../date/utils.js';
 import { i as isNullish } from '../shared/nullish.js';
 
 const [injectTimeFieldRootContext, provideTimeFieldRootContext] = createContext("TimeFieldRoot");
@@ -38,6 +39,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     placeholder: { default: void 0 },
     modelValue: {},
     hourCycle: {},
+    step: {},
     granularity: {},
     hideTimeZone: { type: Boolean },
     maxValue: {},
@@ -59,9 +61,12 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const { disabled, readonly, granularity, defaultValue, minValue, maxValue, dir: propDir, locale: propLocale } = toRefs(props);
     const locale = useLocale(propLocale);
     const dir = useDirection(propDir);
-    const formatter = useDateFormatter(locale.value);
+    const formatter = useDateFormatter(locale.value, {
+      hourCycle: normalizeHourCycle(props.hourCycle)
+    });
     const { primitiveElement, currentElement: parentElement } = usePrimitiveElement();
     const segmentElements = ref(/* @__PURE__ */ new Set());
+    const step = computed(() => normalizeDateStep(props));
     const convertedMinValue = computed(() => minValue.value ? convertValue(minValue.value) : void 0);
     const convertedMaxValue = computed(() => maxValue.value ? convertValue(maxValue.value) : void 0);
     onMounted(() => {
@@ -189,6 +194,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       disabled,
       formatter,
       hourCycle: props.hourCycle,
+      step,
       readonly,
       segmentValues,
       isInvalid,

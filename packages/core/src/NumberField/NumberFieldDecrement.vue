@@ -23,7 +23,7 @@ const props = withDefaults(defineProps<NumberFieldDecrementProps>(), {
 })
 
 const rootContext = injectNumberFieldRootContext()
-const isDisabled = computed(() => rootContext.disabled?.value || props.disabled || rootContext.isDecreaseDisabled.value)
+const isDisabled = computed(() => rootContext.disabled?.value || props.disabled || rootContext.readonly.value || rootContext.isDecreaseDisabled.value)
 
 const { primitiveElement, currentElement } = usePrimitiveElement()
 const { isPressed, onTrigger } = usePressedHold({ target: currentElement, disabled: isDisabled })

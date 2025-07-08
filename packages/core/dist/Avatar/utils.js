@@ -1,3 +1,4 @@
+import { isClient } from '@vueuse/shared';
 import { ref, computed, onMounted, watchEffect, onUnmounted } from 'vue';
 
 function resolveLoadingStatus(image, src) {
@@ -19,7 +20,7 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin } = {}) {
     if (!isMounted.value) {
       return null;
     }
-    if (!imageRef.value) {
+    if (!imageRef.value && isClient) {
       imageRef.value = new window.Image();
     }
     return imageRef.value;

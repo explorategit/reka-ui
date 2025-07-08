@@ -27,8 +27,6 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
   ...__default__,
   __name: "CalendarRoot",
   props: {
-    modelValue: {},
-    multiple: { type: Boolean, default: false },
     defaultValue: { default: void 0 },
     defaultPlaceholder: {},
     placeholder: { default: void 0 },
@@ -50,6 +48,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     dir: {},
     nextPage: {},
     prevPage: {},
+    modelValue: {},
+    multiple: { type: Boolean, default: false },
+    disableDaysOutsideCurrentView: { type: Boolean, default: false },
     asChild: { type: Boolean },
     as: { default: "div" }
   },
@@ -77,7 +78,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       nextPage: propsNextPage,
       prevPage: propsPrevPage,
       dir: propDir,
-      locale: propLocale
+      locale: propLocale,
+      disableDaysOutsideCurrentView
     } = vue.toRefs(props);
     const { primitiveElement, currentElement: parentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
     const locale = shared_useLocale.useLocale(propLocale);
@@ -209,7 +211,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       prevPage,
       parentElement,
       onPlaceholderChange,
-      onDateChange
+      onDateChange,
+      disableDaysOutsideCurrentView
     });
     return (_ctx, _cache) => {
       return vue.openBlock(), vue.createBlock(vue.unref(Primitive_Primitive.Primitive), {

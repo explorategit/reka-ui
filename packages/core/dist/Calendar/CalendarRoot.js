@@ -25,8 +25,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   ...__default__,
   __name: "CalendarRoot",
   props: {
-    modelValue: {},
-    multiple: { type: Boolean, default: false },
     defaultValue: { default: void 0 },
     defaultPlaceholder: {},
     placeholder: { default: void 0 },
@@ -48,6 +46,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     dir: {},
     nextPage: {},
     prevPage: {},
+    modelValue: {},
+    multiple: { type: Boolean, default: false },
+    disableDaysOutsideCurrentView: { type: Boolean, default: false },
     asChild: { type: Boolean },
     as: { default: "div" }
   },
@@ -75,7 +76,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       nextPage: propsNextPage,
       prevPage: propsPrevPage,
       dir: propDir,
-      locale: propLocale
+      locale: propLocale,
+      disableDaysOutsideCurrentView
     } = toRefs(props);
     const { primitiveElement, currentElement: parentElement } = usePrimitiveElement();
     const locale = useLocale(propLocale);
@@ -207,7 +209,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       prevPage,
       parentElement,
       onPlaceholderChange,
-      onDateChange
+      onDateChange,
+      disableDaysOutsideCurrentView
     });
     return (_ctx, _cache) => {
       return openBlock(), createBlock(unref(Primitive), {

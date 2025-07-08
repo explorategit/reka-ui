@@ -15,7 +15,6 @@ import { CSSProperties } from 'vue';
 import { DateValue } from '@internationalized/date';
 import { DebuggerEvent } from 'vue';
 import { DefineComponent } from 'vue';
-import { DefineSetupFnComponent } from 'vue';
 import { EventHook } from '@vueuse/core';
 import { EventHookOn } from '@vueuse/core';
 import { ExtractPropTypes } from 'vue';
@@ -1844,7 +1843,7 @@ declare type __VLS_WithTemplateSlots_99<T, S> = T & {
 
 export declare type AcceptableInputValue = string | Record<string, any>;
 
-export declare type AcceptableValue = string | number | Record<string, any> | null;
+export declare type AcceptableValue = string | number | bigint | Record<string, any> | null;
 
 export declare const AccordionContent: __VLS_WithTemplateSlots_2<DefineComponent<AccordionContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<AccordionContentProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -1866,12 +1865,12 @@ export declare const AccordionItem: __VLS_WithTemplateSlots_4<DefineComponent<Ac
 open: ComputedRef<boolean>;
 dataDisabled: ComputedRef<"" | undefined>;
 }, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<AccordionItemProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -1914,12 +1913,12 @@ export declare const AccordionRoot: <T extends (string | string[]), ExplicitType
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current active value */
             modelValue: AcceptableValue | AcceptableValue[] | undefined;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current active value */
             modelValue: AcceptableValue | AcceptableValue[] | undefined;
         }) => any;
@@ -2071,6 +2070,7 @@ export declare const AlertDialogRoot: __VLS_WithTemplateSlots_12<DefineComponent
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {
         open: boolean;
+        close: () => void;
     }): any;
 }>;
 
@@ -2120,12 +2120,12 @@ declare interface ArrowProps extends PrimitiveProps {
 export declare const AspectRatio: __VLS_WithTemplateSlots_15<DefineComponent<AspectRatioProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<AspectRatioProps> & Readonly<{}>, {
 ratio: number;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current aspect ratio (in %) */
         aspect: number;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current aspect ratio (in %) */
         aspect: number;
     }) => any;
@@ -2187,51 +2187,6 @@ declare type AvatarRootContext = {
 };
 
 export declare interface AvatarRootProps extends PrimitiveProps {
-}
-
-declare interface BaseCalendarRootProps extends PrimitiveProps {
-    /** The default value for the calendar */
-    defaultValue?: DateValue;
-    /** The default placeholder date */
-    defaultPlaceholder?: DateValue;
-    /** The placeholder date, which is used to determine what month to display when no date is selected. This updates as the user navigates the calendar and can be used to programmatically control the calendar view */
-    placeholder?: DateValue;
-    /** This property causes the previous and next buttons to navigate by the number of months displayed at once, rather than one month */
-    pagedNavigation?: boolean;
-    /** Whether or not to prevent the user from deselecting a date without selecting another date first */
-    preventDeselect?: boolean;
-    /** The day of the week to start the calendar on */
-    weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
-    /** The format to use for the weekday strings provided via the weekdays slot prop */
-    weekdayFormat?: WeekDayFormat;
-    /** The accessible label for the calendar */
-    calendarLabel?: string;
-    /** Whether or not to always display 6 weeks in the calendar */
-    fixedWeeks?: boolean;
-    /** The maximum date that can be selected */
-    maxValue?: DateValue;
-    /** The minimum date that can be selected */
-    minValue?: DateValue;
-    /** The locale to use for formatting dates */
-    locale?: string;
-    /** The number of months to display at once */
-    numberOfMonths?: number;
-    /** Whether or not the calendar is disabled */
-    disabled?: boolean;
-    /** Whether or not the calendar is readonly */
-    readonly?: boolean;
-    /** If true, the calendar will focus the selected day, today, or the first day of the month depending on what is visible when the calendar is mounted */
-    initialFocus?: boolean;
-    /** A function that returns whether or not a date is disabled */
-    isDateDisabled?: Matcher;
-    /** A function that returns whether or not a date is unavailable */
-    isDateUnavailable?: Matcher;
-    /** The reading direction of the calendar when applicable. <br> If omitted, inherits globally from `ConfigProvider` or assumes LTR (left-to-right) reading mode. */
-    dir?: Direction;
-    /** A function that returns the next page of the calendar. It receives the current placeholder as an argument inside the component. */
-    nextPage?: (placeholder: DateValue) => DateValue;
-    /** A function that returns the previous page of the calendar. It receives the current placeholder as an argument inside the component. */
-    prevPage?: (placeholder: DateValue) => DateValue;
 }
 
 declare interface BaseSeparatorProps extends PrimitiveProps {
@@ -2308,7 +2263,7 @@ export declare interface CalendarCellTriggerProps extends PrimitiveProps {
 }
 
 declare interface CalendarCellTriggerSlot {
-    default: (props: {
+    default?: (props: {
         /** Current day */
         dayValue: string;
         /** Current disable state */
@@ -2383,12 +2338,12 @@ export declare interface CalendarHeaderProps extends PrimitiveProps {
 export declare const CalendarHeading: __VLS_WithTemplateSlots_27<DefineComponent<CalendarHeadingProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<CalendarHeadingProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
@@ -2407,7 +2362,7 @@ export declare interface CalendarNextProps extends PrimitiveProps {
 }
 
 declare interface CalendarNextSlot {
-    default: (props: {
+    default?: (props: {
         /** Current disable state */
         disabled: boolean;
     }) => any;
@@ -2423,14 +2378,74 @@ export declare interface CalendarPrevProps extends PrimitiveProps {
 }
 
 declare interface CalendarPrevSlot {
-    default: (props: {
+    default?: (props: {
         /** Current disable state */
         disabled: boolean;
     }) => any;
 }
 
-export declare const CalendarRoot: __VLS_WithTemplateSlots_30<DefineSetupFnComponent<Record<string, any>, {}, {}, Record<string, any> & {}, PublicProps>, Readonly<{
-    default: (props: {
+export declare const CalendarRoot: __VLS_WithTemplateSlots_30<DefineComponent<CalendarRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+"update:modelValue": (date: DateValue | undefined) => any;
+"update:placeholder": (date: DateValue) => any;
+}, string, PublicProps, Readonly<CalendarRootProps> & Readonly<{
+"onUpdate:modelValue"?: ((date: DateValue | undefined) => any) | undefined;
+"onUpdate:placeholder"?: ((date: DateValue) => any) | undefined;
+}>, {
+defaultValue: DateValue;
+weekStartsOn: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+fixedWeeks: boolean;
+numberOfMonths: number;
+pagedNavigation: boolean;
+placeholder: DateValue;
+disabled: boolean;
+multiple: boolean;
+as: AsTag | Component;
+preventDeselect: boolean;
+weekdayFormat: WeekDayFormat;
+readonly: boolean;
+initialFocus: boolean;
+isDateDisabled: Matcher;
+isDateUnavailable: Matcher;
+disableDaysOutsideCurrentView: boolean;
+}, {}, {}, {}, string, ComponentProvideOptions, false, {
+primitiveElement: CreateComponentPublicInstanceWithMixins<Readonly<ExtractPropTypes<    {
+asChild: {
+type: BooleanConstructor;
+default: boolean;
+};
+as: {
+type: PropType<AsTag | Component>;
+default: string;
+};
+}>> & Readonly<{}>, () => VNode<RendererNode, RendererElement, {
+[key: string]: any;
+}>, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, PublicProps, {
+asChild: boolean;
+as: AsTag | Component;
+}, true, {}, {}, GlobalComponents, GlobalDirectives, string, {}, any, ComponentProvideOptions, {
+P: {};
+B: {};
+D: {};
+C: {};
+M: {};
+Defaults: {};
+}, Readonly<ExtractPropTypes<    {
+asChild: {
+type: BooleanConstructor;
+default: boolean;
+};
+as: {
+type: PropType<AsTag | Component>;
+default: string;
+};
+}>> & Readonly<{}>, () => VNode<RendererNode, RendererElement, {
+[key: string]: any;
+}>, {}, {}, {}, {
+asChild: boolean;
+as: AsTag | Component;
+}> | null;
+}, any>, Readonly<{
+    default?: (props: {
         /** The current date of the placeholder */
         date: DateValue;
         /** The grid of dates */
@@ -2444,10 +2459,10 @@ export declare const CalendarRoot: __VLS_WithTemplateSlots_30<DefineSetupFnCompo
         /** Whether or not to always display 6 weeks in the calendar */
         fixedWeeks: boolean;
         /** The current date of the calendar */
-        modelValue: DateValue | undefined;
+        modelValue: DateValue | DateValue[] | undefined;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** The current date of the placeholder */
         date: DateValue;
         /** The grid of dates */
@@ -2461,7 +2476,7 @@ export declare const CalendarRoot: __VLS_WithTemplateSlots_30<DefineSetupFnCompo
         /** Whether or not to always display 6 weeks in the calendar */
         fixedWeeks: boolean;
         /** The current date of the calendar */
-        modelValue: DateValue | undefined;
+        modelValue: DateValue | DateValue[] | undefined;
     }) => any;
 }>;
 
@@ -2497,6 +2512,7 @@ declare type CalendarRootContext = {
     isPrevButtonDisabled: (prevPageFunc?: (date: DateValue) => DateValue) => boolean;
     formatter: Formatter;
     dir: Ref<Direction>;
+    disableDaysOutsideCurrentView: Ref<boolean>;
 };
 
 export declare type CalendarRootEmits = {
@@ -2506,7 +2522,56 @@ export declare type CalendarRootEmits = {
     'update:placeholder': [date: DateValue];
 };
 
-export declare type CalendarRootProps = MultipleCalendarRootProps | SingleCalendarRootProps;
+export declare interface CalendarRootProps extends PrimitiveProps {
+    /** The default value for the calendar */
+    defaultValue?: DateValue;
+    /** The default placeholder date */
+    defaultPlaceholder?: DateValue;
+    /** The placeholder date, which is used to determine what month to display when no date is selected */
+    placeholder?: DateValue;
+    /** This property causes the previous and next buttons to navigate by the number of months displayed at once, rather than one month */
+    pagedNavigation?: boolean;
+    /** Whether or not to prevent the user from deselecting a date without selecting another date first */
+    preventDeselect?: boolean;
+    /** The day of the week to start the calendar on */
+    weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
+    /** The format to use for the weekday strings provided via the weekdays slot prop */
+    weekdayFormat?: WeekDayFormat;
+    /** The accessible label for the calendar */
+    calendarLabel?: string;
+    /** Whether or not to always display 6 weeks in the calendar */
+    fixedWeeks?: boolean;
+    /** The maximum date that can be selected */
+    maxValue?: DateValue;
+    /** The minimum date that can be selected */
+    minValue?: DateValue;
+    /** The locale to use for formatting dates */
+    locale?: string;
+    /** The number of months to display at once */
+    numberOfMonths?: number;
+    /** Whether the calendar is disabled */
+    disabled?: boolean;
+    /** Whether the calendar is readonly */
+    readonly?: boolean;
+    /** If true, the calendar will focus the selected day, today, or the first day of the month depending on what is visible when the calendar is mounted */
+    initialFocus?: boolean;
+    /** A function that returns whether or not a date is disabled */
+    isDateDisabled?: Matcher;
+    /** A function that returns whether or not a date is unavailable */
+    isDateUnavailable?: Matcher;
+    /** The reading direction of the calendar when applicable. <br> If omitted, inherits globally from `ConfigProvider` or assumes LTR (left-to-right) reading mode. */
+    dir?: Direction;
+    /** A function that returns the next page of the calendar. It receives the current placeholder as an argument inside the component. */
+    nextPage?: (placeholder: DateValue) => DateValue;
+    /** A function that returns the previous page of the calendar. It receives the current placeholder as an argument inside the component. */
+    prevPage?: (placeholder: DateValue) => DateValue;
+    /** The controlled checked state of the calendar */
+    modelValue?: DateValue | DateValue[] | undefined;
+    /** Whether multiple dates can be selected */
+    multiple?: boolean;
+    /** Whether or not to disable days outside the current view. */
+    disableDaysOutsideCurrentView?: boolean;
+}
 
 export declare type CheckboxCheckedState = boolean | 'indeterminate';
 
@@ -2569,14 +2634,14 @@ value: AcceptableValue;
 as: AsTag | Component;
 modelValue: boolean | "indeterminate" | null;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current value */
         modelValue: CheckboxCheckedState;
         /** Current state */
         state: CheckboxCheckedState;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current value */
         modelValue: CheckboxCheckedState;
         /** Current state */
@@ -2680,12 +2745,12 @@ defaultOpen: boolean;
 open: boolean;
 unmountOnHide: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -2908,11 +2973,11 @@ as: AsTag | Component;
 "onUpdate:modelValue"?: ((args_0: string) => any) | undefined;
 }>, "as"> & ShallowUnwrapRef<    {}> & {} & ComponentCustomProperties & {} & {
 $slots: Readonly<{
-default: (props: {
+default?: (props: {
 modelValue: string | undefined;
 }) => any;
 }> & {
-default: (props: {
+default?: (props: {
 modelValue: string | undefined;
 }) => any;
 };
@@ -3001,14 +3066,14 @@ export declare const ComboboxRoot: <T extends AcceptableValue = AcceptableValue>
     }>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current open state */
             open: boolean;
             /** Current active value */
             modelValue: T | T[];
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current open state */
             open: boolean;
             /** Current active value */
@@ -3126,13 +3191,13 @@ export declare const ComboboxVirtualizer: <T extends AcceptableValue = Acceptabl
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             option: T;
             virtualizer: Virtualizer<HTMLElement, Element>;
             virtualItem: VirtualItem;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             option: T;
             virtualizer: Virtualizer<HTMLElement, Element>;
             virtualItem: VirtualItem;
@@ -3349,12 +3414,12 @@ export declare const ContextMenuSub: __VLS_WithTemplateSlots_62<DefineComponent<
 }>, {
 open: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -3494,7 +3559,7 @@ asChild: boolean;
 as: AsTag | Component;
 }> | null;
 }, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** The current date of the field */
         modelValue: DateValue | undefined;
         /** The date field segment contents */
@@ -3506,7 +3571,7 @@ as: AsTag | Component;
         isInvalid: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** The current date of the field */
         modelValue: DateValue | undefined;
         /** The date field segment contents */
@@ -3529,6 +3594,7 @@ declare type DateFieldRootContext = {
     readonly: Ref<boolean>;
     formatter: Formatter;
     hourCycle: HourCycle;
+    step: Ref<DateStep>;
     segmentValues: Ref<SegmentValueObj>;
     segmentContents: Ref<{
         part: SegmentPart;
@@ -3557,6 +3623,8 @@ export declare interface DateFieldRootProps extends PrimitiveProps, FormFieldPro
     modelValue?: DateValue | null;
     /** The hour cycle used for formatting times. Defaults to the local preference */
     hourCycle?: HourCycle;
+    /** The stepping interval for the time fields. Defaults to `1`. */
+    step?: DateStep;
     /** The granularity to use for formatting times. Defaults to day if a CalendarDate is provided, otherwise defaults to minute. The field will render segments for each part of the date up to and including the specified granularity */
     granularity?: Granularity;
     /** Whether or not to hide the time zone segment of the field */
@@ -3599,12 +3667,12 @@ declare interface DatePickerArrowProps extends PopoverArrowProps {
 
 export declare const DatePickerCalendar: __VLS_WithTemplateSlots_70<DefineComponent<    {}, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<{}> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, true, {}, any>, {
     default?(_: {
-        date: any;
-        grid: any;
-        weekDays: any;
-        weekStartsOn: any;
-        locale: any;
-        fixedWeeks: any;
+        date: DateValue;
+        grid: Grid<DateValue>[];
+        weekDays: string[];
+        weekStartsOn: 0 | 1 | 2 | 6 | 3 | 4 | 5;
+        locale: string;
+        fixedWeeks: boolean;
     }): any;
 }>;
 
@@ -3705,12 +3773,12 @@ export declare interface DatePickerHeaderProps extends CalendarHeaderProps {
 }
 
 export declare const DatePickerHeading: __VLS_WithTemplateSlots_82<DefineComponent<DatePickerHeadingProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<DatePickerHeadingProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
@@ -3906,6 +3974,7 @@ declare type DateRangeFieldRootContext = {
     readonly: Ref<boolean>;
     formatter: Formatter;
     hourCycle: HourCycle;
+    step: Ref<DateStep>;
     segmentValues: Record<DateRangeType, Ref<SegmentValueObj>>;
     segmentContents: Ref<{
         start: {
@@ -3940,6 +4009,8 @@ export declare interface DateRangeFieldRootProps extends PrimitiveProps, FormFie
     modelValue?: DateRange | null;
     /** The hour cycle used for formatting times. Defaults to the local preference */
     hourCycle?: HourCycle;
+    /** The stepping interval for the time fields. Defaults to `1`. */
+    step?: DateStep;
     /** The granularity to use for formatting times. Defaults to day if a CalendarDate is provided, otherwise defaults to minute. The field will render segments for each part of the date up to and including the specified granularity */
     granularity?: Granularity;
     /** Whether or not to hide the time zone segment of the field */
@@ -4090,12 +4161,12 @@ export declare interface DateRangePickerHeaderProps extends RangeCalendarHeaderP
 }
 
 export declare const DateRangePickerHeading: __VLS_WithTemplateSlots_104<DefineComponent<DateRangePickerHeadingProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<DateRangePickerHeadingProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
@@ -4150,6 +4221,7 @@ isDateDisabled: Matcher;
 isDateUnavailable: Matcher;
 isDateHighlightable: Matcher;
 allowNonContiguousRanges: boolean;
+maximumDays: number;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {
         modelValue: DateRange;
@@ -4193,6 +4265,7 @@ declare type DateRangePickerRootContext = {
     dir: Ref<Direction>;
     allowNonContiguousRanges: Ref<boolean>;
     fixedDate: Ref<'start' | 'end' | undefined>;
+    maximumDays?: Ref<number | undefined>;
 };
 
 export declare type DateRangePickerRootEmits = {
@@ -4204,7 +4277,7 @@ export declare type DateRangePickerRootEmits = {
     'update:startValue': [date: DateValue | undefined];
 };
 
-export declare type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges' | 'fixedDate'>;
+export declare type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges' | 'fixedDate' | 'maximumDays'>;
 
 export declare const DateRangePickerTrigger: __VLS_WithTemplateSlots_109<DefineComponent<DateRangePickerTriggerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<DateRangePickerTriggerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, {
     default?(_: {}): any;
@@ -4220,6 +4293,16 @@ declare type DateSegmentObj = {
 };
 
 declare type DateSegmentPart = (typeof DATE_SEGMENT_PARTS)[number];
+
+declare type DateStep = {
+    year?: number;
+    month?: number;
+    day?: number;
+    hour?: number;
+    minute?: number;
+    second?: number;
+    millisecond?: number;
+};
 
 export { DateValue }
 
@@ -4330,14 +4413,18 @@ defaultOpen: boolean;
 open: boolean;
 modal: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
+        /** Close the dialog */
+        close: () => void;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
+        /** Close the dialog */
+        close: () => void;
     }) => any;
 }>;
 
@@ -4563,12 +4650,12 @@ export declare const DropdownMenuRoot: __VLS_WithTemplateSlots_128<DefineCompone
 open: boolean;
 modal: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -4606,12 +4693,12 @@ export declare const DropdownMenuSub: __VLS_WithTemplateSlots_130<DefineComponen
 }>, {
 open: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -4816,7 +4903,7 @@ asChild: boolean;
 as: AsTag | Component;
 }> | null;
 }, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Whether the editable field is in edit mode */
         isEditing: boolean;
         /** The value of the editable field */
@@ -4831,7 +4918,7 @@ as: AsTag | Component;
         edit: () => void;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Whether the editable field is in edit mode */
         isEditing: boolean;
         /** The value of the editable field */
@@ -4938,7 +5025,7 @@ export declare type FlattenedItem<T> = {
     };
 };
 
-declare type FocusOutsideEvent = CustomEvent<{
+export declare type FocusOutsideEvent = CustomEvent<{
     originalEvent: FocusEvent;
 }>;
 
@@ -5134,12 +5221,12 @@ open: boolean;
 openDelay: number;
 closeDelay: number;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -5358,12 +5445,12 @@ asChild: boolean;
 as: AsTag | Component;
 }> | null;
 }, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string | undefined;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string | undefined;
     }) => any;
@@ -5471,12 +5558,12 @@ export declare const ListboxRoot: <T extends AcceptableValue = AcceptableValue>(
     }>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current active value */
             modelValue: T | T[] | undefined;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current active value */
             modelValue: T | T[] | undefined;
         }) => any;
@@ -5560,13 +5647,13 @@ export declare const ListboxVirtualizer: <T extends AcceptableValue = Acceptable
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             option: T;
             virtualizer: Virtualizer<HTMLElement, Element>;
             virtualItem: VirtualItem;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             option: T;
             virtualizer: Virtualizer<HTMLElement, Element>;
             virtualItem: VirtualItem;
@@ -5745,12 +5832,12 @@ export declare const MenubarRoot: __VLS_WithTemplateSlots_164<DefineComponent<Me
 }>, {
 loop: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string;
     }) => any;
@@ -5799,12 +5886,12 @@ export declare const MenubarSub: __VLS_WithTemplateSlots_166<DefineComponent<Men
 }>, {
 open: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -6032,13 +6119,6 @@ declare interface MountingOptions<Props> {
     attrs?: Record<string, unknown>;
 }
 
-export declare interface MultipleCalendarRootProps extends BaseCalendarRootProps {
-    /** The controlled checked state of the calendar. Can be bound as `v-model`. */
-    modelValue?: DateValue[] | undefined;
-    /** Whether or not multiple dates can be selected */
-    multiple: true;
-}
-
 export declare const NavigationMenuContent: __VLS_WithTemplateSlots_170<DefineComponent<NavigationMenuContentProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 escapeKeyDown: (event: KeyboardEvent) => any;
 pointerDownOutside: (event: PointerDownOutsideEvent) => any;
@@ -6184,12 +6264,12 @@ skipDelayDuration: number;
 disableClickTrigger: boolean;
 disableHoverTrigger: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string;
     }) => any;
@@ -6257,12 +6337,12 @@ export declare const NavigationMenuSub: __VLS_WithTemplateSlots_176<DefineCompon
 }>, {
 orientation: Orientation_2;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: string;
     }) => any;
@@ -6508,13 +6588,14 @@ as: AsTag | Component;
 }> | null;
 }, any>, {
     default?(_: {
-        modelValue: number;
+        modelValue: number | undefined;
         textValue: string;
+        readonly: boolean;
     }): any;
 }>;
 
 declare interface NumberFieldRootContext {
-    modelValue: Ref<number>;
+    modelValue: Ref<number | undefined>;
     handleIncrease: (multiplier?: number) => void;
     handleDecrease: (multiplier?: number) => void;
     handleMinMaxValue: (type: 'min' | 'max') => void;
@@ -6525,7 +6606,9 @@ declare interface NumberFieldRootContext {
     validate: (val: string) => boolean;
     applyInputValue: (val: string) => void;
     disabled: Ref<boolean>;
+    readonly: Ref<boolean>;
     disableWheelChange: Ref<boolean>;
+    invertWheelChange: Ref<boolean>;
     max: Ref<number | undefined>;
     min: Ref<number | undefined>;
     isDecreaseDisabled: Ref<boolean>;
@@ -6554,8 +6637,12 @@ export declare interface NumberFieldRootProps extends PrimitiveProps, FormFieldP
     locale?: string;
     /** When `true`, prevents the user from interacting with the Number Field. */
     disabled?: boolean;
+    /** When `true`, the Number Field is read-only. */
+    readonly?: boolean;
     /** When `true`, prevents the value from changing on wheel scroll. */
     disableWheelChange?: boolean;
+    /** When `true`, inverts the direction of the wheel change. */
+    invertWheelChange?: boolean;
     /** Id of the element */
     id?: string;
 }
@@ -6590,7 +6677,7 @@ export declare interface PaginationLastProps extends PrimitiveProps {
 }
 
 export declare const PaginationList: __VLS_WithTemplateSlots_186<DefineComponent<PaginationListProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<PaginationListProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Pages item */
         items: ({
             type: "ellipsis";
@@ -6600,7 +6687,7 @@ export declare const PaginationList: __VLS_WithTemplateSlots_186<DefineComponent
         })[];
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Pages item */
         items: ({
             type: "ellipsis";
@@ -6654,14 +6741,14 @@ total: number;
 siblingCount: number;
 showEdges: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current page state */
         page: number;
         /** Number of pages */
         pageCount: number;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current page state */
         page: number;
         /** Number of pages */
@@ -6816,12 +6903,12 @@ export declare const PinInputRoot: <Type extends PinInputType = "text">(__VLS_pr
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: PinInputValue<Type>;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: PinInputValue<Type>;
         }) => any;
@@ -6843,6 +6930,7 @@ declare interface PinInputRootContext<Type extends PinInputType = 'text'> {
     isCompleted: ComputedRef<boolean>;
     inputElements?: Ref<Set<HTMLInputElement>>;
     onInputElementChange: (el: HTMLInputElement) => void;
+    isNumericMode: ComputedRef<boolean>;
 }
 
 export declare type PinInputRootEmits<Type extends PinInputType = 'text'> = {
@@ -6875,7 +6963,7 @@ declare type PinInputType = 'text' | 'number';
 
 declare type PinInputValue<Type extends PinInputType = 'text'> = Type extends 'number' ? number[] : string[];
 
-declare type PointerDownOutsideEvent = CustomEvent<{
+export declare type PointerDownOutsideEvent = CustomEvent<{
     originalEvent: PointerEvent;
 }>;
 
@@ -6972,12 +7060,12 @@ defaultOpen: boolean;
 open: boolean;
 modal: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -7245,14 +7333,14 @@ export declare const ProgressRoot: __VLS_WithTemplateSlots_200<DefineComponent<P
 max: number;
 getValueLabel: (value: number | null | undefined, max: number) => string | undefined;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: number | null | undefined;
         /** Whether the progress is indeterminate */
         indeterminate: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: number | null | undefined;
         /** Whether the progress is indeterminate */
@@ -7279,11 +7367,15 @@ export declare interface ProgressRootProps extends PrimitiveProps {
     /** The maximum progress value. */
     max?: number;
     /**
-     * A function to get the accessible label text representing the current value in a human-readable format.
+     * A function to get the accessible label text in a human-readable format.
      *
      *  If not provided, the value label will be read as the numeric value as a percentage of the max value.
      */
     getValueLabel?: (value: number | null | undefined, max: number) => string | undefined;
+    /**
+     * A function to get the accessible value text representing the current value in a human-readable format.
+     */
+    getValueText?: (value: number | null | undefined, max: number) => string | undefined;
 }
 
 declare type ProgressState = 'indeterminate' | 'loading' | 'complete';
@@ -7310,7 +7402,7 @@ onSelect?: ((event: RadioGroupItemSelectEvent) => any) | undefined;
 disabled: boolean;
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current checked state */
         checked: boolean;
         /** Required state */
@@ -7319,7 +7411,7 @@ as: AsTag | Component;
         disabled: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current checked state */
         checked: boolean;
         /** Required state */
@@ -7352,12 +7444,12 @@ loop: boolean;
 required: boolean;
 orientation: DataOrientation;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: AcceptableValue | undefined;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current input values */
         modelValue: AcceptableValue | undefined;
     }) => any;
@@ -7463,7 +7555,7 @@ export declare interface RangeCalendarCellTriggerProps extends PrimitiveProps {
 }
 
 declare interface RangeCalendarCellTriggerSlot {
-    default: (props: {
+    default?: (props: {
         /** Current day */
         dayValue: string;
         /** Current disable state */
@@ -7548,12 +7640,12 @@ export declare interface RangeCalendarHeaderProps extends PrimitiveProps {
 export declare const RangeCalendarHeading: __VLS_WithTemplateSlots_212<DefineComponent<RangeCalendarHeadingProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<RangeCalendarHeadingProps> & Readonly<{}>, {
 as: AsTag | Component;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current month and year */
         headingValue: string;
     }) => any;
@@ -7572,7 +7664,7 @@ export declare interface RangeCalendarNextProps extends PrimitiveProps {
 }
 
 declare interface RangeCalendarNextSlot {
-    default: (props: {
+    default?: (props: {
         /** Current disable state */
         disabled: boolean;
     }) => any;
@@ -7588,7 +7680,7 @@ export declare interface RangeCalendarPrevProps extends PrimitiveProps {
 }
 
 declare interface RangeCalendarPrevSlot {
-    default: (props: {
+    default?: (props: {
         /** Current disable state */
         disabled: boolean;
     }) => any;
@@ -7617,8 +7709,10 @@ readonly: boolean;
 initialFocus: boolean;
 isDateDisabled: Matcher;
 isDateUnavailable: Matcher;
+disableDaysOutsideCurrentView: boolean;
 isDateHighlightable: Matcher;
 allowNonContiguousRanges: boolean;
+maximumDays: number;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {
 primitiveElement: CreateComponentPublicInstanceWithMixins<Readonly<ExtractPropTypes<    {
 asChild: {
@@ -7657,7 +7751,7 @@ asChild: boolean;
 as: AsTag | Component;
 }> | null;
 }, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** The current date of the placeholder */
         date: DateValue;
         /** The grid of dates */
@@ -7674,7 +7768,7 @@ as: AsTag | Component;
         modelValue: DateRange;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** The current date of the placeholder */
         date: DateValue;
         /** The grid of dates */
@@ -7718,6 +7812,7 @@ declare type RangeCalendarRootContext = {
     isDateUnavailable?: Matcher;
     isDateHighlightable?: Matcher;
     isOutsideVisibleView: (date: DateValue) => boolean;
+    allowNonContiguousRanges: Ref<boolean>;
     highlightedRange: Ref<{
         start: DateValue;
         end: DateValue;
@@ -7735,7 +7830,9 @@ declare type RangeCalendarRootContext = {
     isPrevButtonDisabled: (prevPageFunc?: (date: DateValue) => DateValue) => boolean;
     formatter: Formatter;
     dir: Ref<Direction>;
+    disableDaysOutsideCurrentView: Ref<boolean>;
     fixedDate: Ref<'start' | 'end' | undefined>;
+    maximumDays: Ref<number | undefined>;
 };
 
 export declare type RangeCalendarRootEmits = {
@@ -7762,6 +7859,8 @@ export declare interface RangeCalendarRootProps extends PrimitiveProps {
     pagedNavigation?: boolean;
     /** Whether or not to prevent the user from deselecting a date without selecting another date first */
     preventDeselect?: boolean;
+    /** The maximum number of days that can be selected in a range */
+    maximumDays?: number;
     /** The day of the week to start the calendar on */
     weekStartsOn?: 0 | 1 | 2 | 3 | 4 | 5 | 6;
     /** The format to use for the weekday strings provided via the weekdays slot prop */
@@ -7796,6 +7895,8 @@ export declare interface RangeCalendarRootProps extends PrimitiveProps {
     nextPage?: (placeholder: DateValue) => DateValue;
     /** A function that returns the previous page of the calendar. It receives the current placeholder as an argument inside the component. */
     prevPage?: (placeholder: DateValue) => DateValue;
+    /** Whether or not to disable days outside the current view. */
+    disableDaysOutsideCurrentView?: boolean;
     /** Which part of the range should be fixed */
     fixedDate?: 'start' | 'end';
 }
@@ -8220,14 +8321,14 @@ export declare const SelectRoot: <T extends AcceptableValue = AcceptableValue>(_
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: T | T[] | undefined;
             /** Current open state */
             open: boolean;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: T | T[] | undefined;
             /** Current open state */
@@ -8362,13 +8463,6 @@ declare type Side = (typeof SIDE_OPTIONS)[number];
 
 declare const SIDE_OPTIONS: readonly ["top", "right", "bottom", "left"];
 
-export declare interface SingleCalendarRootProps extends BaseCalendarRootProps {
-    /** The controlled checked state of the calendar. Can be bound as `v-model`. */
-    modelValue?: DateValue | undefined;
-    /** Whether or not multiple dates can be selected */
-    multiple?: false;
-}
-
 declare interface SingleOrMultipleProps<T = AcceptableValue | AcceptableValue[]> {
     /**
      * Determines whether a "single" or "multiple" items can be selected at a time.
@@ -8419,12 +8513,12 @@ inverted: boolean;
 minStepsBetweenThumbs: number;
 thumbAlignment: ThumbAlignment;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current slider values */
         modelValue: number[] | null;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current slider values */
         modelValue: number[] | null;
     }) => any;
@@ -8518,12 +8612,12 @@ storage: PanelGroupStorage;
 autoSaveId: string | null;
 keyboardResizeBy: number | null;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current size of layout */
         layout: number[];
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current size of layout */
         layout: number[];
     }) => any;
@@ -8569,7 +8663,7 @@ onResize?: ((size: number, prevSize: number | undefined) => any) | undefined;
 onCollapse?: (() => any) | undefined;
 onExpand?: (() => any) | undefined;
 }>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Is the panel collapsed */
         isCollapsed: boolean;
         /** Is the panel expanded */
@@ -8582,7 +8676,7 @@ onExpand?: (() => any) | undefined;
         resize: (size: number) => void;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Is the panel collapsed */
         isCollapsed: boolean;
         /** Is the panel expanded */
@@ -8658,12 +8752,12 @@ export declare interface StepperDescriptionProps extends PrimitiveProps {
 }
 
 export declare const StepperIndicator: __VLS_WithTemplateSlots_246<DefineComponent<StepperIndicatorProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<StepperIndicatorProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current step */
         step: number;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current step */
         step: number;
     }) => any;
@@ -8676,12 +8770,12 @@ export declare const StepperItem: __VLS_WithTemplateSlots_247<DefineComponent<St
 disabled: boolean;
 completed: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** The current state of the stepper item */
         state: StepperState;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** The current state of the stepper item */
         state: StepperState;
     }) => any;
@@ -8705,7 +8799,19 @@ export declare interface StepperItemProps extends PrimitiveProps {
     completed?: boolean;
 }
 
-export declare const StepperRoot: __VLS_WithTemplateSlots_248<DefineComponent<StepperRootProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
+export declare const StepperRoot: __VLS_WithTemplateSlots_248<DefineComponent<StepperRootProps, {
+goToStep: (step: number) => void;
+nextStep: () => void;
+prevStep: () => void;
+modelValue: WritableComputedRef<number | undefined, number | undefined>;
+totalSteps: ComputedRef<number>;
+isNextDisabled: ComputedRef<boolean>;
+isPrevDisabled: ComputedRef<boolean>;
+isFirstStep: ComputedRef<boolean>;
+isLastStep: ComputedRef<boolean>;
+hasNext: () => boolean;
+hasPrev: () => boolean;
+}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {
 "update:modelValue": (payload: number | undefined) => any;
 }, string, PublicProps, Readonly<StepperRootProps> & Readonly<{
 "onUpdate:modelValue"?: ((payload: number | undefined) => any) | undefined;
@@ -8714,7 +8820,7 @@ defaultValue: number;
 orientation: DataOrientation;
 linear: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current step */
         modelValue: number | undefined;
         /** Total number of steps */
@@ -8733,9 +8839,13 @@ linear: boolean;
         nextStep: () => void;
         /** Go to the previous step */
         prevStep: () => void;
+        /** Whether or not there is a next step */
+        hasNext: () => boolean;
+        /** Whether or not there is a previous step */
+        hasPrev: () => boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current step */
         modelValue: number | undefined;
         /** Total number of steps */
@@ -8754,6 +8864,10 @@ linear: boolean;
         nextStep: () => void;
         /** Go to the previous step */
         prevStep: () => void;
+        /** Whether or not there is a next step */
+        hasNext: () => boolean;
+        /** Whether or not there is a previous step */
+        hasPrev: () => boolean;
     }) => any;
 }>;
 
@@ -8844,12 +8958,12 @@ value: string;
 as: AsTag | Component;
 modelValue: boolean | null;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current value */
         modelValue: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current value */
         modelValue: boolean;
     }) => any;
@@ -8926,12 +9040,12 @@ export declare const TabsRoot: <T extends StringOrNumber = StringOrNumber>(__VLS
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: T | undefined;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: T | undefined;
         }) => any;
@@ -9072,12 +9186,12 @@ export declare const TagsInputRoot: <T extends AcceptableInputValue = string>(__
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: AcceptableInputValue[];
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             /** Current input values */
             modelValue: AcceptableInputValue[];
         }) => any;
@@ -9236,7 +9350,7 @@ asChild: boolean;
 as: AsTag | Component;
 }> | null;
 }, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** The current time of the field */
         modelValue: TimeValue | undefined;
         /** The time field segment contents */
@@ -9248,7 +9362,7 @@ as: AsTag | Component;
         isInvalid: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** The current time of the field */
         modelValue: TimeValue | undefined;
         /** The time field segment contents */
@@ -9270,6 +9384,7 @@ declare type TimeFieldRootContext = {
     readonly: Ref<boolean>;
     formatter: Formatter;
     hourCycle: HourCycle;
+    step: Ref<DateStep>;
     segmentValues: Ref<SegmentValueObj>;
     segmentContents: Ref<{
         part: SegmentPart;
@@ -9298,6 +9413,8 @@ export declare interface TimeFieldRootProps extends PrimitiveProps, FormFieldPro
     modelValue?: TimeValue | null;
     /** The hour cycle used for formatting times. Defaults to the local preference */
     hourCycle?: HourCycle;
+    /** The stepping interval for the time fields. Defaults to `1`. */
+    step?: DateStep;
     /** The granularity to use for formatting times. Defaults to minute if a Time is provided, otherwise defaults to minute. The field will render segments for each part of the date up to and including the specified granularity */
     granularity?: 'hour' | 'minute' | 'second';
     /** Whether or not to hide the time zone segment of the field */
@@ -9434,7 +9551,7 @@ as: AsTag | Component;
 defaultOpen: boolean;
 open: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
         /** Remaining time (in ms) */
@@ -9443,7 +9560,7 @@ open: boolean;
         duration: number;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
         /** Remaining time (in ms) */
@@ -9543,7 +9660,7 @@ disabled: boolean;
 as: AsTag | Component;
 modelValue: boolean | null;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current value */
         modelValue: boolean;
         /** Current state */
@@ -9554,7 +9671,7 @@ modelValue: boolean | null;
         disabled: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current value */
         modelValue: boolean;
         /** Current state */
@@ -9598,12 +9715,12 @@ disabled: boolean;
 loop: boolean;
 rovingFocus: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current toggle values */
         modelValue: AcceptableValue | AcceptableValue[] | undefined;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current toggle values */
         modelValue: AcceptableValue | AcceptableValue[] | undefined;
     }) => any;
@@ -9876,12 +9993,12 @@ disableHoverableContent: boolean;
 disableClosingTrigger: boolean;
 ignoreNonKeyboardFocus: boolean;
 }, {}, {}, {}, string, ComponentProvideOptions, false, {}, any>, Readonly<{
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         /** Current open state */
         open: boolean;
     }) => any;
@@ -9958,7 +10075,7 @@ export declare const TreeItem: <T extends Record<string, any>>(__VLS_props: NonN
     }>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             isExpanded: boolean;
             isSelected: boolean;
             isIndeterminate: boolean | undefined;
@@ -9966,7 +10083,7 @@ export declare const TreeItem: <T extends Record<string, any>>(__VLS_props: NonN
             handleSelect: () => void;
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             isExpanded: boolean;
             isSelected: boolean;
             isIndeterminate: boolean | undefined;
@@ -10015,13 +10132,13 @@ export declare const TreeRoot: <T extends Record<string, any>, U extends Record<
     expose(exposed: ShallowUnwrapRef<    {}>): void;
     attrs: any;
     slots: Readonly<{
-        default: (props: {
+        default?: (props: {
             flattenItems: FlattenedItem<T>[];
             modelValue: M extends true ? U[] : U;
             expanded: string[];
         }) => any;
     }> & {
-        default: (props: {
+        default?: (props: {
             flattenItems: FlattenedItem<T>[];
             modelValue: M extends true ? U[] : U;
             expanded: string[];
@@ -10087,13 +10204,13 @@ export declare interface TreeRootProps<T = Record<string, any>, U extends Record
 }
 
 export declare const TreeVirtualizer: __VLS_WithTemplateSlots_288<DefineComponent<TreeVirtualizerProps, {}, {}, {}, {}, ComponentOptionsMixin, ComponentOptionsMixin, {}, string, PublicProps, Readonly<TreeVirtualizerProps> & Readonly<{}>, {}, {}, {}, {}, string, ComponentProvideOptions, false, {}, HTMLDivElement>, Readonly<{
-    default: (props: {
+    default?: (props: {
         item: FlattenedItem<Record<string, any>>;
         virtualizer: Virtualizer<Element | Window, Element>;
         virtualItem: VirtualItem;
     }) => any;
 }> & {
-    default: (props: {
+    default?: (props: {
         item: FlattenedItem<Record<string, any>>;
         virtualizer: Virtualizer<Element | Window, Element>;
         virtualItem: VirtualItem;
@@ -10121,7 +10238,7 @@ export declare function useBodyScrollLock(initialState?: boolean | undefined): W
  *
  * @see [DateFormatter](https://react-spectrum.adobe.com/internationalized/date/DateFormatter.html)
  */
-export declare function useDateFormatter(initialLocale: string): Formatter;
+export declare function useDateFormatter(initialLocale: string, opts?: DateFormatterOptions): Formatter;
 
 /**
  * The `useEmitAsProps` function is a TypeScript utility that converts emitted events into props for a

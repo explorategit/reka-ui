@@ -10,6 +10,7 @@ const shared_useFormControl = require('../shared/useFormControl.cjs');
 const shared_clamp = require('../shared/clamp.cjs');
 const Primitive_Primitive = require('../Primitive/Primitive.cjs');
 const VisuallyHidden_VisuallyHiddenInput = require('../VisuallyHidden/VisuallyHiddenInput.cjs');
+const shared_nullish = require('../shared/nullish.cjs');
 
 const [injectNumberFieldRootContext, provideNumberFieldRootContext] = shared_createContext.createContext("NumberFieldRoot");
 const __default__ = {
@@ -33,7 +34,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     formatOptions: {},
     locale: {},
     disabled: { type: Boolean },
+    readonly: { type: Boolean },
     disableWheelChange: { type: Boolean },
+    invertWheelChange: { type: Boolean },
     id: {},
     asChild: { type: Boolean },
     as: { default: "div" },
@@ -44,7 +47,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
   setup(__props, { emit: __emit }) {
     const props = __props;
     const emits = __emit;
-    const { disabled, disableWheelChange, min, max, step, stepSnapping, formatOptions, id, locale: propLocale } = vue.toRefs(props);
+    const { disabled, readonly, disableWheelChange, invertWheelChange, min, max, step, stepSnapping, formatOptions, id, locale: propLocale } = vue.toRefs(props);
     const modelValue = core.useVModel(props, "modelValue", emits, {
       defaultValue: props.defaultValue,
       passive: props.modelValue === void 0
@@ -54,16 +57,16 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const isFormControl = shared_useFormControl.useFormControl(currentElement);
     const inputEl = vue.ref();
     const isDecreaseDisabled = vue.computed(
-      () => clampInputValue(modelValue.value) === min.value || (min.value && !isNaN(modelValue.value) ? NumberField_utils.handleDecimalOperation("-", modelValue.value, step.value) < min.value : false)
+      () => !shared_nullish.isNullish(modelValue.value) && (clampInputValue(modelValue.value) === min.value || min.value && !isNaN(modelValue.value) ? NumberField_utils.handleDecimalOperation("-", modelValue.value, step.value) < min.value : false)
     );
     const isIncreaseDisabled = vue.computed(
-      () => clampInputValue(modelValue.value) === max.value || (max.value && !isNaN(modelValue.value) ? NumberField_utils.handleDecimalOperation("+", modelValue.value, step.value) > max.value : false)
+      () => !shared_nullish.isNullish(modelValue.value) && (clampInputValue(modelValue.value) === max.value || max.value && !isNaN(modelValue.value) ? NumberField_utils.handleDecimalOperation("+", modelValue.value, step.value) > max.value : false)
     );
     function handleChangingValue(type, multiplier = 1) {
       inputEl.value?.focus();
-      const currentInputValue = numberParser.parse(inputEl.value?.value ?? "");
-      if (props.disabled)
+      if (props.disabled || props.readonly)
         return;
+      const currentInputValue = numberParser.parse(inputEl.value?.value ?? "");
       if (isNaN(currentInputValue)) {
         modelValue.value = min.value ?? 0;
       } else {
@@ -92,7 +95,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       return hasDecimals ? "decimal" : "numeric";
     });
     const textValueFormatter = NumberField_utils.useNumberFormatter(locale, formatOptions);
-    const textValue = vue.computed(() => isNaN(modelValue.value) ? "" : textValueFormatter.format(modelValue.value));
+    const textValue = vue.computed(() => shared_nullish.isNullish(modelValue.value) || isNaN(modelValue.value) ? "" : textValueFormatter.format(modelValue.value));
     function validate(val) {
       return numberParser.isValidPartialNumber(val, min.value, max.value);
     }
@@ -111,7 +114,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     }
     function applyInputValue(val) {
       const parsedValue = numberParser.parse(val);
-      modelValue.value = clampInputValue(parsedValue);
+      modelValue.value = isNaN(parsedValue) ? void 0 : clampInputValue(parsedValue);
       if (!val.length)
         return setInputValue(val);
       if (isNaN(parsedValue))
@@ -127,10 +130,12 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       inputEl,
       onInputElement: (el) => inputEl.value = el,
       textValue,
+      readonly,
       validate,
       applyInputValue,
       disabled,
       disableWheelChange,
+      invertWheelChange,
       max,
       min,
       isDecreaseDisabled,
@@ -144,12 +149,14 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         role: "group",
         as: _ctx.as,
         "as-child": _ctx.asChild,
-        "data-disabled": vue.unref(disabled) ? "" : void 0
+        "data-disabled": vue.unref(disabled) ? "" : void 0,
+        "data-readonly": vue.unref(readonly) ? "" : void 0
       }), {
         default: vue.withCtx(() => [
           vue.renderSlot(_ctx.$slots, "default", {
             modelValue: vue.unref(modelValue),
-            textValue: textValue.value
+            textValue: textValue.value,
+            readonly: vue.unref(readonly)
           }),
           vue.unref(isFormControl) && _ctx.name ? (vue.openBlock(), vue.createBlock(vue.unref(VisuallyHidden_VisuallyHiddenInput._sfc_main), {
             key: 0,
@@ -161,7 +168,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           }, null, 8, ["value", "name", "disabled", "required"])) : vue.createCommentVNode("", true)
         ]),
         _: 3
-      }, 16, ["as", "as-child", "data-disabled"]);
+      }, 16, ["as", "as-child", "data-disabled", "data-readonly"]);
     };
   }
 });

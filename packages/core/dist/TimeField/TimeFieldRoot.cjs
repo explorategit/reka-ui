@@ -14,6 +14,7 @@ const date_parser = require('../date/parser.cjs');
 const Primitive_Primitive = require('../Primitive/Primitive.cjs');
 const VisuallyHidden_VisuallyHidden = require('../VisuallyHidden/VisuallyHidden.cjs');
 const shared_useKbd = require('../shared/useKbd.cjs');
+const date_utils = require('../date/utils.cjs');
 const shared_nullish = require('../shared/nullish.cjs');
 
 const [injectTimeFieldRootContext, provideTimeFieldRootContext] = shared_createContext.createContext("TimeFieldRoot");
@@ -40,6 +41,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     placeholder: { default: void 0 },
     modelValue: {},
     hourCycle: {},
+    step: {},
     granularity: {},
     hideTimeZone: { type: Boolean },
     maxValue: {},
@@ -61,9 +63,12 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const { disabled, readonly, granularity, defaultValue, minValue, maxValue, dir: propDir, locale: propLocale } = vue.toRefs(props);
     const locale = shared_useLocale.useLocale(propLocale);
     const dir = shared_useDirection.useDirection(propDir);
-    const formatter = shared_useDateFormatter.useDateFormatter(locale.value);
+    const formatter = shared_useDateFormatter.useDateFormatter(locale.value, {
+      hourCycle: date_utils.normalizeHourCycle(props.hourCycle)
+    });
     const { primitiveElement, currentElement: parentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
     const segmentElements = vue.ref(/* @__PURE__ */ new Set());
+    const step = vue.computed(() => date_utils.normalizeDateStep(props));
     const convertedMinValue = vue.computed(() => minValue.value ? convertValue(minValue.value) : void 0);
     const convertedMaxValue = vue.computed(() => maxValue.value ? convertValue(maxValue.value) : void 0);
     vue.onMounted(() => {
@@ -191,6 +196,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       disabled,
       formatter,
       hourCycle: props.hourCycle,
+      step,
       readonly,
       segmentValues,
       isInvalid,

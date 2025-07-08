@@ -34,7 +34,6 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       day: "numeric",
       year: "numeric"
     }));
-    const isDisabled = vue.computed(() => rootContext.isDateDisabled(props.day));
     const isUnavailable = vue.computed(() => rootContext.isDateUnavailable?.(props.day) ?? false);
     const isSelectedDate = vue.computed(() => rootContext.isSelected(props.day));
     const isSelectionStart = vue.computed(() => rootContext.isSelectionStart(props.day));
@@ -42,6 +41,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const isHighlightStart = vue.computed(() => rootContext.isHighlightedStart(props.day));
     const isHighlightEnd = vue.computed(() => rootContext.isHighlightedEnd(props.day));
     const isHighlighted = vue.computed(() => rootContext.highlightedRange.value ? date_comparators.isBetweenInclusive(props.day, rootContext.highlightedRange.value.start, rootContext.highlightedRange.value.end) : false);
+    const allowNonContiguousRanges = vue.computed(() => rootContext.allowNonContiguousRanges.value);
     const isDateToday = vue.computed(() => {
       return date.isToday(props.day, date.getLocalTimeZone());
     });
@@ -51,6 +51,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const isOutsideVisibleView = vue.computed(
       () => rootContext.isOutsideVisibleView(props.day)
     );
+    const isDisabled = vue.computed(() => rootContext.isDateDisabled(props.day) || rootContext.disableDaysOutsideCurrentView.value && isOutsideView.value);
     const dayValue = vue.computed(() => props.day.day.toLocaleString(rootContext.locale.value));
     const isFocusedDate = vue.computed(() => {
       return !rootContext.disabled.value && date.isSameDay(props.day, rootContext.placeholder.value);
@@ -103,14 +104,18 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       }
     }
     function handleClick(e) {
+      if (isDisabled.value)
+        return;
       changeDate(e, props.day);
     }
     function handleFocus() {
-      if (rootContext.isDateDisabled(props.day) || rootContext.isDateUnavailable?.(props.day))
+      if (isDisabled.value || rootContext.isDateUnavailable?.(props.day))
         return;
       rootContext.focusedValue.value = props.day.copy();
     }
     function handleArrowKey(e) {
+      if (isDisabled.value)
+        return;
       e.preventDefault();
       e.stopPropagation();
       const parentElement = rootContext.parentElement.value;
@@ -207,14 +212,14 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         role: "button",
         "aria-label": labelText.value,
         "data-reka-calendar-cell-trigger": "",
-        "aria-selected": isSelectedDate.value && !isUnavailable.value ? true : void 0,
+        "aria-selected": isSelectedDate.value && (allowNonContiguousRanges.value || !isUnavailable.value) ? true : void 0,
         "aria-disabled": isDisabled.value || isUnavailable.value ? true : void 0,
-        "data-highlighted": isHighlighted.value && !isUnavailable.value ? "" : void 0,
+        "data-highlighted": isHighlighted.value && (allowNonContiguousRanges.value || !isUnavailable.value) ? "" : void 0,
         "data-selection-start": isSelectionStart.value ? true : void 0,
         "data-selection-end": isSelectionEnd.value ? true : void 0,
         "data-highlighted-start": isHighlightStart.value ? true : void 0,
         "data-highlighted-end": isHighlightEnd.value ? true : void 0,
-        "data-selected": isSelectedDate.value && !isUnavailable.value ? true : void 0,
+        "data-selected": isSelectedDate.value && (allowNonContiguousRanges.value || !isUnavailable.value) ? true : void 0,
         "data-outside-visible-view": isOutsideVisibleView.value ? "" : void 0,
         "data-value": _ctx.day.toString(),
         "data-disabled": isDisabled.value ? "" : void 0,
@@ -237,7 +242,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
             outsideView: isOutsideView.value,
             outsideVisibleView: isOutsideVisibleView.value,
             unavailable: isUnavailable.value,
-            highlighted: isHighlighted.value && !isUnavailable.value,
+            highlighted: isHighlighted.value && (allowNonContiguousRanges.value || !isUnavailable.value),
             highlightedStart: isHighlightStart.value,
             highlightedEnd: isHighlightEnd.value,
             selectionStart: isSelectionStart.value,

@@ -32,7 +32,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       day: "numeric",
       year: "numeric"
     }));
-    const isDisabled = computed(() => rootContext.isDateDisabled(props.day));
     const isUnavailable = computed(() => rootContext.isDateUnavailable?.(props.day) ?? false);
     const isSelectedDate = computed(() => rootContext.isSelected(props.day));
     const isSelectionStart = computed(() => rootContext.isSelectionStart(props.day));
@@ -40,6 +39,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const isHighlightStart = computed(() => rootContext.isHighlightedStart(props.day));
     const isHighlightEnd = computed(() => rootContext.isHighlightedEnd(props.day));
     const isHighlighted = computed(() => rootContext.highlightedRange.value ? isBetweenInclusive(props.day, rootContext.highlightedRange.value.start, rootContext.highlightedRange.value.end) : false);
+    const allowNonContiguousRanges = computed(() => rootContext.allowNonContiguousRanges.value);
     const isDateToday = computed(() => {
       return isToday(props.day, getLocalTimeZone());
     });
@@ -49,6 +49,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const isOutsideVisibleView = computed(
       () => rootContext.isOutsideVisibleView(props.day)
     );
+    const isDisabled = computed(() => rootContext.isDateDisabled(props.day) || rootContext.disableDaysOutsideCurrentView.value && isOutsideView.value);
     const dayValue = computed(() => props.day.day.toLocaleString(rootContext.locale.value));
     const isFocusedDate = computed(() => {
       return !rootContext.disabled.value && isSameDay(props.day, rootContext.placeholder.value);
@@ -101,14 +102,18 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       }
     }
     function handleClick(e) {
+      if (isDisabled.value)
+        return;
       changeDate(e, props.day);
     }
     function handleFocus() {
-      if (rootContext.isDateDisabled(props.day) || rootContext.isDateUnavailable?.(props.day))
+      if (isDisabled.value || rootContext.isDateUnavailable?.(props.day))
         return;
       rootContext.focusedValue.value = props.day.copy();
     }
     function handleArrowKey(e) {
+      if (isDisabled.value)
+        return;
       e.preventDefault();
       e.stopPropagation();
       const parentElement = rootContext.parentElement.value;
@@ -205,14 +210,14 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         role: "button",
         "aria-label": labelText.value,
         "data-reka-calendar-cell-trigger": "",
-        "aria-selected": isSelectedDate.value && !isUnavailable.value ? true : void 0,
+        "aria-selected": isSelectedDate.value && (allowNonContiguousRanges.value || !isUnavailable.value) ? true : void 0,
         "aria-disabled": isDisabled.value || isUnavailable.value ? true : void 0,
-        "data-highlighted": isHighlighted.value && !isUnavailable.value ? "" : void 0,
+        "data-highlighted": isHighlighted.value && (allowNonContiguousRanges.value || !isUnavailable.value) ? "" : void 0,
         "data-selection-start": isSelectionStart.value ? true : void 0,
         "data-selection-end": isSelectionEnd.value ? true : void 0,
         "data-highlighted-start": isHighlightStart.value ? true : void 0,
         "data-highlighted-end": isHighlightEnd.value ? true : void 0,
-        "data-selected": isSelectedDate.value && !isUnavailable.value ? true : void 0,
+        "data-selected": isSelectedDate.value && (allowNonContiguousRanges.value || !isUnavailable.value) ? true : void 0,
         "data-outside-visible-view": isOutsideVisibleView.value ? "" : void 0,
         "data-value": _ctx.day.toString(),
         "data-disabled": isDisabled.value ? "" : void 0,
@@ -235,7 +240,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
             outsideView: isOutsideView.value,
             outsideVisibleView: isOutsideVisibleView.value,
             unavailable: isUnavailable.value,
-            highlighted: isHighlighted.value && !isUnavailable.value,
+            highlighted: isHighlighted.value && (allowNonContiguousRanges.value || !isUnavailable.value),
             highlightedStart: isHighlightStart.value,
             highlightedEnd: isHighlightEnd.value,
             selectionStart: isSelectionStart.value,

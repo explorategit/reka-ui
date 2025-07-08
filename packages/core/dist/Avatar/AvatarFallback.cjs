@@ -1,6 +1,7 @@
 'use strict';
 
 const vue = require('vue');
+const shared = require('@vueuse/shared');
 const Avatar_AvatarRoot = require('./AvatarRoot.cjs');
 const shared_useForwardExpose = require('../shared/useForwardExpose.cjs');
 const Primitive_Primitive = require('../Primitive/Primitive.cjs');
@@ -24,7 +25,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     shared_useForwardExpose.useForwardExpose();
     const canRender = vue.ref(props.delayMs === void 0);
     vue.watchEffect((onCleanup) => {
-      if (props.delayMs) {
+      if (props.delayMs && shared.isClient) {
         const timerId = window.setTimeout(() => {
           canRender.value = true;
         }, props.delayMs);

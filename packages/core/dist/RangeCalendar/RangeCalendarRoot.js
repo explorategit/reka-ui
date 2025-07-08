@@ -35,6 +35,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     allowNonContiguousRanges: { type: Boolean, default: false },
     pagedNavigation: { type: Boolean, default: false },
     preventDeselect: { type: Boolean, default: false },
+    maximumDays: { default: void 0 },
     weekStartsOn: { default: 0 },
     weekdayFormat: { default: "narrow" },
     calendarLabel: {},
@@ -52,6 +53,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     dir: {},
     nextPage: {},
     prevPage: {},
+    disableDaysOutsideCurrentView: { type: Boolean, default: false },
     fixedDate: {},
     asChild: { type: Boolean },
     as: { default: "div" }
@@ -81,7 +83,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       nextPage: propsNextPage,
       prevPage: propsPrevPage,
       allowNonContiguousRanges,
-      fixedDate
+      disableDaysOutsideCurrentView,
+      fixedDate,
+      maximumDays
     } = toRefs(props);
     const { primitiveElement, currentElement: parentElement } = usePrimitiveElement();
     const dir = useDirection(propDir);
@@ -93,7 +97,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       defaultValue: props.defaultValue ?? { start: void 0, end: void 0 },
       passive: props.modelValue === void 0
     });
-    const currentModelValue = computed(() => isNullish(modelValue.value) ? { start: void 0, end: void 0 } : modelValue.value);
+    const currentModelValue = computed(
+      () => isNullish(modelValue.value) ? { start: void 0, end: void 0 } : modelValue.value
+    );
     const defaultDate = getDefaultDate({
       defaultPlaceholder: props.placeholder,
       defaultValue: currentModelValue.value.start,
@@ -146,7 +152,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       isSelectionStart,
       isSelectionEnd,
       isHighlightedStart,
-      isHighlightedEnd
+      isHighlightedEnd,
+      isDateDisabled: rangeIsDateDisabled
     } = useRangeCalendarState({
       start: startValue,
       end: endValue,
@@ -155,7 +162,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       isDateHighlightable: propsIsDateHighlightable.value,
       focusedValue,
       allowNonContiguousRanges,
-      fixedDate
+      fixedDate,
+      maximumDays
     });
     watch(modelValue, (_modelValue, _prevValue) => {
       if (!_prevValue?.start && _modelValue?.start || !_modelValue || !_modelValue.start || startValue.value && !isEqualDay(_modelValue.start, startValue.value)) {
@@ -172,13 +180,15 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     });
     watch([startValue, endValue], ([_startValue, _endValue]) => {
       const value = currentModelValue.value;
-      if (value && value.start && value.end && _startValue && _endValue && isEqualDay(value.start, _startValue) && isEqualDay(value.end, _endValue))
+      if (value && value.start && value.end && _startValue && _endValue && isEqualDay(value.start, _startValue) && isEqualDay(value.end, _endValue)) {
         return;
+      }
       isEditing.value = true;
       if (_startValue && _endValue) {
         isEditing.value = false;
-        if (value.start && value.end && isEqualDay(value.start, _startValue) && isEqualDay(value.end, _endValue))
+        if (value.start && value.end && isEqualDay(value.start, _startValue) && isEqualDay(value.end, _endValue)) {
           return;
+        }
         if (isBefore(_endValue, _startValue)) {
           modelValue.value = {
             start: _endValue.copy(),
@@ -221,7 +231,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       fullCalendarLabel,
       headingValue,
       isInvalid,
-      isDateDisabled,
+      isDateDisabled: rangeIsDateDisabled,
+      allowNonContiguousRanges,
       highlightedRange,
       focusedValue,
       lastPressedDateValue,
@@ -239,7 +250,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       dir,
       isHighlightedStart,
       isHighlightedEnd,
-      fixedDate
+      disableDaysOutsideCurrentView,
+      fixedDate,
+      maximumDays
     });
     onMounted(() => {
       if (initialFocus.value)

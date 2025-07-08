@@ -9,6 +9,7 @@ const shared_useDirection = require('../shared/useDirection.cjs');
 const shared_useDateFormatter = require('../shared/useDateFormatter.cjs');
 const Primitive_usePrimitiveElement = require('../Primitive/usePrimitiveElement.cjs');
 const date_segment = require('../date/segment.cjs');
+const date_utils = require('../date/utils.cjs');
 const date_parser = require('../date/parser.cjs');
 const Primitive_Primitive = require('../Primitive/Primitive.cjs');
 const VisuallyHidden_VisuallyHidden = require('../VisuallyHidden/VisuallyHidden.cjs');
@@ -33,6 +34,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     placeholder: { default: void 0 },
     modelValue: {},
     hourCycle: {},
+    step: {},
     granularity: {},
     hideTimeZone: { type: Boolean },
     maxValue: {},
@@ -55,7 +57,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const { disabled, readonly, isDateUnavailable: propsIsDateUnavailable, granularity, defaultValue, dir: propDir, locale: propLocale } = vue.toRefs(props);
     const locale = shared_useLocale.useLocale(propLocale);
     const dir = shared_useDirection.useDirection(propDir);
-    const formatter = shared_useDateFormatter.useDateFormatter(locale.value);
+    const formatter = shared_useDateFormatter.useDateFormatter(locale.value, {
+      hourCycle: date_utils.normalizeHourCycle(props.hourCycle)
+    });
     const { primitiveElement, currentElement: parentElement } = Primitive_usePrimitiveElement.usePrimitiveElement();
     const segmentElements = vue.ref(/* @__PURE__ */ new Set());
     vue.onMounted(() => {
@@ -75,6 +79,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       defaultValue: props.defaultPlaceholder ?? defaultDate.copy(),
       passive: props.placeholder === void 0
     });
+    const step = vue.computed(() => date_utils.normalizeDateStep(props));
     const inferredGranularity = vue.computed(() => {
       if (props.granularity)
         return !date_comparators.hasTime(placeholder.value) ? "day" : props.granularity;
@@ -163,6 +168,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       disabled,
       formatter,
       hourCycle: props.hourCycle,
+      step,
       readonly,
       segmentValues,
       isInvalid,

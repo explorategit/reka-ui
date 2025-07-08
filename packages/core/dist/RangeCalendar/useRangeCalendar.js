@@ -45,6 +45,15 @@ function useRangeCalendarState(props) {
       return isBetween(date, props.start.value, props.end.value);
     return false;
   };
+  const rangeIsDateDisabled = (date) => {
+    if (props.isDateDisabled(date))
+      return true;
+    if (!props.maximumDays?.value || !props.start.value || props.end.value || isSameDay(props.start.value, date))
+      return false;
+    if (Math.abs(date.compare(props.start.value)) > props.maximumDays.value)
+      return true;
+    return false;
+  };
   const isDateHighlightable = (date) => {
     if (props.isDateHighlightable?.(date))
       return true;
@@ -64,7 +73,14 @@ function useRangeCalendarState(props) {
         end
       };
     }
-    const isValid = areAllDaysBetweenValid(start, end, props.allowNonContiguousRanges.value ? () => false : props.isDateUnavailable, props.isDateDisabled, props.isDateHighlightable);
+    if (props.maximumDays?.value && !props.end.value && Math.abs(end.compare(start)) > props.maximumDays.value) {
+      const cappedEnd = isStartBeforeFocused ? start.add({ days: props.maximumDays.value }) : start.subtract({ days: props.maximumDays.value });
+      return {
+        start,
+        end: cappedEnd
+      };
+    }
+    const isValid = areAllDaysBetweenValid(start, end, props.allowNonContiguousRanges.value ? () => false : props.isDateUnavailable, rangeIsDateDisabled, props.isDateHighlightable);
     if (isValid) {
       return {
         start,
@@ -91,7 +107,8 @@ function useRangeCalendarState(props) {
     isSelectionStart,
     isSelectionEnd,
     isHighlightedStart,
-    isHighlightedEnd
+    isHighlightedEnd,
+    isDateDisabled: rangeIsDateDisabled
   };
 }
 

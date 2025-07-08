@@ -1,4 +1,5 @@
 import { defineComponent, ref, watchEffect, createBlock, createCommentVNode, unref, openBlock, withCtx, renderSlot } from 'vue';
+import { isClient } from '@vueuse/shared';
 import { i as injectAvatarRootContext } from './AvatarRoot.js';
 import { u as useForwardExpose } from '../shared/useForwardExpose.js';
 import { P as Primitive } from '../Primitive/Primitive.js';
@@ -22,7 +23,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     useForwardExpose();
     const canRender = ref(props.delayMs === void 0);
     watchEffect((onCleanup) => {
-      if (props.delayMs) {
+      if (props.delayMs && isClient) {
         const timerId = window.setTimeout(() => {
           canRender.value = true;
         }, props.delayMs);

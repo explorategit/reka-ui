@@ -20,7 +20,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
   setup(__props) {
     const props = __props;
     const rootContext = injectNumberFieldRootContext();
-    const isDisabled = computed(() => rootContext.disabled?.value || props.disabled || rootContext.isIncreaseDisabled.value);
+    const isDisabled = computed(() => rootContext.disabled?.value || props.disabled || rootContext.readonly.value || rootContext.isIncreaseDisabled.value);
     const { primitiveElement, currentElement } = usePrimitiveElement();
     const { isPressed, onTrigger } = usePressedHold({ target: currentElement, disabled: isDisabled });
     onTrigger(() => {

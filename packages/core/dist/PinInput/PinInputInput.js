@@ -26,7 +26,6 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const currentValue = computed(() => context.currentModelValue.value[props.index]);
     const disabled = computed(() => props.disabled || context.disabled.value);
     const isOtpMode = computed(() => context.otp.value);
-    const isNumericMode = computed(() => context.type.value === "number");
     const isPasswordMode = computed(() => context.mask.value);
     const { primitiveElement, currentElement } = usePrimitiveElement();
     function handleInput(event) {
@@ -35,7 +34,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         handleMultipleCharacter(target.value);
         return;
       }
-      if (isNumericMode.value && !/^\d*$/.test(target.value)) {
+      if (context.isNumericMode.value && !/^\d*$/.test(target.value)) {
         target.value = target.value.replace(/\D/g, "");
         return;
       }
@@ -105,7 +104,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       for (let i = initialIndex; i < lastIndex; i++) {
         const input = inputElements.value[i];
         const value = values[i - initialIndex];
-        if (isNumericMode.value && !/^\d*$/.test(value))
+        if (context.isNumericMode.value && !/^\d*$/.test(value))
           continue;
         tempModelValue[i] = value;
         input.focus();
@@ -123,7 +122,16 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     }
     function updateModelValueAt(index, value) {
       const tempModelValue = [...context.currentModelValue.value];
-      tempModelValue[index] = isNumericMode.value ? +value : value;
+      if (context.isNumericMode.value) {
+        const num = +value;
+        if (value === "" || isNaN(num)) {
+          delete tempModelValue[index];
+        } else {
+          tempModelValue[index] = num;
+        }
+      } else {
+        tempModelValue[index] = value;
+      }
       context.modelValue.value = removeTrailingEmptyStrings(tempModelValue);
     }
     watch(currentValue, () => {
@@ -146,8 +154,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         "as-child": _ctx.asChild,
         autocomplete: isOtpMode.value ? "one-time-code" : "false",
         type: isPasswordMode.value ? "password" : "text",
-        inputmode: isNumericMode.value ? "numeric" : "text",
-        pattern: isNumericMode.value ? "[0-9]*" : void 0,
+        inputmode: unref(context).isNumericMode.value ? "numeric" : "text",
+        pattern: unref(context).isNumericMode.value ? "[0-9]*" : void 0,
         placeholder: unref(context).placeholder.value,
         value: currentValue.value,
         disabled: disabled.value,

@@ -29,9 +29,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         return;
       event.preventDefault();
       if (event.deltaY > 0)
-        rootContext.handleIncrease();
+        rootContext.invertWheelChange.value ? rootContext.handleDecrease() : rootContext.handleIncrease();
       else if (event.deltaY < 0)
-        rootContext.handleDecrease();
+        rootContext.invertWheelChange.value ? rootContext.handleIncrease() : rootContext.handleDecrease();
     }
     onMounted(() => {
       rootContext.onInputElement(currentElement.value);
@@ -64,6 +64,8 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
         "aria-valuenow": unref(rootContext).modelValue.value,
         "aria-valuemin": unref(rootContext).min.value,
         "aria-valuemax": unref(rootContext).max.value,
+        readonly: unref(rootContext).readonly.value ? "" : void 0,
+        "data-readonly": unref(rootContext).readonly.value ? "" : void 0,
         onKeydown: [
           _cache[0] || (_cache[0] = withKeys(withModifiers(($event) => unref(rootContext).handleIncrease(), ["prevent"]), ["up"])),
           _cache[1] || (_cache[1] = withKeys(withModifiers(($event) => unref(rootContext).handleDecrease(), ["prevent"]), ["down"])),
@@ -91,7 +93,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
           renderSlot(_ctx.$slots, "default")
         ]),
         _: 3
-      }, 16, ["id", "value", "inputmode", "disabled", "data-disabled", "aria-valuenow", "aria-valuemin", "aria-valuemax"]);
+      }, 16, ["id", "value", "inputmode", "disabled", "data-disabled", "aria-valuenow", "aria-valuemin", "aria-valuemax", "readonly", "data-readonly"]);
     };
   }
 });

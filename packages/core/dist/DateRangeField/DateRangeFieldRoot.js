@@ -9,6 +9,7 @@ import { u as usePrimitiveElement } from '../Primitive/usePrimitiveElement.js';
 import { P as Primitive } from '../Primitive/Primitive.js';
 import { _ as _sfc_main$1 } from '../VisuallyHidden/VisuallyHidden.js';
 import { u as useKbd } from '../shared/useKbd.js';
+import { n as normalizeHourCycle, a as normalizeDateStep } from '../date/utils.js';
 import { g as getSegmentElements, i as isSegmentNavigationKey } from '../date/segment.js';
 import { i as initializeSegmentValues, s as syncSegmentValues, c as createContent } from '../date/parser.js';
 
@@ -30,6 +31,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     placeholder: { default: void 0 },
     modelValue: {},
     hourCycle: {},
+    step: {},
     granularity: {},
     hideTimeZone: { type: Boolean },
     maxValue: {},
@@ -52,7 +54,9 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
     const { disabled, readonly, isDateUnavailable: propsIsDateUnavailable, dir: propDir, locale: propLocale } = toRefs(props);
     const locale = useLocale(propLocale);
     const dir = useDirection(propDir);
-    const formatter = useDateFormatter(locale.value);
+    const formatter = useDateFormatter(locale.value, {
+      hourCycle: normalizeHourCycle(props.hourCycle)
+    });
     const { primitiveElement, currentElement: parentElement } = usePrimitiveElement();
     const segmentElements = ref(/* @__PURE__ */ new Set());
     onMounted(() => {
@@ -72,6 +76,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       defaultValue: props.defaultPlaceholder ?? defaultDate.copy(),
       passive: props.placeholder === void 0
     });
+    const step = computed(() => normalizeDateStep(props));
     const inferredGranularity = computed(() => {
       if (props.granularity)
         return !hasTime(placeholder.value) ? "day" : props.granularity;
@@ -225,6 +230,7 @@ const _sfc_main = /* @__PURE__ */ defineComponent({
       disabled,
       formatter,
       hourCycle: props.hourCycle,
+      step,
       readonly,
       segmentValues: { start: startSegmentValues, end: endSegmentValues },
       isInvalid,

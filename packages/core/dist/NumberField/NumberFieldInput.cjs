@@ -31,9 +31,9 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         return;
       event.preventDefault();
       if (event.deltaY > 0)
-        rootContext.handleIncrease();
+        rootContext.invertWheelChange.value ? rootContext.handleDecrease() : rootContext.handleIncrease();
       else if (event.deltaY < 0)
-        rootContext.handleDecrease();
+        rootContext.invertWheelChange.value ? rootContext.handleIncrease() : rootContext.handleDecrease();
     }
     vue.onMounted(() => {
       rootContext.onInputElement(currentElement.value);
@@ -66,6 +66,8 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
         "aria-valuenow": vue.unref(rootContext).modelValue.value,
         "aria-valuemin": vue.unref(rootContext).min.value,
         "aria-valuemax": vue.unref(rootContext).max.value,
+        readonly: vue.unref(rootContext).readonly.value ? "" : void 0,
+        "data-readonly": vue.unref(rootContext).readonly.value ? "" : void 0,
         onKeydown: [
           _cache[0] || (_cache[0] = vue.withKeys(vue.withModifiers(($event) => vue.unref(rootContext).handleIncrease(), ["prevent"]), ["up"])),
           _cache[1] || (_cache[1] = vue.withKeys(vue.withModifiers(($event) => vue.unref(rootContext).handleDecrease(), ["prevent"]), ["down"])),
@@ -93,7 +95,7 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
           vue.renderSlot(_ctx.$slots, "default")
         ]),
         _: 3
-      }, 16, ["id", "value", "inputmode", "disabled", "data-disabled", "aria-valuenow", "aria-valuemin", "aria-valuemax"]);
+      }, 16, ["id", "value", "inputmode", "disabled", "data-disabled", "aria-valuenow", "aria-valuemin", "aria-valuemax", "readonly", "data-readonly"]);
     };
   }
 });

@@ -81,6 +81,8 @@ function handleChange() {
     :aria-valuenow="rootContext.modelValue.value"
     :aria-valuemin="rootContext.min.value"
     :aria-valuemax="rootContext.max.value"
+    :readonly="rootContext.readonly.value ? '' : undefined"
+    :data-readonly="rootContext.readonly.value ? '' : undefined"
     @keydown.up.prevent="rootContext.handleIncrease()"
     @keydown.down.prevent="rootContext.handleDecrease()"
     @keydown.page-up.prevent="rootContext.handleIncrease(10)"

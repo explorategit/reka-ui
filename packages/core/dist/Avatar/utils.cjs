@@ -1,5 +1,6 @@
 'use strict';
 
+const shared = require('@vueuse/shared');
 const vue = require('vue');
 
 function resolveLoadingStatus(image, src) {
@@ -21,7 +22,7 @@ function useImageLoadingStatus(src, { referrerPolicy, crossOrigin } = {}) {
     if (!isMounted.value) {
       return null;
     }
-    if (!imageRef.value) {
+    if (!imageRef.value && shared.isClient) {
       imageRef.value = new window.Image();
     }
     return imageRef.value;
