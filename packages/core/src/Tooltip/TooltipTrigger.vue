@@ -38,8 +38,6 @@ const { forwardRef, currentElement: triggerElement } = useForwardExpose()
 const isPointerDown = ref(false)
 const hasPointerMoveOpened = ref(false)
 
-console.log('TooltipTrigger')
-
 const tooltipListeners = computed(() => {
   if (rootContext.disabled.value)
     return {}
@@ -89,7 +87,6 @@ function handlePointerLeave() {
 }
 
 function handleFocus(event: FocusEvent) {
-  console.log('TooltipTrigger focus', event)
   if (isPointerDown.value)
     return
 
