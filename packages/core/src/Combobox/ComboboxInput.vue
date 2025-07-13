@@ -1,8 +1,8 @@
 <script lang="ts">
 import type { ListboxFilterEmits, ListboxFilterProps } from '@/Listbox'
-import { usePrimitiveElement } from '@/Primitive'
 import { useVModel } from '@vueuse/core'
 import { nextTick, onMounted, watch } from 'vue'
+import { usePrimitiveElement } from '@/Primitive'
 
 export type ComboboxInputEmits = ListboxFilterEmits
 export interface ComboboxInputProps extends ListboxFilterProps {
@@ -60,6 +60,11 @@ function handleFocus() {
     rootContext.onOpenChange(true)
 }
 
+function handleClick() {
+  if (rootContext.openOnClick.value && !rootContext.open.value)
+    rootContext.onOpenChange(true)
+}
+
 function resetSearchTerm() {
   const rootModelValue = rootContext.modelValue.value
 
@@ -113,6 +118,7 @@ watch(
     aria-autocomplete="list"
     role="combobox"
     autocomplete="false"
+    @click="handleClick"
     @input="handleInput"
     @keydown.down.up.prevent="handleKeyDown"
     @focus="handleFocus"

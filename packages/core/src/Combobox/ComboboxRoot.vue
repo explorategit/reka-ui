@@ -1,7 +1,7 @@
 <script lang="ts">
+import type { Ref } from 'vue'
 import type { ListboxRootProps } from '@/Listbox'
 import type { AcceptableValue, GenericComponentInstance } from '@/shared/types'
-import type { Ref } from 'vue'
 import { usePrimitiveElement } from '@/Primitive'
 import { createContext, useDirection, useFilter } from '@/shared'
 
@@ -30,6 +30,7 @@ type ComboboxRootContext<T> = {
   }
   ignoreFilter: Ref<boolean>
   openOnFocus: Ref<boolean>
+  openOnClick: Ref<boolean>
 }
 
 export const [injectComboboxRootContext, provideComboboxRootContext]
@@ -65,6 +66,11 @@ export interface ComboboxRootProps<T = AcceptableValue> extends Omit<ListboxRoot
    */
   openOnFocus?: boolean
   /**
+   * Whether to open the combobox when the input is clicked
+   * @defaultValue `false`
+   */
+  openOnClick?: boolean
+  /**
    * When `true`, disable the default filters
    */
   ignoreFilter?: boolean
@@ -73,16 +79,17 @@ export interface ComboboxRootProps<T = AcceptableValue> extends Omit<ListboxRoot
 
 <script setup lang="ts" generic="T extends AcceptableValue = AcceptableValue">
 import type { EventHookOn } from '@vueuse/core'
-import { ListboxRoot } from '@/Listbox'
-import { PopperRoot } from '@/Popper'
 import { createEventHook, useVModel } from '@vueuse/core'
 import { computed, getCurrentInstance, nextTick, onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { ListboxRoot } from '@/Listbox'
+import { PopperRoot } from '@/Popper'
 
 const props = withDefaults(defineProps<ComboboxRootProps<T>>(), {
   open: undefined,
   resetSearchTermOnBlur: true,
   resetSearchTermOnSelect: true,
   openOnFocus: false,
+  openOnClick: false,
 })
 const emits = defineEmits<ComboboxRootEmits<T>>()
 
@@ -96,7 +103,7 @@ defineSlots<{
 }>()
 
 const { primitiveElement, currentElement: parentElement } = usePrimitiveElement<GenericComponentInstance<typeof ListboxRoot>>()
-const { multiple, disabled, ignoreFilter, resetSearchTermOnSelect, openOnFocus, dir: propDir } = toRefs(props)
+const { multiple, disabled, ignoreFilter, resetSearchTermOnSelect, openOnFocus, openOnClick, dir: propDir } = toRefs(props)
 
 const dir = useDirection(propDir)
 
@@ -239,6 +246,7 @@ provideComboboxRootContext({
   filterState,
   ignoreFilter,
   openOnFocus,
+  openOnClick,
 })
 </script>
 
