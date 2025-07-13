@@ -45,6 +45,12 @@
     'required': false
   },
   {
+    'name': 'invertWheelChange',
+    'description': '<p>When <code>true</code>, inverts the direction of the wheel change.</p>\n',
+    'type': 'boolean',
+    'required': false
+  },
+  {
     'name': 'locale',
     'description': '<p>The locale to use for formatting dates</p>\n',
     'type': 'string',
@@ -72,6 +78,12 @@
     'name': 'name',
     'description': '<p>The name of the field. Submitted with its owning form as part of a name/value pair.</p>\n',
     'type': 'string',
+    'required': false
+  },
+  {
+    'name': 'readonly',
+    'description': '<p>When <code>true</code>, the Number Field is read-only.</p>\n',
+    'type': 'boolean',
     'required': false
   },
   {
@@ -108,7 +120,7 @@
   {
     'name': 'modelValue',
     'description': '',
-    'type': 'number'
+    'type': 'number | undefined'
   },
   {
     'name': 'textValue',

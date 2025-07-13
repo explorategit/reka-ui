@@ -73,10 +73,10 @@ export const [injectEditableRootContext, provideEditableRootContext]
 
 <script setup lang="ts">
 import type { Ref } from 'vue'
-import { Primitive, usePrimitiveElement } from '@/Primitive'
-import { VisuallyHiddenInput } from '@/VisuallyHidden'
 import { useVModel } from '@vueuse/core'
 import { computed, ref, toRefs, watch } from 'vue'
+import { Primitive, usePrimitiveElement } from '@/Primitive'
+import { VisuallyHiddenInput } from '@/VisuallyHidden'
 
 defineOptions({
   inheritAttrs: false,
@@ -95,7 +95,7 @@ const props = withDefaults(defineProps<EditableRootProps>(), {
 
 const emits = defineEmits<EditableRootEmits>()
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Whether the editable field is in edit mode */
     isEditing: boolean
     /** The value of the editable field */
@@ -180,8 +180,9 @@ function handleDismiss() {
   }
 }
 
-const pointerDownOutside = usePointerDownOutside(() => handleDismiss(), currentElement)
-const focusOutside = useFocusOutside(() => handleDismiss(), currentElement)
+const pointerDownOutside = usePointerDownOutside(() => handleDismiss(), currentElement, isEditing)
+const focusOutside = useFocusOutside(() => handleDismiss(), currentElement, isEditing)
+
 const isEmpty = computed(() => modelValue.value === '')
 
 defineExpose({

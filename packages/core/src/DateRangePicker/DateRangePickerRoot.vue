@@ -1,12 +1,12 @@
 <script lang="ts">
-import type { Matcher, WeekDayFormat } from '@/date'
-
-import type { DateRange, Granularity, HourCycle } from '@/shared/date'
-import type { Direction } from '@/shared/types'
 import type { DateValue } from '@internationalized/date'
-import type { Ref } from 'vue'
 
+import type { Ref } from 'vue'
 import type { DateRangeFieldRoot, DateRangeFieldRootProps, PopoverRootEmits, PopoverRootProps, RangeCalendarRootProps } from '..'
+import type { Matcher, WeekDayFormat } from '@/date'
+import type { DateRange, Granularity, HourCycle } from '@/shared/date'
+
+import type { Direction } from '@/shared/types'
 import { createContext, useDirection } from '@/shared'
 import { getDefaultDate } from '@/shared/date'
 import { PopoverRoot } from '..'
@@ -44,9 +44,10 @@ type DateRangePickerRootContext = {
   dir: Ref<Direction>
   allowNonContiguousRanges: Ref<boolean>
   fixedDate: Ref<'start' | 'end' | undefined>
+  maximumDays?: Ref<number | undefined>
 }
 
-export type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges' | 'fixedDate'>
+export type DateRangePickerRootProps = DateRangeFieldRootProps & PopoverRootProps & Pick<RangeCalendarRootProps, 'isDateDisabled' | 'pagedNavigation' | 'weekStartsOn' | 'weekdayFormat' | 'fixedWeeks' | 'numberOfMonths' | 'preventDeselect' | 'isDateUnavailable' | 'isDateHighlightable' | 'allowNonContiguousRanges' | 'fixedDate' | 'maximumDays'>
 
 export type DateRangePickerRootEmits = {
   /** Event handler called whenever the model value changes */
@@ -88,6 +89,7 @@ const props = withDefaults(defineProps<DateRangePickerRootProps>(), {
   isDateUnavailable: undefined,
   isDateHighlightable: undefined,
   allowNonContiguousRanges: false,
+  maximumDays: undefined,
 })
 const emits = defineEmits<DateRangePickerRootEmits & PopoverRootEmits>()
 const {
@@ -116,6 +118,7 @@ const {
   dir: propsDir,
   allowNonContiguousRanges,
   fixedDate,
+  maximumDays,
 } = toRefs(props)
 
 const dir = useDirection(propsDir)
@@ -180,6 +183,7 @@ provideDateRangePickerRootContext({
   dateFieldRef,
   dir,
   fixedDate,
+  maximumDays,
   onStartValueChange(date: DateValue | undefined) {
     emits('update:startValue', date)
   },

@@ -117,6 +117,12 @@
     'default': '\'en\''
   },
   {
+    'name': 'maximumDays',
+    'description': '<p>The maximum number of days that can be selected in a range</p>\n',
+    'type': 'number',
+    'required': false
+  },
+  {
     'name': 'maxValue',
     'description': '<p>The maximum date that can be selected</p>\n',
     'type': 'DateValue',
@@ -191,6 +197,12 @@
     'name': 'required',
     'description': '<p>When <code>true</code>, indicates that the user must set the value before the owning form can be submitted.</p>\n',
     'type': 'boolean',
+    'required': false
+  },
+  {
+    'name': 'step',
+    'description': '<p>The stepping interval for the time fields. Defaults to <code>1</code>.</p>\n',
+    'type': 'DateStep',
     'required': false
   },
   {

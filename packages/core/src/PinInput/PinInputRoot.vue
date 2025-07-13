@@ -1,10 +1,10 @@
 <script lang="ts">
+import type { ComputedRef, Ref } from 'vue'
 import type { PrimitiveProps } from '@/Primitive'
 import type { Direction, FormFieldProps } from '@/shared/types'
-import type { ComputedRef, Ref } from 'vue'
+import { computed, ref, toRefs, watch } from 'vue'
 import { createContext, useDirection, useForwardExpose } from '@/shared'
 import VisuallyHiddenInput from '@/VisuallyHidden/VisuallyHiddenInput.vue'
-import { computed, ref, toRefs, watch } from 'vue'
 
 export type PinInputType = 'text' | 'number'
 
@@ -49,6 +49,7 @@ export interface PinInputRootContext<Type extends PinInputType = 'text'> {
   isCompleted: ComputedRef<boolean>
   inputElements?: Ref<Set<HTMLInputElement>>
   onInputElementChange: (el: HTMLInputElement) => void
+  isNumericMode: ComputedRef<boolean>
 }
 
 export const [injectPinInputRootContext, providePinInputRootContext]
@@ -56,8 +57,8 @@ export const [injectPinInputRootContext, providePinInputRootContext]
 </script>
 
 <script setup lang="ts" generic="Type extends PinInputType = 'text'">
-import { Primitive } from '@/Primitive'
 import { useVModel } from '@vueuse/core'
+import { Primitive } from '@/Primitive'
 
 defineOptions({
   inheritAttrs: false,
@@ -70,7 +71,7 @@ const props = withDefaults(defineProps<PinInputRootProps<Type>>(), {
 const emits = defineEmits<PinInputRootEmits<Type>>()
 
 defineSlots<{
-  default: (props: {
+  default?: (props: {
     /** Current input values */
     modelValue: typeof modelValue.value
   }) => any
@@ -92,8 +93,9 @@ function onInputElementChange(el: HTMLInputElement) {
   inputElements.value.add(el)
 }
 
+const isNumericMode = computed(() => props.type === 'number')
 const isCompleted = computed(() => {
-  const modelValues = currentModelValue.value.filter(i => !!i)
+  const modelValues = currentModelValue.value.filter(i => !!i || (isNumericMode.value && i === 0))
   return modelValues.length === inputElements.value.size
 })
 
@@ -114,6 +116,7 @@ providePinInputRootContext({
   isCompleted,
   inputElements,
   onInputElementChange,
+  isNumericMode,
 })
 </script>
 
