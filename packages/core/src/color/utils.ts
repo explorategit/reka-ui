@@ -1,19 +1,25 @@
 /**
+ * Converts a hex color string to RGB (Red, Green, Blue).
+ * @param hex
+ * @returns
+ */
+export function hexToRGB(hex: string): { r: number, g: number, b: number } {
+  hex = hex.replace(/^#/, '')
+  const bigint = parseInt(hex, 16)
+  const r = (bigint >> 16) & 255
+  const g = (bigint >> 8) & 255
+  const b = bigint & 255
+  return { r, g, b }
+}
+
+/**
  * Converts a hex color string to HSL (Hue, Saturation, Lightness).
  * @param hex Hex color string (e.g., "#ff5733")
  * @returns An object containing hue, saturation, and lightness values.
  */
 export function hexToHSL(hex: string): { h: number, s: number, l: number } {
-  // Remove the hash at the start if it's there
-  hex = hex.replace(/^#/, '')
+  let { r, g, b } = hexToRGB(hex)
 
-  // Parse the r, g, b values from the hex string
-  const bigint = parseInt(hex, 16)
-  let r = (bigint >> 16) & 255
-  let g = (bigint >> 8) & 255
-  let b = bigint & 255
-
-  // Convert to HSL
   r /= 255
   g /= 255
   b /= 255
@@ -54,7 +60,6 @@ export function hexToHSL(hex: string): { h: number, s: number, l: number } {
  * @returns A human-readable color name based on the hue, saturation, and lightness.
  */
 export function getColorName(hex: string) {
-  // Convert RGB to HSL
   const { h, s, l } = hexToHSL(hex)
 
   // Handle achromatic colors (low saturation)
@@ -118,15 +123,7 @@ export function getColorName(hex: string) {
 }
 
 export function getColorContrast(hex: string): 'light' | 'dark' {
-  // Convert hex to RGB
-  const bigint = parseInt(hex.replace(/^#/, ''), 16)
-  const r = (bigint >> 16) & 255
-  const g = (bigint >> 8) & 255
-  const b = bigint & 255
-
-  // Calculate luminance
+  const { r, g, b } = hexToRGB(hex)
   const luminance = (0.299 * r + 0.587 * g + 0.114 * b) / 255
-
-  // Return 'light' or 'dark' based on luminance
   return luminance > 0.5 ? 'dark' : 'light'
 }
