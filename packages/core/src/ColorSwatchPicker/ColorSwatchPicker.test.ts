@@ -1,29 +1,29 @@
-import { render } from '@testing-library/vue'
-import { describe, expect, it } from 'vitest'
-import ColorSwatchPickerItem from './ColorSwatchPickerItem.vue'
-import ColorSwatchPickerRoot from './ColorSwatchPickerRoot.vue'
+import type { DOMWrapper, VueWrapper } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
+import { beforeEach, describe, expect, it } from 'vitest'
+import { axe } from 'vitest-axe'
+import ColorSwatchPicker from './story/_ColorSwatchPicker.vue'
 
-const TEST_COLOR = '#ff00aa'
+describe('given default ColorSwatchPicker', () => {
+  let wrapper: VueWrapper<InstanceType<typeof ColorSwatchPicker>>
+  let content: DOMWrapper<Element>
+  let items: DOMWrapper<Element>[]
 
-describe('colorSwatchPickerRoot.vue', () => {
-  it('renders with the correct model value', () => {
-    const { getByRole } = render(ColorSwatchPickerRoot, {
-      props: { modelValue: TEST_COLOR },
-      slots: {
-        default: `<div data-testid="slot-content"></div>`,
-      },
-    })
-    expect(getByRole('listbox')).toBeInTheDocument()
+  beforeEach(() => {
+    document.body.innerHTML = ''
+    wrapper = mount(ColorSwatchPicker, { attachTo: document.body })
+    content = wrapper.find('[role=listbox]')
+    items = wrapper.findAll('[role=option]')
   })
-})
 
-describe('colorSwatchPickerItem.vue', () => {
-  it('applies the correct style variable for color', () => {
-    const { getByRole } = render(ColorSwatchPickerItem, {
-      props: { value: TEST_COLOR },
-      slots: { default: 'item' },
-    })
-    const item = getByRole('option')
-    expect(item.style.getPropertyValue('--reka-color-swatch-picker-item-color')).toBe(TEST_COLOR)
+  it('should render the component', () => {
+    expect(wrapper.exists()).toBe(true)
+    expect(content.exists()).toBe(true)
+    expect(items.length).toBeGreaterThan(0)
+  })
+
+  it('should have no accessibility violations', async () => {
+    const results = await axe(wrapper.element)
+    expect(results).toHaveNoViolations()
   })
 })

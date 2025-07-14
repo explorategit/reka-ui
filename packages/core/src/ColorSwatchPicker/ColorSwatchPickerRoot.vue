@@ -40,6 +40,7 @@ const forwarded = useForwardPropsEmits(props, emits)
     as-child
   >
     <ListboxContent
+      aria-label="color swatch options"
       :as-child="asChild"
       :as="as"
     >

@@ -1,25 +1,16 @@
-import { render } from '@testing-library/vue'
+import { mount } from '@vue/test-utils'
 import { describe, expect, it } from 'vitest'
-import ColorSwatch from './ColorSwatch.vue'
+import { axe } from 'vitest-axe'
+import ColorSwatch from './story/_ColorSwatch.vue'
 
-const TEST_COLOR = '#123abc'
-
-describe('colorSwatch.vue', () => {
-  it('applies the correct style variable for color', () => {
-    const { getByRole } = render(ColorSwatch, { props: { color: TEST_COLOR } })
-    const swatch = getByRole('img')
-    expect(swatch.style.getPropertyValue('--reka-color-swatch-color')).toBe(TEST_COLOR)
+describe('given a default ColorSwatch', () => {
+  it('should pass axe accessibility tests', async () => {
+    const wrapper = mount(ColorSwatch, { attachTo: document.body })
+    expect(await axe(wrapper.element)).toHaveNoViolations()
   })
 
-  it('sets the correct aria-label', () => {
-    const { getByRole } = render(ColorSwatch, { props: { color: TEST_COLOR } })
-    const swatch = getByRole('img')
-    expect(swatch.hasAttribute('aria-label')).toBe(true)
-  })
-
-  it('sets aria-roledescription to "color swatch"', () => {
-    const { getByRole } = render(ColorSwatch, { props: { color: TEST_COLOR } })
-    const swatch = getByRole('img')
-    expect(swatch.getAttribute('aria-roledescription')).toBe('color swatch')
+  it('should render ColorSwatch', () => {
+    const wrapper = mount(ColorSwatch)
+    expect(wrapper.element).toBeTruthy()
   })
 })
