@@ -3,8 +3,8 @@ import { Icon } from '@iconify/vue'
 import {
   blue,
   green,
+  indigo,
   orange,
-  pink,
   red,
   violet,
   yellow,
@@ -13,12 +13,12 @@ import { ColorSwatchPickerItem, ColorSwatchPickerItemIndicator, ColorSwatchPicke
 
 const colors = [
   red.red9,
-  pink.pink9,
-  violet.violet9,
-  blue.blue9,
-  green.green9,
   orange.orange9,
   yellow.yellow9,
+  green.green9,
+  blue.blue9,
+  indigo.indigo9,
+  violet.violet9,
 ]
 </script>
 
