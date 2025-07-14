@@ -40,8 +40,8 @@ Import all parts and piece them together.
 import {
   ColorSwatchPickerItem,
   ColorSwatchPickerItemIndicator,
+  ColorSwatchPickerItemSwatch,
   ColorSwatchPickerRoot,
-  ColorSwatchPickerSwatch
 } from 'reka-ui'
 </script>
 

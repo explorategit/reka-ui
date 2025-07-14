@@ -15,24 +15,9 @@
     'required': false
   },
   {
-    'name': 'color',
-    'description': '',
-    'type': 'string',
-    'required': false,
-    'default': '\'\''
-  },
-  {
     'name': 'label',
     'description': '',
     'type': 'string',
     'required': false
-  }
-]" />
-
-<SlotsTable :data="[
-  {
-    'name': 'color',
-    'description': '',
-    'type': 'string'
   }
 ]" />
