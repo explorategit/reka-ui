@@ -2,7 +2,14 @@
 import type { PrimitiveProps } from '@/Primitive'
 
 export interface ColorSwatchProps extends PrimitiveProps {
+  /**
+   * The color to display in the swatch as a hex string.
+   * Example: `#16a372` or `#ff5733`.
+   */
   color?: string
+  /**
+   * Optional accessible label for the color. If omitted, the color name will be derived from the color value.
+   */
   label?: string
 }
 </script>

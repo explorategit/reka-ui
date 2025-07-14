@@ -4,6 +4,10 @@ import type { ListboxItemEmits, ListboxItemProps } from '@/Listbox'
 import { createContext, useForwardPropsEmits } from '@/shared'
 
 export interface ColorSwatchPickerItemProps extends ListboxItemProps {
+/**
+ * The color to display in the swatch as a hex string.
+ * Example: `#16a372` or `#ff5733`.
+ */
   value: string
 }
 
