@@ -48,15 +48,15 @@ import {
 <template>
   <ColorSwatchPickerRoot>
     <ColorSwatchPickerItem value="#ff0000">
-      <ColorSwatchPickerSwatch />
+      <ColorSwatchPickerItemSwatch />
       <ColorSwatchPickerItemIndicator />
     </ColorSwatchPickerItem>
     <ColorSwatchPickerItem value="#00ff00">
-      <ColorSwatchPickerSwatch />
+      <ColorSwatchPickerItemSwatch />
       <ColorSwatchPickerItemIndicator />
     </ColorSwatchPickerItem>
     <ColorSwatchPickerItem value="#0000ff">
-      <ColorSwatchPickerSwatch />
+      <ColorSwatchPickerItemSwatch />
       <ColorSwatchPickerItemIndicator />
     </ColorSwatchPickerItem>
   </ColorSwatchPickerRoot>
