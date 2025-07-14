@@ -16,14 +16,14 @@
   },
   {
     'name': 'color',
-    'description': '',
+    'description': '<p>The color to display in the swatch as a hex string.\nExample: <code>#16a372</code> or <code>#ff5733</code>.</p>\n',
     'type': 'string',
     'required': false,
     'default': '\'\''
   },
   {
     'name': 'label',
-    'description': '',
+    'description': '<p>Optional accessible label for the color. If omitted, the color name will be derived from the color value.</p>\n',
     'type': 'string',
     'required': false
   }

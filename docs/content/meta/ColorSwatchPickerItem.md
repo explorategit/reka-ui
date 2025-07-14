@@ -22,7 +22,7 @@
   },
   {
     'name': 'value',
-    'description': '<p>The value given as data when submitted with a <code>name</code>.</p>\n',
+    'description': '<p>The color to display in the swatch as a hex string.\nExample: <code>#16a372</code> or <code>#ff5733</code>.</p>\n',
     'type': 'string',
     'required': true
   }

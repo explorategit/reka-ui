@@ -16,7 +16,7 @@
   },
   {
     'name': 'label',
-    'description': '',
+    'description': '<p>Optional accessible label for the color. If omitted, the color name will be derived from the color value.</p>\n',
     'type': 'string',
     'required': false
   }
