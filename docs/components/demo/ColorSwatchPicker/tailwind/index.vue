@@ -1,13 +1,24 @@
 <script setup lang="ts">
 import { Icon } from '@iconify/vue'
+import {
+  blue,
+  green,
+  orange,
+  pink,
+  red,
+  violet,
+  yellow,
+} from '@radix-ui/colors'
 import { ColorSwatchPickerItem, ColorSwatchPickerItemIndicator, ColorSwatchPickerItemSwatch, ColorSwatchPickerRoot } from 'reka-ui'
 
 const colors = [
-  '#84CC16',
-  '#F59E0B',
-  '#0D6EFD',
-  '#EC4899',
-  '#F43F5E',
+  red.red9,
+  pink.pink9,
+  violet.violet9,
+  blue.blue9,
+  green.green9,
+  orange.orange9,
+  yellow.yellow9,
 ]
 </script>
 

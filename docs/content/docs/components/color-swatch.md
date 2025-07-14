@@ -17,13 +17,9 @@ Displays a color swatch, which can be used to represent colors in a UI.
 
 <Highlights
   :features="[
-    // 'Full keyboard navigation',
-    // 'Can be controlled or uncontrolled',
-    // 'Focus is fully managed',
-    // 'Localization support',
-    // 'Highly composable'
-    'Accessible by default',
     'Supports custom colors',
+    'Provides an accessible label for screen readers',
+    'Provides a color contrast for better visibility',
   ]"
 />
 
