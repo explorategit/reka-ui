@@ -158,6 +158,16 @@ export default defineConfig({
             ],
           },
           {
+            text: 'Color',
+            items: [
+              { text: 'Color Swatch', link: '/docs/components/color-swatch' },
+              {
+                text: 'Color Swatch Picker',
+                link: '/docs/components/color-swatch-picker',
+              },
+            ],
+          },
+          {
             text: 'Dates',
             items: [
               {

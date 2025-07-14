@@ -56,6 +56,17 @@ export const components = {
     'CollapsibleContent',
   ] as const,
 
+  colorSwatch: [
+    'ColorSwatch',
+  ] as const,
+
+  colorSwatchPicker: [
+    'ColorSwatchPickerRoot',
+    'ColorSwatchPickerItem',
+    'ColorSwatchPickerItemSwatch',
+    'ColorSwatchPickerItemIndicator',
+  ] as const,
+
   combobox: [
     'ComboboxRoot',
     'ComboboxInput',

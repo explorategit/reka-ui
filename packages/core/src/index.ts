@@ -5,6 +5,8 @@ export * from './Avatar'
 export * from './Calendar'
 export * from './Checkbox'
 export * from './Collapsible'
+export * from './ColorSwatch'
+export * from './ColorSwatchPicker'
 export * from './Combobox'
 // utilities
 export * from './ConfigProvider'

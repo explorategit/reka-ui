@@ -1,0 +1,61 @@
+<script lang="ts">
+import type { PrimitiveProps } from '@/Primitive'
+
+export interface ColorSwatchProps extends PrimitiveProps {
+  color?: string
+  label?: string
+}
+</script>
+
+<script setup lang="ts">
+import { computed } from 'vue'
+import { getColorContrast, getColorName } from '@/color'
+import { Primitive } from '@/Primitive'
+
+const props = withDefaults(defineProps<ColorSwatchProps>(), { as: 'div', color: '' })
+
+const label = computed(() => {
+  if (props.label)
+    return props.label
+
+  try {
+    return `${getColorName(props.color)}`
+  }
+  catch {
+    if (import.meta.env.DEV) {
+      console.warn(`WARNING: Unable to resolve color "${props.color}" to a name. 
+           Please check that the color provided is a valid hex color or provide a label.`)
+    }
+    return undefined
+  }
+})
+
+const colorContrast = computed(() => {
+  try {
+    return getColorContrast(props.color)
+  }
+  catch {
+    if (import.meta.env.DEV) {
+      console.warn(`WARNING: Unable to resolve contrast color for "${props.color}". 
+           Please check that the color provided is a valid hex color.`)
+    }
+    return undefined
+  }
+})
+</script>
+
+<template>
+  <Primitive
+    role="img"
+    :aria-label="label"
+    aria-roledescription="color swatch"
+    :as-child="asChild"
+    :as="as"
+    :data-color-contrast="colorContrast"
+    :style="{
+      '--reka-color-swatch-color': color,
+    }"
+  >
+    <slot :color="color" />
+  </Primitive>
+</template>
