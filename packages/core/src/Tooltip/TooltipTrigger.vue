@@ -38,8 +38,6 @@ const { forwardRef, currentElement: triggerElement } = useForwardExpose()
 const isPointerDown = ref(false)
 const hasPointerMoveOpened = ref(false)
 
-console.log('TooltipTrigger')
-
 const tooltipListeners = computed(() => {
   if (rootContext.disabled.value)
     return {}

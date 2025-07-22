@@ -29,7 +29,6 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
     const { forwardRef, currentElement: triggerElement } = shared_useForwardExpose.useForwardExpose();
     const isPointerDown = vue.ref(false);
     const hasPointerMoveOpened = vue.ref(false);
-    console.log("TooltipTrigger");
     const tooltipListeners = vue.computed(() => {
       if (rootContext.disabled.value)
         return {};
