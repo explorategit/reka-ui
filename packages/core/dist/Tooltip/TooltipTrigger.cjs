@@ -69,7 +69,6 @@ const _sfc_main = /* @__PURE__ */ vue.defineComponent({
       hasPointerMoveOpened.value = false;
     }
     function handleFocus(event) {
-      console.log("TooltipTrigger focus", event);
       if (isPointerDown.value)
         return;
       if (rootContext.ignoreNonKeyboardFocus.value && !event.target.matches?.(":focus-visible"))

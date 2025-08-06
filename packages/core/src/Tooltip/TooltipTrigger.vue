@@ -87,7 +87,6 @@ function handlePointerLeave() {
 }
 
 function handleFocus(event: FocusEvent) {
-  console.log('TooltipTrigger focus', event)
   if (isPointerDown.value)
     return
 
