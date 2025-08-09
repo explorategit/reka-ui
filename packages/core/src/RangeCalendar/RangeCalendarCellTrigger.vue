@@ -8,10 +8,11 @@ import {
   isSameMonth,
   isToday,
 } from '@internationalized/date'
+import { reactiveOmit } from '@vueuse/shared'
 import { computed, nextTick } from 'vue'
 import { getSelectableCells } from '@/Calendar/utils'
 import { getDaysInMonth, isBetweenInclusive, toDate } from '@/date'
-import { useKbd } from '@/shared'
+import { useForwardProps, useKbd } from '@/shared'
 
 export interface RangeCalendarCellTriggerProps extends PrimitiveProps {
   day: DateValue
@@ -57,6 +58,10 @@ const props = withDefaults(defineProps<RangeCalendarCellTriggerProps>(), { as: '
 defineSlots<RangeCalendarCellTriggerSlot>()
 
 const rootContext = injectRangeCalendarRootContext()
+
+const delegatedProps = reactiveOmit(props, ['day', 'month'])
+
+const forwarded = useForwardProps(delegatedProps)
 
 const kbd = useKbd()
 
@@ -281,7 +286,7 @@ function handleArrowKey(e: KeyboardEvent) {
 <template>
   <Primitive
     ref="primitiveElement"
-    v-bind="props"
+    v-bind="forwarded"
     role="button"
     :aria-label="labelText"
     data-reka-calendar-cell-trigger

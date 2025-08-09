@@ -16,12 +16,18 @@ export interface RangeCalendarPrevSlot {
 </script>
 
 <script setup lang="ts">
+import { reactiveOmit } from '@vueuse/shared'
 import { computed } from 'vue'
 import { Primitive } from '@/Primitive'
+import { useForwardProps } from '@/shared'
 import { injectRangeCalendarRootContext } from './RangeCalendarRoot.vue'
 
 const props = withDefaults(defineProps<RangeCalendarPrevProps>(), { as: 'button' })
 defineSlots<RangeCalendarPrevSlot>()
+
+const delegatedProps = reactiveOmit(props, ['prevPage'])
+
+const forwarded = useForwardProps(delegatedProps)
 
 const disabled = computed(() => rootContext.disabled.value || rootContext.isPrevButtonDisabled(props.prevPage))
 
@@ -30,7 +36,7 @@ const rootContext = injectRangeCalendarRootContext()
 
 <template>
   <Primitive
-    v-bind="props"
+    v-bind="forwarded"
     aria-label="Previous page"
     :type="as === 'button' ? 'button' : undefined"
     :aria-disabled="disabled || undefined"
