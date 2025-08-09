@@ -1,5 +1,6 @@
 <script lang="ts">
 import type { PrimitiveProps } from '@/Primitive'
+import { injectMenuContext } from './MenuRoot.vue'
 
 export interface MenuItemImplProps extends PrimitiveProps {
   /** When `true`, prevents the user from interacting with the item. */
@@ -28,6 +29,7 @@ defineOptions({
 
 const props = defineProps<MenuItemImplProps>()
 
+const menuContext = injectMenuContext()
 const contentContext = injectMenuContentContext()
 const { forwardRef } = useForwardExpose()
 const { CollectionItem } = useCollection()
@@ -35,11 +37,9 @@ const { CollectionItem } = useCollection()
 const isFocused = ref(false)
 
 async function handlePointerMove(event: PointerEvent) {
-  if (event.defaultPrevented)
+  if (event.defaultPrevented || !isMouseEvent(event) || !menuContext.open.value) {
     return
-  if (!isMouseEvent(event))
-    return
-
+  }
   if (props.disabled) {
     contentContext.onItemLeave(event)
   }
