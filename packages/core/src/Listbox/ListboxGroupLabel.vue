@@ -1,9 +1,7 @@
 <script lang="ts">
 import type { PrimitiveProps } from '@/Primitive'
 
-export interface ListboxGroupLabelProps extends PrimitiveProps {
-  for?: string
-}
+export interface ListboxGroupLabelProps extends PrimitiveProps {}
 </script>
 
 <script setup lang="ts">
