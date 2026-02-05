@@ -1,43 +1,49 @@
-import { defineComponent, createBlock, openBlock, unref, mergeProps, withCtx, renderSlot } from 'vue';
-import { u as useForwardExpose } from '../shared/useForwardExpose.js';
-import { i as injectTagsInputRootContext } from './TagsInputRoot.js';
-import { P as Primitive } from '../Primitive/Primitive.js';
+import { useForwardExpose } from "../shared/useForwardExpose.js";
+import { Primitive } from "../Primitive/Primitive.js";
+import { injectTagsInputRootContext } from "./TagsInputRoot.js";
+import { createBlock, defineComponent, mergeProps, openBlock, renderSlot, unref, withCtx } from "vue";
 
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  ...__default__,
-  __name: "TagsInputClear",
-  props: {
-    asChild: { type: Boolean },
-    as: { default: "button" }
-  },
-  setup(__props) {
-    const props = __props;
-    useForwardExpose();
-    const context = injectTagsInputRootContext();
-    function handleCancel() {
-      if (context.disabled.value)
-        return;
-      context.modelValue.value = [];
-    }
-    return (_ctx, _cache) => {
-      return openBlock(), createBlock(unref(Primitive), mergeProps(props, {
-        type: _ctx.as === "button" ? "button" : void 0,
-        "data-disabled": unref(context).disabled.value ? "" : void 0,
-        onClick: handleCancel
-      }), {
-        default: withCtx(() => [
-          renderSlot(_ctx.$slots, "default")
-        ]),
-        _: 3
-      }, 16, ["type", "data-disabled"]);
-    };
-  }
+//#region src/TagsInput/TagsInputClear.vue?vue&type=script&setup=true&lang.ts
+const __default__ = { compatConfig: { MODE: 3 } };
+var TagsInputClear_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	...__default__,
+	__name: "TagsInputClear",
+	props: {
+		asChild: {
+			type: Boolean,
+			required: false
+		},
+		as: {
+			type: null,
+			required: false,
+			default: "button"
+		}
+	},
+	setup(__props) {
+		const props = __props;
+		useForwardExpose();
+		const context = injectTagsInputRootContext();
+		function handleCancel() {
+			if (context.disabled.value) return;
+			context.modelValue.value = [];
+		}
+		return (_ctx, _cache) => {
+			return openBlock(), createBlock(unref(Primitive), mergeProps(props, {
+				type: _ctx.as === "button" ? "button" : void 0,
+				"data-disabled": unref(context).disabled.value ? "" : void 0,
+				onClick: handleCancel
+			}), {
+				default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
+				_: 3
+			}, 16, ["type", "data-disabled"]);
+		};
+	}
 });
 
-export { _sfc_main as _ };
+//#endregion
+//#region src/TagsInput/TagsInputClear.vue
+var TagsInputClear_default = TagsInputClear_vue_vue_type_script_setup_true_lang_default;
+
+//#endregion
+export { TagsInputClear_default };
 //# sourceMappingURL=TagsInputClear.js.map

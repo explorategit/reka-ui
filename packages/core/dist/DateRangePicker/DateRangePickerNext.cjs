@@ -1,34 +1,46 @@
-'use strict';
+const require_rolldown_runtime = require('../rolldown-runtime.cjs');
+const require_RangeCalendar_RangeCalendarNext = require('../RangeCalendar/RangeCalendarNext.cjs');
+const vue = require_rolldown_runtime.__toESM(require("vue"));
 
-const vue = require('vue');
-require('@floating-ui/vue');
-const RangeCalendar_RangeCalendarNext = require('../RangeCalendar/RangeCalendarNext.cjs');
-
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
-const _sfc_main = /* @__PURE__ */ vue.defineComponent({
-  ...__default__,
-  __name: "DateRangePickerNext",
-  props: {
-    nextPage: { type: Function },
-    asChild: { type: Boolean },
-    as: {}
-  },
-  setup(__props) {
-    const props = __props;
-    return (_ctx, _cache) => {
-      return vue.openBlock(), vue.createBlock(vue.unref(RangeCalendar_RangeCalendarNext._sfc_main), vue.normalizeProps(vue.guardReactiveProps(props)), {
-        default: vue.withCtx((slotProps) => [
-          vue.renderSlot(_ctx.$slots, "default", vue.normalizeProps(vue.guardReactiveProps(slotProps)))
-        ]),
-        _: 3
-      }, 16);
-    };
-  }
+//#region src/DateRangePicker/DateRangePickerNext.vue?vue&type=script&setup=true&lang.ts
+const __default__ = { compatConfig: { MODE: 3 } };
+var DateRangePickerNext_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ (0, vue.defineComponent)({
+	...__default__,
+	__name: "DateRangePickerNext",
+	props: {
+		nextPage: {
+			type: Function,
+			required: false
+		},
+		asChild: {
+			type: Boolean,
+			required: false
+		},
+		as: {
+			type: null,
+			required: false
+		}
+	},
+	setup(__props) {
+		const props = __props;
+		return (_ctx, _cache) => {
+			return (0, vue.openBlock)(), (0, vue.createBlock)((0, vue.unref)(require_RangeCalendar_RangeCalendarNext.RangeCalendarNext_default), (0, vue.normalizeProps)((0, vue.guardReactiveProps)(props)), {
+				default: (0, vue.withCtx)((slotProps) => [(0, vue.renderSlot)(_ctx.$slots, "default", (0, vue.normalizeProps)((0, vue.guardReactiveProps)(slotProps)))]),
+				_: 3
+			}, 16);
+		};
+	}
 });
 
-exports._sfc_main = _sfc_main;
+//#endregion
+//#region src/DateRangePicker/DateRangePickerNext.vue
+var DateRangePickerNext_default = DateRangePickerNext_vue_vue_type_script_setup_true_lang_default;
+
+//#endregion
+Object.defineProperty(exports, 'DateRangePickerNext_default', {
+  enumerable: true,
+  get: function () {
+    return DateRangePickerNext_default;
+  }
+});
 //# sourceMappingURL=DateRangePickerNext.cjs.map

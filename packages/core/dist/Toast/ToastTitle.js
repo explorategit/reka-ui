@@ -1,32 +1,38 @@
-import { defineComponent, createBlock, openBlock, unref, normalizeProps, guardReactiveProps, withCtx, renderSlot } from 'vue';
-import { u as useForwardExpose } from '../shared/useForwardExpose.js';
-import { P as Primitive } from '../Primitive/Primitive.js';
+import { useForwardExpose } from "../shared/useForwardExpose.js";
+import { Primitive } from "../Primitive/Primitive.js";
+import { createBlock, defineComponent, guardReactiveProps, normalizeProps, openBlock, renderSlot, unref, withCtx } from "vue";
 
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  ...__default__,
-  __name: "ToastTitle",
-  props: {
-    asChild: { type: Boolean },
-    as: {}
-  },
-  setup(__props) {
-    const props = __props;
-    useForwardExpose();
-    return (_ctx, _cache) => {
-      return openBlock(), createBlock(unref(Primitive), normalizeProps(guardReactiveProps(props)), {
-        default: withCtx(() => [
-          renderSlot(_ctx.$slots, "default")
-        ]),
-        _: 3
-      }, 16);
-    };
-  }
+//#region src/Toast/ToastTitle.vue?vue&type=script&setup=true&lang.ts
+const __default__ = { compatConfig: { MODE: 3 } };
+var ToastTitle_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	...__default__,
+	__name: "ToastTitle",
+	props: {
+		asChild: {
+			type: Boolean,
+			required: false
+		},
+		as: {
+			type: null,
+			required: false
+		}
+	},
+	setup(__props) {
+		const props = __props;
+		useForwardExpose();
+		return (_ctx, _cache) => {
+			return openBlock(), createBlock(unref(Primitive), normalizeProps(guardReactiveProps(props)), {
+				default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
+				_: 3
+			}, 16);
+		};
+	}
 });
 
-export { _sfc_main as _ };
+//#endregion
+//#region src/Toast/ToastTitle.vue
+var ToastTitle_default = ToastTitle_vue_vue_type_script_setup_true_lang_default;
+
+//#endregion
+export { ToastTitle_default };
 //# sourceMappingURL=ToastTitle.js.map

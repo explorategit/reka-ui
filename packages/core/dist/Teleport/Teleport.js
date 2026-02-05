@@ -1,34 +1,51 @@
-import { defineComponent, createBlock, createCommentVNode, unref, openBlock, Teleport, renderSlot } from 'vue';
-import { useMounted } from '@vueuse/core';
+import { Teleport, createBlock, createCommentVNode, defineComponent, openBlock, renderSlot, unref } from "vue";
+import { useMounted } from "@vueuse/core";
 
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  ...__default__,
-  __name: "Teleport",
-  props: {
-    to: { default: "body" },
-    disabled: { type: Boolean },
-    defer: { type: Boolean },
-    forceMount: { type: Boolean }
-  },
-  setup(__props) {
-    const isMounted = useMounted();
-    return (_ctx, _cache) => {
-      return unref(isMounted) || _ctx.forceMount ? (openBlock(), createBlock(Teleport, {
-        key: 0,
-        to: _ctx.to,
-        disabled: _ctx.disabled,
-        defer: _ctx.defer
-      }, [
-        renderSlot(_ctx.$slots, "default")
-      ], 8, ["to", "disabled", "defer"])) : createCommentVNode("", true);
-    };
-  }
+//#region src/Teleport/Teleport.vue?vue&type=script&setup=true&lang.ts
+const __default__ = { compatConfig: { MODE: 3 } };
+var Teleport_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	...__default__,
+	__name: "Teleport",
+	props: {
+		to: {
+			type: null,
+			required: false,
+			default: "body"
+		},
+		disabled: {
+			type: Boolean,
+			required: false
+		},
+		defer: {
+			type: Boolean,
+			required: false
+		},
+		forceMount: {
+			type: Boolean,
+			required: false
+		}
+	},
+	setup(__props) {
+		const isMounted = useMounted();
+		return (_ctx, _cache) => {
+			return unref(isMounted) || _ctx.forceMount ? (openBlock(), createBlock(Teleport, {
+				key: 0,
+				to: _ctx.to,
+				disabled: _ctx.disabled,
+				defer: _ctx.defer
+			}, [renderSlot(_ctx.$slots, "default")], 8, [
+				"to",
+				"disabled",
+				"defer"
+			])) : createCommentVNode("v-if", true);
+		};
+	}
 });
 
-export { _sfc_main as _ };
+//#endregion
+//#region src/Teleport/Teleport.vue
+var Teleport_default = Teleport_vue_vue_type_script_setup_true_lang_default;
+
+//#endregion
+export { Teleport_default };
 //# sourceMappingURL=Teleport.js.map

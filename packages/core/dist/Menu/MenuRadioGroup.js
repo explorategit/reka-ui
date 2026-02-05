@@ -1,43 +1,56 @@
-import { defineComponent, createBlock, openBlock, normalizeProps, guardReactiveProps, withCtx, renderSlot, unref } from 'vue';
-import { useVModel } from '@vueuse/core';
-import { _ as _sfc_main$1 } from './MenuGroup.js';
-import { c as createContext } from '../shared/createContext.js';
+import { createContext } from "../shared/createContext.js";
+import { useForwardProps } from "../shared/useForwardProps.js";
+import { MenuGroup_default } from "./MenuGroup.js";
+import { createBlock, defineComponent, guardReactiveProps, normalizeProps, openBlock, renderSlot, unref, withCtx } from "vue";
+import { reactiveOmit, useVModel } from "@vueuse/core";
 
+//#region src/Menu/MenuRadioGroup.vue?vue&type=script&setup=true&lang.ts
 const [injectMenuRadioGroupContext, provideMenuRadioGroupContext] = createContext("MenuRadioGroup");
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  ...__default__,
-  __name: "MenuRadioGroup",
-  props: {
-    modelValue: { default: "" },
-    asChild: { type: Boolean },
-    as: {}
-  },
-  emits: ["update:modelValue"],
-  setup(__props, { emit: __emit }) {
-    const props = __props;
-    const emits = __emit;
-    const modelValue = useVModel(props, "modelValue", emits);
-    provideMenuRadioGroupContext({
-      modelValue,
-      onValueChange: (payload) => {
-        modelValue.value = payload;
-      }
-    });
-    return (_ctx, _cache) => {
-      return openBlock(), createBlock(_sfc_main$1, normalizeProps(guardReactiveProps(props)), {
-        default: withCtx(() => [
-          renderSlot(_ctx.$slots, "default", { modelValue: unref(modelValue) })
-        ]),
-        _: 3
-      }, 16);
-    };
-  }
+const __default__ = { compatConfig: { MODE: 3 } };
+var MenuRadioGroup_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	...__default__,
+	__name: "MenuRadioGroup",
+	props: {
+		modelValue: {
+			type: null,
+			required: false,
+			default: ""
+		},
+		asChild: {
+			type: Boolean,
+			required: false
+		},
+		as: {
+			type: null,
+			required: false
+		}
+	},
+	emits: ["update:modelValue"],
+	setup(__props, { emit: __emit }) {
+		const props = __props;
+		const emits = __emit;
+		const delegatedProps = reactiveOmit(props, ["modelValue"]);
+		const forwarded = useForwardProps(delegatedProps);
+		const modelValue = useVModel(props, "modelValue", emits);
+		provideMenuRadioGroupContext({
+			modelValue,
+			onValueChange: (payload) => {
+				modelValue.value = payload;
+			}
+		});
+		return (_ctx, _cache) => {
+			return openBlock(), createBlock(MenuGroup_default, normalizeProps(guardReactiveProps(unref(forwarded))), {
+				default: withCtx(() => [renderSlot(_ctx.$slots, "default", { modelValue: unref(modelValue) })]),
+				_: 3
+			}, 16);
+		};
+	}
 });
 
-export { _sfc_main as _, injectMenuRadioGroupContext as i };
+//#endregion
+//#region src/Menu/MenuRadioGroup.vue
+var MenuRadioGroup_default = MenuRadioGroup_vue_vue_type_script_setup_true_lang_default;
+
+//#endregion
+export { MenuRadioGroup_default, injectMenuRadioGroupContext };
 //# sourceMappingURL=MenuRadioGroup.js.map

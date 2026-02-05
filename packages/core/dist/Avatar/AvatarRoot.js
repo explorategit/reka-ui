@@ -1,39 +1,44 @@
-import { defineComponent, ref, createBlock, openBlock, unref, withCtx, renderSlot } from 'vue';
-import { c as createContext } from '../shared/createContext.js';
-import { u as useForwardExpose } from '../shared/useForwardExpose.js';
-import { P as Primitive } from '../Primitive/Primitive.js';
+import { createContext } from "../shared/createContext.js";
+import { useForwardExpose } from "../shared/useForwardExpose.js";
+import { Primitive } from "../Primitive/Primitive.js";
+import { createBlock, defineComponent, openBlock, ref, renderSlot, unref, withCtx } from "vue";
 
+//#region src/Avatar/AvatarRoot.vue?vue&type=script&setup=true&lang.ts
 const [injectAvatarRootContext, provideAvatarRootContext] = createContext("AvatarRoot");
-const __default__ = {
-  compatConfig: {
-    MODE: 3
-  }
-};
-const _sfc_main = /* @__PURE__ */ defineComponent({
-  ...__default__,
-  __name: "AvatarRoot",
-  props: {
-    asChild: { type: Boolean },
-    as: { default: "span" }
-  },
-  setup(__props) {
-    useForwardExpose();
-    provideAvatarRootContext({
-      imageLoadingStatus: ref("idle")
-    });
-    return (_ctx, _cache) => {
-      return openBlock(), createBlock(unref(Primitive), {
-        "as-child": _ctx.asChild,
-        as: _ctx.as
-      }, {
-        default: withCtx(() => [
-          renderSlot(_ctx.$slots, "default")
-        ]),
-        _: 3
-      }, 8, ["as-child", "as"]);
-    };
-  }
+const __default__ = { compatConfig: { MODE: 3 } };
+var AvatarRoot_vue_vue_type_script_setup_true_lang_default = /* @__PURE__ */ defineComponent({
+	...__default__,
+	__name: "AvatarRoot",
+	props: {
+		asChild: {
+			type: Boolean,
+			required: false
+		},
+		as: {
+			type: null,
+			required: false,
+			default: "span"
+		}
+	},
+	setup(__props) {
+		useForwardExpose();
+		provideAvatarRootContext({ imageLoadingStatus: ref("idle") });
+		return (_ctx, _cache) => {
+			return openBlock(), createBlock(unref(Primitive), {
+				"as-child": _ctx.asChild,
+				as: _ctx.as
+			}, {
+				default: withCtx(() => [renderSlot(_ctx.$slots, "default")]),
+				_: 3
+			}, 8, ["as-child", "as"]);
+		};
+	}
 });
 
-export { _sfc_main as _, injectAvatarRootContext as i };
+//#endregion
+//#region src/Avatar/AvatarRoot.vue
+var AvatarRoot_default = AvatarRoot_vue_vue_type_script_setup_true_lang_default;
+
+//#endregion
+export { AvatarRoot_default, injectAvatarRootContext };
 //# sourceMappingURL=AvatarRoot.js.map
