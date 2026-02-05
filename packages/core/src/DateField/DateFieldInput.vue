@@ -29,8 +29,6 @@ const lastKeyZero = ref(false)
 const {
   handleSegmentClick,
   handleSegmentKeydown,
-  handleSegmentCopy,
-  handleSegmentPaste,
   attributes,
 } = useDateField({
   hasLeftFocus,
@@ -65,8 +63,6 @@ const isInvalid = computed(() => rootContext.isInvalid.value)
     :data-invalid="isInvalid ? '' : undefined"
     :aria-invalid="isInvalid ? true : undefined"
     v-on="part !== 'literal' ? {
-      copy: handleSegmentCopy,
-      paste: handleSegmentPaste,
       mousedown: handleSegmentClick,
       keydown: handleSegmentKeydown,
       focusout: () => { hasLeftFocus = true },
