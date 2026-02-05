@@ -51,20 +51,24 @@ function handleInput(event: InputEvent) {
     rootContext.onOpenChange(true)
     nextTick(() => {
       if (target.value) {
-        rootContext.filterState.search = target.value
-        listboxContext.highlightFirstItem(event)
+        rootContext.filterSearch.value = target.value
+        listboxContext.highlightFirstItem()
       }
     })
   }
   else {
-    rootContext.filterState.search = target.value
+    rootContext.filterSearch.value = target.value
   }
 }
 
 function handleFocus() {
-  if (rootContext.openOnFocus.value && !rootContext.open.value) {
+  if (rootContext.openOnFocus.value && !rootContext.open.value)
     rootContext.onOpenChange(true)
-  }
+}
+
+function handleClick() {
+  if (rootContext.openOnClick.value && !rootContext.open.value)
+    rootContext.onOpenChange(true)
 }
 
 function resetSearchTerm() {
@@ -98,14 +102,13 @@ watch(rootContext.modelValue, async () => {
     resetSearchTerm()
 }, { immediate: true, deep: true })
 
-watch(
-  () => props.modelValue,
-  () => {
-    if (props.modelValue !== undefined) {
-      rootContext.filterState.search = props.modelValue
-    }
-  },
-)
+watch(rootContext.filterState, (_newValue, oldValue) => {
+  // we exclude virtualized list as the state would be constantly updated,
+  // and only change highlight when previously there were no items displayed
+  if (!rootContext.isVirtual.value && (oldValue.count === 0)) {
+    listboxContext.highlightFirstItem()
+  }
+})
 </script>
 
 <template>
@@ -115,11 +118,13 @@ watch(
     :as="as"
     :as-child="asChild"
     :auto-focus="autoFocus"
+    :disabled="disabled"
     :aria-expanded="rootContext.open.value"
     :aria-controls="rootContext.contentId"
     aria-autocomplete="list"
     role="combobox"
-    autocomplete="false"
+    autocomplete="off"
+    @click="handleClick"
     @input="handleInput"
     @keydown.down.up.prevent="handleKeyDown"
     @focus="handleFocus"

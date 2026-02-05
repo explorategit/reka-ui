@@ -13,7 +13,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { computed, onBeforeUnmount, onMounted } from 'vue'
+import { computed, onMounted, onUnmounted } from 'vue'
 import { Primitive } from '@/Primitive'
 import { injectSelectContentContext } from './SelectContentImpl.vue'
 import { injectSelectItemContext } from './SelectItem.vue'
@@ -52,7 +52,7 @@ onMounted(() => {
   rootContext.onOptionAdd(optionProps.value)
 })
 
-onBeforeUnmount(() => {
+onUnmounted(() => {
   rootContext.onOptionRemove(optionProps.value)
 })
 </script>

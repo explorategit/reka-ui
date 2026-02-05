@@ -62,6 +62,8 @@ defineSlots<{
   default?: (props: {
     /** Current open state */
     open: typeof open.value
+    /** Close the popover */
+    close: () => void
   }) => any
 }>()
 
@@ -93,6 +95,9 @@ providePopoverRootContext({
 
 <template>
   <PopperRoot>
-    <slot :open="open" />
+    <slot
+      :open="open"
+      :close="() => open = false"
+    />
   </PopperRoot>
 </template>

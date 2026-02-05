@@ -46,15 +46,13 @@ export function useCollection<ItemData = {}>(options: { key?: string, isProvider
 
   const CollectionSlot = defineComponent({
     name: 'CollectionSlot',
-    compatConfig: {
-      MODE: 3,
-    },
-    setup(_, { slots }) {
+    inheritAttrs: false,
+    setup(_, { slots, attrs }) {
       const { primitiveElement, currentElement } = usePrimitiveElement()
       watch(currentElement, () => {
         context.collectionRef.value = currentElement.value
       })
-      return () => h(Slot, { ref: primitiveElement }, slots)
+      return () => h(Slot, { ref: primitiveElement, ...attrs }, slots)
     },
   })
 

@@ -1,12 +1,13 @@
-import type { CycleTimeOptions, DateFields, DateValue, TimeFields } from '@internationalized/date'
+import type { CalendarDateTime, DateFields, DateValue, TimeFields } from '@internationalized/date'
 import type { Ref } from 'vue'
 import type { AnyExceptLiteral, DateStep, HourCycle, SegmentPart, SegmentValueObj } from './types'
 import type { Formatter } from '@/shared'
-import { CalendarDate, CalendarDateTime, parseAbsoluteToLocal, parseDate, parseDateTime } from '@internationalized/date'
+import {
+  DateFormatter,
+} from '@internationalized/date'
 import { computed } from 'vue'
 import { getDaysInMonth, toDate } from '@/date'
-import { useKbd } from '@/shared'
-import { isCopy, isCut, isPaste } from '../macro'
+import { snapValueToStep, useKbd } from '@/shared'
 import { isAcceptableSegmentKey, isNumberString, isSegmentNavigationKey } from './segment'
 
 type MinuteSecondIncrementProps = {
@@ -21,7 +22,6 @@ type DateTimeValueIncrementation = {
   part: keyof Omit<DateFields, 'era'> | keyof TimeFields
   dateRef: DateValue
   prevValue: number | null
-  hourCycle?: HourCycle
 }
 
 type SegmentAttrProps = {
@@ -48,7 +48,15 @@ function commonSegmentAttrs(props: SegmentAttrProps) {
 function daySegmentAttrs(props: SegmentAttrProps) {
   const { segmentValues, placeholder } = props
   const isEmpty = segmentValues.day === null
-  const date = segmentValues.day ? placeholder.set({ day: segmentValues.day }) : placeholder
+
+  // Include month from segmentValues to ensure correct max days calculation
+  const dateFields: { day?: number, month?: number } = {}
+  if (segmentValues.day)
+    dateFields.day = segmentValues.day
+  if (segmentValues.month)
+    dateFields.month = segmentValues.month
+
+  const date = Object.keys(dateFields).length > 0 ? placeholder.set(dateFields) : placeholder
 
   const valueNow = date.day
   const valueMin = 1
@@ -276,6 +284,7 @@ export type UseDateFieldProps = {
   placeholder: Ref<DateValue>
   hourCycle: HourCycle
   step: Ref<DateStep>
+  stepSnapping?: Ref<boolean>
   formatter: Formatter
   segmentValues: Ref<SegmentValueObj>
   disabled: Ref<boolean>
@@ -314,7 +323,7 @@ export function useDateField(props: UseDateFieldProps) {
 
     return Number.parseInt(str.slice(0, -1))
   }
-  function dateTimeValueIncrementation({ e, part, dateRef, prevValue, hourCycle }: DateTimeValueIncrementation): number {
+  function dateTimeValueIncrementation({ e, part, dateRef, prevValue }: DateTimeValueIncrementation): number {
     const step = props.step.value[part] ?? 1
     const sign = e.key === kbd.ARROW_UP ? step : -step
 
@@ -322,7 +331,9 @@ export function useDateField(props: UseDateFieldProps) {
       return dateRef[part as keyof Omit<DateFields, 'era'>]
 
     if (part === 'hour' && 'hour' in dateRef) {
-      const cycleArgs: [keyof DateFields | keyof TimeFields, number, CycleTimeOptions?] = [part, sign, { hourCycle }]
+      // Don't pass hourCycle to cycle - internal representation is always 24-hour
+      // The hourCycle prop only affects display, not internal cycling
+      const cycleArgs: [keyof DateFields | keyof TimeFields, number] = [part, sign]
       return dateRef.set({ [part as keyof DateValue]: prevValue }).cycle(...cycleArgs)[part]
     }
 
@@ -501,8 +512,7 @@ export function useDateField(props: UseDateFieldProps) {
     return { value: total, moveToNext }
   }
 
-  function updateHour(num: number, prev: number | null) {
-    const max = 24
+  function updateHour(max: number, num: number, prev: number | null) {
     let moveToNext = false
     const maxStart = Math.floor(max / 10)
 
@@ -708,6 +718,11 @@ export function useDateField(props: UseDateFieldProps) {
     }
   }
 
+  function uses12HourFormat(locale: string): boolean {
+    const hourCycle = new DateFormatter(locale, { hour: 'numeric' }).resolvedOptions().hourCycle
+    return hourCycle === 'h11' || hourCycle === 'h12'
+  }
+
   function handleHourSegmentKeydown(e: KeyboardEvent) {
     const dateRef = props.placeholder.value
     if (!isAcceptableSegmentKey(e.key) || isSegmentNavigationKey(e.key) || !('hour' in dateRef) || !('hour' in props.segmentValues.value))
@@ -715,16 +730,14 @@ export function useDateField(props: UseDateFieldProps) {
 
     const prevValue = props.segmentValues.value.hour
 
-    const hourCycle = props.hourCycle
-
     if (e.key === kbd.ARROW_UP || e.key === kbd.ARROW_DOWN) {
-      props.segmentValues.value.hour = dateTimeValueIncrementation({ e, part: 'hour', dateRef: props.placeholder.value, prevValue, hourCycle })
+      const newHour = dateTimeValueIncrementation({ e, part: 'hour', dateRef: props.placeholder.value, prevValue })
+      props.segmentValues.value.hour = newHour
 
-      if ('dayPeriod' in props.segmentValues.value) {
-        if (props.segmentValues.value.hour < 12)
-          props.segmentValues.value.dayPeriod = 'AM'
-        else if (props.segmentValues.value.hour)
-          props.segmentValues.value.dayPeriod = 'PM'
+      if ('dayPeriod' in props.segmentValues.value && newHour !== null) {
+        // Determine AM/PM based on internal 24-hour value
+        // Hour 0-11 = AM, Hour 12-23 = PM
+        props.segmentValues.value.dayPeriod = newHour >= 12 ? 'PM' : 'AM'
       }
 
       return
@@ -732,14 +745,29 @@ export function useDateField(props: UseDateFieldProps) {
 
     if (isNumberString(e.key)) {
       const num = Number.parseInt(e.key)
-      const { value, moveToNext } = updateHour(num, prevValue)
+      const is12Hour = uses12HourFormat(props.formatter.getLocale())
+      const max = is12Hour ? 12 : 24
 
-      if ('dayPeriod' in props.segmentValues.value && value && value > 12)
-        props.segmentValues.value.dayPeriod = 'PM'
-      else if ('dayPeriod' in props.segmentValues.value && value)
-        props.segmentValues.value.dayPeriod = 'AM'
+      let displayPrev = prevValue
+      if (is12Hour && prevValue !== null) {
+        displayPrev = prevValue === 0 ? 12 : (prevValue > 12 ? prevValue - 12 : prevValue)
+      }
 
-      props.segmentValues.value.hour = value
+      const { value, moveToNext } = updateHour(max, num, displayPrev)
+
+      // Convert display hour back to internal 24-hour format
+      let internalValue = value
+      if (is12Hour && value !== null) {
+        const period = props.segmentValues.value.dayPeriod || 'AM'
+        if (value === 12) {
+          internalValue = period === 'AM' ? 0 : 12
+        }
+        else {
+          internalValue = period === 'PM' ? value + 12 : value
+        }
+      }
+
+      props.segmentValues.value.hour = internalValue
 
       if (moveToNext)
         props.focusNext()
@@ -845,9 +873,6 @@ export function useDateField(props: UseDateFieldProps) {
     const disabled = props.disabled.value
     const readonly = props.readonly.value
 
-    if (e.key !== kbd.TAB && !isCut(e) && !isCopy(e) && !isPaste(e))
-      e.preventDefault()
-
     if (disabled || readonly)
       return
     const segmentKeydownHandlers = {
@@ -867,94 +892,45 @@ export function useDateField(props: UseDateFieldProps) {
       if (Object.values(props.segmentValues.value).every(item => item !== null)) {
         const updateObject = { ...props.segmentValues.value as Record<AnyExceptLiteral, number> }
 
-        let dateRef = props.placeholder.value.copy()
-
-        Object.keys(updateObject).forEach((part) => {
-          const value = updateObject[part as AnyExceptLiteral]
-          dateRef = dateRef.set({ [part]: value })
-        })
+        // Set all date fields at once to avoid order-dependent constraints
+        // (e.g., setting day: 31 before month: 3 would incorrectly constrain the day)
+        const dateRef = props.placeholder.value.set(updateObject)
 
         props.modelValue.value = dateRef.copy()
       }
     }
   }
 
-  function handleSegmentCopy(event: ClipboardEvent) {
-    event.preventDefault()
-
-    if (!props.modelValue.value)
+  function handleSegmentFocusOut() {
+    if (!props.stepSnapping?.value)
       return
 
-    const formattedValue = props.formatter.toParts(props.modelValue.value).map(part => part.value).join('')
-    event.clipboardData?.setData('text/plain', formattedValue)
-  }
-
-  function handleSegmentPaste(event: ClipboardEvent) {
-    event.preventDefault()
-
-    const dateString = event.clipboardData?.getData('text/plain').trim() || ''
-    if (!dateString)
-      return
-
-    /**
-     * Assume the date string is in ISO format, and try to parse it.
-     */
-    try {
-      const dateValue = parseDate(dateString)
-      props.modelValue.value = dateValue
-      return
+    if (props.part === 'hour' && 'hour' in props.segmentValues.value && props.segmentValues.value.hour !== null && props.step.value.hour && props.step.value.hour > 1) {
+      props.segmentValues.value.hour = snapValueToStep(props.segmentValues.value.hour, 0, 23, props.step.value.hour)
+      if ('dayPeriod' in props.segmentValues.value) {
+        if (props.segmentValues.value.hour < 12)
+          props.segmentValues.value.dayPeriod = 'AM'
+        else if (props.segmentValues.value.hour)
+          props.segmentValues.value.dayPeriod = 'PM'
+      }
     }
-    catch { }
-
-    try {
-      const dateValue = parseDateTime(dateString)
-      props.modelValue.value = dateValue
-      return
+    else if (props.part === 'minute' && 'minute' in props.segmentValues.value && props.segmentValues.value.minute !== null && props.step.value.minute && props.step.value.minute > 1) {
+      props.segmentValues.value.minute = snapValueToStep(props.segmentValues.value.minute, 0, 59, props.step.value.minute)
     }
-    catch { }
-
-    try {
-      const dateValue = parseAbsoluteToLocal(dateString)
-      props.modelValue.value = dateValue
-      return
+    else if (props.part === 'second' && 'second' in props.segmentValues.value && props.segmentValues.value.second !== null && props.step.value.second && props.step.value.second > 1) {
+      props.segmentValues.value.second = snapValueToStep(props.segmentValues.value.second, 0, 59, props.step.value.second)
     }
-    catch { }
 
-    /**
-     * Fallback to native Date parsing to handle locale specific formats.
-     */
-    const date = new Date(dateString)
-    if (isNaN(date.getTime()))
-      return
-
-    const includesTime = /\d{1,2}:\d{2}:\d{2}/.test(dateString)
-
-    if (includesTime) {
-      const dateValue = new CalendarDateTime(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getDate(),
-        date.getHours(),
-        date.getMinutes(),
-        date.getSeconds(),
-      )
-      props.modelValue.value = dateValue
-    }
-    else {
-      const dateValue = new CalendarDate(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        date.getDate(),
-      )
-      props.modelValue.value = dateValue
+    if (Object.values(props.segmentValues.value).every(item => item !== null)) {
+      const dateRef = props.placeholder.value.set({ ...props.segmentValues.value as Record<AnyExceptLiteral, number> })
+      props.modelValue.value = dateRef.copy()
     }
   }
 
   return {
     handleSegmentClick,
-    handleSegmentCopy,
     handleSegmentKeydown,
-    handleSegmentPaste,
+    handleSegmentFocusOut,
     attributes,
   }
 }

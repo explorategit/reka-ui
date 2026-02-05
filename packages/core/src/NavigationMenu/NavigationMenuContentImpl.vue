@@ -109,7 +109,7 @@ function handlePointerDownOutside(ev: PointerDownOutsideEvent) {
       i.ref.contains(target),
     )
     const isRootViewport
-    = menuContext.isRootMenu && menuContext.viewport.value?.contains(target)
+      = menuContext.isRootMenu && menuContext.viewport.value?.contains(target)
 
     if (isTrigger || isRootViewport || !menuContext.isRootMenu)
       ev.preventDefault()
