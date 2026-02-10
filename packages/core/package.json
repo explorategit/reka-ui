@@ -1,5 +1,5 @@
 {
-  "name": "reka-ui",
+  "name": "@explorate/reka-ui",
   "type": "module",
   "version": "2.8.0",
   "description": "Vue port for Radix UI Primitives.",
